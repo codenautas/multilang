@@ -13,14 +13,16 @@ Tools for multilanguage &amp; Markdown multilang
 ## Install
 
 ```sh
-$ npm install multilang
+$ npm install multilang -g
 ```
 
-## API
+## Use
 
-```js
-var multilang = require('multilang');
 ```
+$ multilang doc-en.md
+```
+
+Generates one the .md files for the other languages writed in `doc-en.md`
 
 ## License
 
