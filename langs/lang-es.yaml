@@ -1,0 +1,10 @@
+﻿name: castellano
+abr: es
+phrases:
+  language: idioma
+  also available in: también disponible en
+languages:
+  en: inlgés
+  es: español
+  it: italiano
+  ru: ruso
