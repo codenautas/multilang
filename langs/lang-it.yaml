@@ -1,0 +1,11 @@
+﻿name: italiano
+abr: it
+languages:
+  en: inlgese
+  es: spagnolo
+  it: italiano
+  ru: russo
+phrases:
+  language: lingua
+  disponibile anche in: también disponible en
+  DO NOT MODIFY DIRECTLY: NO MODIFIQUE ESTE ARCHIVO. FUE GENERADO AUTOMÁTICAMENTE POR multilang.js #no se refiere a éste sino al generado
