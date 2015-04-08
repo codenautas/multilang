@@ -6,7 +6,7 @@ var multilang = require('..');
 
 describe('multilang', function(){
     describe('example test', function(){
-        it('generate the spanish file of the example', function(done){
+        it.skip('generate the spanish file of the example', function(done){
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/multilenguaje.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
