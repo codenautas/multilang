@@ -7,18 +7,8 @@ also available in:
 # multilang
 <!--lang:en-->
 Tools for multilanguage &amp; Markdown multilang
-
-In a file type Markdown or HTML you writte documentation in multiple languages.
-
-One of these languages ​​is the principal, the others are comented with &lt; and &gt;
-
-Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
 <!--lang:es--]
 Herramientas multilenguaje (primeramente para Markdown)
-
-En un archivo tipo Markdown o html se escribe documentación en varios idiomas. 
-Uno de esos lenguajes es el principal, los otros están comentados con &lt;!-- y --&gt;
-Luego con `multilang` se extraen los otros lenguajes generando un archivo para cada uno de los otros lenguajes definidos
 [!--lang:*-->
 
 ![designing](https://img.shields.io/badge/stability-desgining-red.svg)
@@ -27,6 +17,18 @@ Luego con `multilang` se extraen los otros lenguajes generando un archivo para c
 [![Linux Build][travis-image]][travis-url]
 [![Windows Build][appveyor-image]][appveyor-url]
 [![Test Coverage][coveralls-image]][coveralls-url]
+
+<!--lang:en-->
+In a file type Markdown or HTML you writte documentation in multiple languages.
+
+One of these languages ​​is the principal, the others are comented with &lt; and &gt;
+
+Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
+
+<!--lang:es--]
+En un archivo tipo Markdown o html se escribe documentación en varios idiomas. 
+Uno de esos lenguajes es el principal, los otros están comentados con &lt;!-- y --&gt;
+Luego con `multilang` se extraen los otros lenguajes generando un archivo para cada uno de los otros lenguajes definidos
 
 <!--lang:en-->
 ## Install
@@ -53,7 +55,17 @@ $ multilang doc-en.md
 Generates one the .md files for the other languages writed in `doc-en.md`
 <!--lang:es--]
 Genera los archivos especificados en la cabecera del archivo para los idiomas secundarios.
+
+[!--lang:en-->
+## Multilanguage document format
+
+<!--lang:es--]
+## Formato del documento multilenguaje
+
+Un documento multilenguaje es un documento HTML o Markdown escrito en un idioma principal
+
 [!--lang:*-->
+
 
 ## License
 

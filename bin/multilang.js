@@ -2,6 +2,10 @@
 
 var multilang={}
 
+multilang.langs={
+}
+// esto se va a inicializar con los yaml de ./langs/lang-*.yaml
+
 multilang.changeDoc=function changeDoc(documentText,lang){
     return "changed not implemented yet";
 }
@@ -17,6 +21,10 @@ multilang.obtainLangs=function obtainLangs(documentTextHeader){
         all_langs[lang[1]] = {'fileName' : lang[2] };
     }
     return {main:def_lang, langs:all_langs};
+}
+
+multilang.generateButtons=function changeDoc(documentTextHeader,lang){
+    return "<--changed not implemented yet";
 }
 
 
