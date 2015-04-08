@@ -23,9 +23,22 @@ multilang.obtainLangs=function obtainLangs(documentTextHeader){
     return {main:def_lang, langs:all_langs};
 }
 
-multilang.generateButtons=function changeDoc(documentTextHeader,lang){
-    return "<--changed not implemented yet";
+multilang.generateButtons=function changeDoc(documentTextHeader,lang) {
+    var r=null;
+    if(this.langs) {
+        var ln=this.langs[lang];
+        if(ln) {
+            r='<!--multilang buttons -->\n';
+            r += 'idioma: !['+ln.name+'](https://github.com/codenautas/multilang/blob/master/img/lang-'+ln.abr+'.png)\n';
+            r += 'also available in:';
+            for(var lother in ln.languages) {
+                var lname = ln.languages[lother];
+                if(ln.name == lname) { continue; }
+                r += '\n[!['+lname+'](https://github.com/codenautas/multilang/blob/master/img/lang-'+lother+'.png)](readme.md)';
+            }
+        }
+    }
+    return r;
 }
-
 
 module.exports = multilang;

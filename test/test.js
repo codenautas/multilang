@@ -31,7 +31,7 @@ describe('multilang', function(){
                 }
             });
         });
-        it.skip('generate the button section overriding defaults', function(){
+        it('generate the button section overriding defaults', function(){
             var header='<!--multilang v0 en:readme.md fr:lisezmoi.md -->';
             expect(!!multilang.langs).to.be.eql(true);
             multilang.langs.fr={
@@ -49,7 +49,7 @@ describe('multilang', function(){
             expect(buttonSection).to.eql(
                 '<!--multilang buttons -->\n'+
                 'idioma: ![français](https://github.com/codenautas/multilang/blob/master/img/lang-fr.png)\n'+
-                'also availabe in:\n'+
+                'also available in:\n'+
                 '[![anglais](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](readme.md)'
             );
         });
