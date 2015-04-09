@@ -1,0 +1,11 @@
+﻿name: français
+abr: fr
+languages:
+  en: anglais
+  es: espagnol
+  it: italiano
+  ru: russe
+phrases:
+  language: langue
+  also available in: également disponible en
+  DO NOT MODIFY DIRECTLY: NE MODIFIEZ PAS DIRECTEMENT CE DOSSIER. A été généré par multilang.js #no se refiere a éste sino al generado

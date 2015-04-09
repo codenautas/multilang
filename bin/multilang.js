@@ -2,7 +2,7 @@
 
 var _ = require("lodash");
 var yaml = require('js-yaml');
-var fs = require('fs');
+var fs = require('fs-promise');
 var stripBom = require('strip-bom');
 
 var multilang={}
@@ -49,7 +49,8 @@ multilang.obtainLangs=function obtainLangs(documentTextHeader){
 var imgUrl = 'https://github.com/codenautas/multilang/blob/master/img/';
 
 multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
-    var obtainedLangs = multilang.obtainLangs(documentTextHeader);
+    var obtainedLangs = this.obtainLangs(documentTextHeader);
+    if(null == this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
     var ln = _.merge({}, this.langs.en, this.langs[lang]); 
     var r='<!--multilang buttons -->\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';

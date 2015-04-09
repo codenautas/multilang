@@ -3,12 +3,15 @@
 var expect = require('expect.js');
 var fs = require('fs-promise');
 var multilang = require('..');
+var stripBom = require('strip-bom');
 
 describe('multilang', function(){
     describe('example test', function(){
         it.skip('generate the spanish file of the example', function(done){
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/multilenguaje.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
+                    englishDoc = stripBom(englishDoc);
+                    expectedSpanishDoc = stripBom(expectedSpanishDoc);
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
                     expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
                     done();
@@ -43,26 +46,27 @@ describe('multilang', function(){
                 },
                 phrases:{
                     language: 'langue',
+                    'also available in': 'le puedé conseguiré también en (francés trucho)'
                 }
             }
             var buttonSection = multilang.generateButtons(header,'fr');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons -->\n'+
                 'langue: ![français](https://github.com/codenautas/multilang/blob/master/img/lang-fr.png)\n'+ 
-                'also available in:\n'+
+                'le puedé conseguiré también en (francés trucho):\n'+
                 '[![anglais](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](readme.md)'
             );
         });
-        it.skip('generate the button section from yamls', function(){
+        it('generate the button section from yamls', function(){
             var header='<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md -->';
             var buttonSection = multilang.generateButtons(header,'es');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons -->\n'+
                 'idioma: ![castellano](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)\n'+
                 'también disponible en:\n'+
-                '[![inglés](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](multilanguage.md) -\n'+
-                '[![italiano](https://github.com/codenautas/multilang/blob/master/img/lang-it.png)](multilingua.md) -\n'+
-                '[![ruso](https://github.com/codenautas/multilang/blob/master/img/lang-ru.png)](мультиязычный.md)\n'
+                '[![inglés](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](multilanguage.md)\n'+
+                '[![italiano](https://github.com/codenautas/multilang/blob/master/img/lang-it.png)](multilingua.md)\n'+
+                '[![ruso](https://github.com/codenautas/multilang/blob/master/img/lang-ru.png)](мультиязычный.md)'
             );
         });
         it.skip('separate the content of original doc', function(){
@@ -113,7 +117,7 @@ describe('multilang', function(){
                 name: 'castellano',
                 abr: 'es',
                 languages: {
-                    en: 'inlgés', 
+                    en: 'inglés', 
                     es: 'español',
                     it: 'italiano',
                     ru: 'ruso'
