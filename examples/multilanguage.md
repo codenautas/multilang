@@ -6,14 +6,14 @@ also available in:
 [![Italian](https://github.com/codenautas/multilang/blob/master/img/lang-it.png)](multilingua.md) -
 [![Russian](https://github.com/codenautas/multilang/blob/master/img/lang-ru.png)](мультиязычный.md)
 
-<!--lang:en-->
+[!--lang:en--]
 # Multilanguage
 
 This is an example of multilanguage markdown file.
 
 The main goal is write multilanguage documentation in an unified source.
 
-<!--lang:es--]
+[!--lang:es--]
 # Multilenguaje (Multilanguage)
 
 Esto es una prueba de archivos markdown multilenguajes.
@@ -34,10 +34,10 @@ L'obiettivo principale è scrivere la documentazione multilingue in una fonte un
 
 Основная цель написать мультиязычный документации в единой источника.
 
-[!--lang:en-->
+[!--lang:en--]
 # License
 
-<!--lang:es--]
+[!--lang:es--]
 # Licencia
 
 [!--lang:it--]
@@ -46,6 +46,6 @@ L'obiettivo principale è scrivere la documentazione multilingue in una fonte un
 [!--lang:ru--]
 # лицензия
 
-[!--lang:*-->
+[!--lang:*--]
 MIT
-<!--lang:.-->
+[!--lang:.--]

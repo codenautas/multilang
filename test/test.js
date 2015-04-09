@@ -7,7 +7,7 @@ var stripBom = require('strip-bom');
 
 describe('multilang', function(){
     describe('example test', function(){
-        it.skip('generate the spanish file of the example', function(done){
+        it('generate the spanish file of the example', function(done){
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/multilenguaje.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
                     englishDoc = stripBom(englishDoc);
@@ -64,8 +64,8 @@ describe('multilang', function(){
                 '<!--multilang buttons -->\n'+
                 'idioma: ![castellano](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)\n'+
                 'también disponible en:\n'+
-                '[![inglés](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](multilanguage.md)\n'+
-                '[![italiano](https://github.com/codenautas/multilang/blob/master/img/lang-it.png)](multilingua.md)\n'+
+                '[![inglés](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](multilanguage.md) -\n'+
+                '[![italiano](https://github.com/codenautas/multilang/blob/master/img/lang-it.png)](multilingua.md) -\n'+
                 '[![ruso](https://github.com/codenautas/multilang/blob/master/img/lang-ru.png)](мультиязычный.md)'
             );
         });

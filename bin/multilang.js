@@ -9,13 +9,13 @@ var multilang={}
 
 multilang.langs={
     en:{
-        name: 'English',
+        name: 'english',
         abr: 'en',
         languages:{
-            en: 'English',
-            es: 'Spanish',
-            it: 'Italian',
-            ru: 'Russian'
+            en: 'english',
+            es: 'spanish',
+            it: 'italian',
+            ru: 'russian'
         },
         phrases:{
             language: 'language',
@@ -28,7 +28,19 @@ multilang.langs={
 // esto se va a inicializar con los yaml de ./langs/lang-*.yaml
 
 multilang.changeDoc=function changeDoc(documentText,lang){
-    return "changed not implemented yet";
+    var langConv = this.parseLang(lang);
+    var r='<!-- \n\n\n\n\n'
+         +langConv.phrases['DO NOT MODIFY DIRECTLY']
+         +' \n\n\n\n\n-->\n'
+         + this.generateButtons(documentText, lang);
+    // parsear tags
+    var pat= new RegExp('\\[!--lang:('+lang+'|\\*)--]([^[]+)', 'g');
+    var s;
+    while(null != (s = pat.exec(documentText))) {
+        r += '\n' + s[2].replace(/\n*$/,'');
+    }
+    r += '\n';
+    return r;
 }
 
 multilang.obtainLangs=function obtainLangs(documentTextHeader){
@@ -54,12 +66,15 @@ multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
     var ln = _.merge({}, this.langs.en, this.langs[lang]); 
     var r='<!--multilang buttons -->\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
-    r += ln.phrases['also available in']+':'; 
+    r += ln.phrases['also available in']+':';
+    var gotToStrip=false;
     for(var lother in obtainedLangs.langs) {
         if(lother == lang) { continue; } 
+        gotToStrip=true;
         var lname = ln.languages[lother];
-        r += '\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+obtainedLangs.langs[lother].fileName+')';
+        r += '\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+obtainedLangs.langs[lother].fileName+') -';
     }
+    if(gotToStrip) { r = r.substring(0, r.length-2); }
     return r;
 }
 
