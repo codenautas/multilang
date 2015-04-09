@@ -1,6 +1,9 @@
 "use strict";
 
 var _ = require("lodash");
+var yaml = require('js-yaml');
+var fs = require('fs');
+var stripBom = require('strip-bom');
 
 var multilang={}
 
@@ -54,7 +57,6 @@ multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
     for(var lother in obtainedLangs.langs) {
         if(lother == lang) { continue; } 
         var lname = ln.languages[lother];
-        console.log('Bad',lother);
         r += '\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+obtainedLangs.langs[lother].fileName+')';
     }
     return r;
@@ -62,6 +64,11 @@ multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
 
 multilang.splitDoc=function splitDoc(documentText){
     return [];
+}
+
+multilang.parseLang=function parseLang(lang){
+    var langFile = './langs/lang-'+lang+'.yaml';
+    return yaml.safeLoad(stripBom(fs.readFileSync(langFile, 'utf8')));
 }
 
 module.exports = multilang;

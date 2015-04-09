@@ -5,16 +5,20 @@
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "codenautas/multilang",
-  "contributors": [{
-    "name": "Emilio Platzer", "email": "emilioplatzer@gmail.com"
-  }],
+  "contributors": [
+    {
+      "name": "Emilio Platzer",
+      "email": "emilioplatzer@gmail.com"
+    }
+  ],
   "dependencies": {
-    "js-yaml": ">=3.2.7",
-    "promise": ">=7.0.0",
     "fs-promise": ">=0.3.1",
-    "lodash": ">=3.6.0"
+    "js-yaml": ">=3.2.7",
+    "lodash": ">=3.6.0",
+    "promise": ">=7.0.0",
+    "strip-bom": "^1.0.0"
   },
-  "devDependencies": {    
+  "devDependencies": {
     "istanbul": "~0.3.13",
     "mocha": "~2.2.4",
     "expect.js": ">=0.3.1"

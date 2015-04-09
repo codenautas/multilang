@@ -107,5 +107,54 @@ describe('multilang', function(){
                 }
             ]);
         });
+        it('parse yaml files', function(){
+            var parsedLang = multilang.parseLang('es');
+            expect(parsedLang).to.eql({
+                name: 'castellano',
+                abr: 'es',
+                languages: {
+                    en: 'inlgés', 
+                    es: 'español',
+                    it: 'italiano',
+                    ru: 'ruso'
+                },
+                phrases: {
+                    language: 'idioma', 
+                    'also available in': 'también disponible en',
+                    'DO NOT MODIFY DIRECTLY': 'NO MODIFIQUE ESTE ARCHIVO. FUE GENERADO AUTOMÁTICAMENTE POR multilang.js'
+                }
+            });
+            parsedLang = multilang.parseLang('it');
+            expect(parsedLang).to.eql({
+                name: 'italiano',
+                abr: 'it',
+                languages: {
+                    en: 'inlgese', 
+                    es: 'spagnolo',
+                    it: 'italiano',
+                    ru: 'russo'
+                },
+                phrases: {
+                    language: 'lingua', 
+                    'also available in': 'disponibile anche in',
+                    'DO NOT MODIFY DIRECTLY': 'NO MODIFIQUE ESTE ARCHIVO. FUE GENERADO AUTOMÁTICAMENTE POR multilang.js'
+                }
+            });
+            parsedLang = multilang.parseLang('ru');
+            expect(parsedLang).to.eql({
+                name: 'русский',
+                abr: 'ru',
+                languages: {
+                    en: 'английский', 
+                    es: 'испанский',
+                    it: 'итальянский',
+                    ru: 'русский'
+                },
+                phrases: {
+                    language: 'язык', 
+                    'also available in': 'также доступны в'
+                }
+            });
+        });
     });
 });
