@@ -60,4 +60,8 @@ multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
     return r;
 }
 
+multilang.splitDoc=function splitDoc(documentText){
+    return [];
+}
+
 module.exports = multilang;

@@ -65,5 +65,47 @@ describe('multilang', function(){
                 '[![ruso](https://github.com/codenautas/multilang/blob/master/img/lang-ru.png)](мультиязычный.md)\n'
             );
         });
+        it.skip('separate the content of original doc', function(){
+            var doc='first lines\n'+
+                '<!--multilang v0 xxxxxxxxxxxxxxxxx-->  \n'+
+                '<!--multilang buttons-->  \t \n'+
+                'not blank line\n'+
+                'other not blank line\n'+
+                '\n'+ // one blank line separates de header
+                'if no prefix is for all languajes\n'+
+                '<!--lang:xx--]  \t  \n'+ // don't mind whites spaces and not distingish < from [ neither ] from >
+                'this is lang xx\n'+
+                'this too becauses is the same pharagraph\n'+
+                '\n\n'+ // preserver white spaces
+                '[!--lang:yy,zz--]\n'+ // to languages
+                ''+ // zero lines
+                '[!--lang:*--]\n'+
+                'this is for all langs\n'+
+                'last line could not have endline marker';
+            var separatedDoc = multilang.splitDoc(doc);
+            expect(separatedDoc).to.eql([
+                {   
+                    all:true,
+                    text:'first lines\n'
+                },{
+                    header:true
+                },{
+                    all:true,
+                    text:'if no prefix is for all languajes\n'
+                },{
+                    langs:{ xx:true },
+                    text:'this is lang xx\n'+
+                        'this too becauses is the same pharagraph\n'+
+                        '\n\n'
+                },{
+                    langs:{ yy:true, zz:true },
+                    text:''
+                },{
+                    all:true,
+                    text:'this is for all langs\n'+
+                        'last line could not have endline marker'
+                }
+            ]);
+        });
     });
 });
