@@ -11,7 +11,8 @@
   "dependencies": {
     "js-yaml": ">=3.2.7",
     "promise": ">=7.0.0",
-    "fs-promise": ">=0.3.1"
+    "fs-promise": ">=0.3.1",
+    "lodash": ">=3.6.0"
   },
   "devDependencies": {    
     "istanbul": "~0.3.13",

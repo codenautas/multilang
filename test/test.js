@@ -48,7 +48,7 @@ describe('multilang', function(){
             var buttonSection = multilang.generateButtons(header,'fr');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons -->\n'+
-                'idioma: ![français](https://github.com/codenautas/multilang/blob/master/img/lang-fr.png)\n'+
+                'langue: ![français](https://github.com/codenautas/multilang/blob/master/img/lang-fr.png)\n'+ 
                 'also available in:\n'+
                 '[![anglais](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](readme.md)'
             );
