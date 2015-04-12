@@ -12,6 +12,7 @@ Herramientas multilenguaje (primeramente para Markdown)
 [![Linux Build][travis-image]][travis-url]
 [![Windows Build][appveyor-image]][appveyor-url]
 [![Test Coverage][coveralls-image]][coveralls-url]
+[![Code Climate][climate-image]][climate-url]
 <!--multilang buttons -->
 language: ![English](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)
 also available in:
@@ -121,3 +122,5 @@ y no se visualice el texto en los idiomas secundarios.
 [coveralls-url]: https://coveralls.io/r/codenautas/multilang
 [downloads-image]: https://img.shields.io/npm/dm/multilang.svg?style=flat
 [downloads-url]: https://npmjs.org/package/multilang
+[climate-image]: https://codeclimate.com/github/codenautas/multilang/badges/gpa.svg
+[climate-url]: https://codeclimate.com/github/codenautas/multilang
