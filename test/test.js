@@ -4,14 +4,13 @@ var expect = require('expect.js');
 var fs = require('fs-promise');
 var multilang = require('..');
 var stripBom = require('strip-bom');
-
+var expectCalled = require('expect-called');
+ 
 describe('multilang', function(){
-    describe('example test', function(){
-        it('generate the spanish file of the example', function(done){
+    describe('integration', function(){
+        it.skip('generate the spanish file of the example', function(done){
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/multilenguaje.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
-                    englishDoc = stripBom(englishDoc);
-                    expectedSpanishDoc = stripBom(expectedSpanishDoc);
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
                     expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
                     done();
@@ -34,8 +33,7 @@ describe('multilang', function(){
                 }
             });
         });
-        it('generate the button section overriding defaults', function(){
-            var header='<!--multilang v0 en:readme.md fr:lisezmoi.md -->';
+        it.skip('generate the button section overriding defaults', function(){
             expect(!!multilang.langs).to.be.eql(true);
             multilang.langs.fr={
                 name: 'français',
@@ -46,20 +44,34 @@ describe('multilang', function(){
                 },
                 phrases:{
                     language: 'langue',
-                    'also available in': 'le puedé conseguiré también en (francés trucho)'
                 }
             }
-            var buttonSection = multilang.generateButtons(header,'fr');
+            var docLangs={
+                main:'en',
+                langs:{
+                    en:'readme.md',
+                    fr:'lisezmoi.md',
+                }
+            }
+            var buttonSection = multilang.generateButtons(docLangs,'fr');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons -->\n'+
                 'langue: ![français](https://github.com/codenautas/multilang/blob/master/img/lang-fr.png)\n'+ 
-                'le puedé conseguiré también en (francés trucho):\n'+
+                'also available in:\n'+
                 '[![anglais](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](readme.md)'
             );
         });
-        it('generate the button section from yamls', function(){
-            var header='<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md -->';
-            var buttonSection = multilang.generateButtons(header,'es');
+        it.skip('generate the button section from yamls', function(){
+            var docLangs={
+                main:'en',
+                langs:{
+                    en:'multilanguage.md',
+                    es:'multilenguaje.md',
+                    it:'multilingua.md',
+                    ru:'мультиязычный.md'
+                }
+            }
+            var buttonSection = multilang.generateButtons(docLangs,'es');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons -->\n'+
                 'idioma: ![castellano](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)\n'+
@@ -70,15 +82,15 @@ describe('multilang', function(){
             );
         });
         it.skip('separate the content of original doc', function(){
-            var doc='first lines\n'+
+            var doc='\ufeffFirst lines\n'+
                 '<!--multilang v0 xxxxxxxxxxxxxxxxx-->  \n'+
                 '<!--multilang buttons-->  \t \n'+
                 'not blank line\n'+
                 'other not blank line\n'+
-                '\n'+ // one blank line separates de header
+                ' \t \r\n'+ // one blank line separates de header, may by has or not spaces or \r before the \n
                 'if no prefix is for all languajes\n'+
                 '<!--lang:xx--]  \t  \n'+ // don't mind whites spaces and not distingish < from [ neither ] from >
-                'this is lang xx\n'+
+                'this is lang xx\r\n'+ // have DOS/Windows EOL
                 'this too becauses is the same pharagraph\n'+
                 '\n\n'+ // preserver white spaces
                 '[!--lang:yy,zz--]\n'+ // to languages
@@ -88,30 +100,22 @@ describe('multilang', function(){
                 'last line could not have endline marker';
             var separatedDoc = multilang.splitDoc(doc);
             expect(separatedDoc).to.eql([
+                {special: 'header', withBom:true},
+                {all:true, text:'First lines\n'},
+                {special: 'buttons'},
+                {all:true, text:'if no prefix is for all languajes\n'},
                 {   
-                    all:true,
-                    text:'first lines\n'
-                },{
-                    header:true
-                },{
-                    all:true,
-                    text:'if no prefix is for all languajes\n'
-                },{
-                    langs:{ xx:true },
-                    text:'this is lang xx\n'+
+                    langs:{ xx:true }, 
+                    text:'this is lang xx\r\n'+
                         'this too becauses is the same pharagraph\n'+
                         '\n\n'
-                },{
-                    langs:{ yy:true, zz:true },
-                    text:''
-                },{
-                    all:true,
-                    text:'this is for all langs\n'+
-                        'last line could not have endline marker'
-                }
+                },
+                {langs:{ yy:true, zz:true }, text:''},
+                {all:true, text:'this is for all langs\n'+'last line could not have endline marker'}
             ]);
         });
         it('parse yaml files', function(){
+            // quizás haya que borrar las llamadas a es e it y dejar solo ru (cuando haya que actualizar el caso)
             var parsedLang = multilang.parseLang('es');
             expect(parsedLang).to.eql({
                 name: 'castellano',
@@ -159,6 +163,57 @@ describe('multilang', function(){
                     'also available in': 'также доступны в'
                 }
             });
+        });
+    });
+    describe('controls', function(){
+        it.skip('generate the spanish file of the example', function(done){
+            fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
+                englishDoc = stripBom(englishDoc);
+                var splitDocControl = expectCalled.control(multilang,'splitDoc',{returns:[
+                    {special: 'header', withBom:false}, 
+                    {langs: {en: true}, text:"in other lang don't put"},
+                    {langs: {fr: true}, text:"top line in french\r\n\n"},
+                    {special: 'buttons'},
+                    {langs: {en: true, es:true}, text:"two langs without fr"},
+                    {langs: {fr: true}, text:'second section in french\n\n\n'},
+                    {langs: {en: true, fr: true}, text:'section in mixed lang\nfor various langs\n\n'},
+                    {all:true, text:'section for all'}
+                ]});
+                var generateButtonsControl = expectCalled.control(multilang,'generateButtons',{returns:[
+                    '<--button line-->\n\r\nactual lang:<img src=this.png>\n'
+                ]});
+                var obtainLangsControl = expectCalled.control(multilang,'obtainLangs');
+                var obtainedDoc = multilang.changeDoc(englishDoc,'fr');
+                var fakeDoc='<!-- \n\n\n\n\n'+multilang.langs.en.phrases['DO NOT MODIFY DIRECTLY']+'\n\n\n\n\n-->\n'+
+                    "top line in french\r\n\n"+
+                    '<--button line-->\n\r\nactual lang:<img src=this.png>\n'+
+                    'second section in french\n\n\n'+
+                    'section in mixed lang\nfor various langs\n\n'+
+                    'section for all';
+                expect(obtainedDoc).to.eql(fakeDoc);
+                expect(obtainLangsControl.calls.length).to.eql(1);
+                expect(obtainLangsControl.calls[0][0]).to.contain(
+                    '<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md -->'
+                );
+                expect(generateButtonsControl.calls).to.eql([
+                    [{
+                        main:'en',
+                        langs:{
+                            en:'multilanguage.md',
+                            es:'multilenguaje.md',
+                            it:'multilingua.md',
+                            ru:'мультиязычный.md'
+                        }
+                    },'es']
+                ]);
+                expect(splitDocControl.calls.length).to.eql(1);
+                splitDocControl.stopControl();
+                generateButtonsControl.stopControl();
+                obtainLangsControl.stopControl();
+                done();
+            }).catch(function(err){
+                done(err);
+            })
         });
     });
 });

@@ -1,7 +1,7 @@
 {
   "name": "multilang",
   "description": "Tools for multilanguage and Markdown multilang",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "codenautas/multilang",
@@ -16,7 +16,8 @@
     "js-yaml": ">=3.2.7",
     "lodash": ">=3.6.0",
     "promise": ">=7.0.0",
-    "strip-bom": "^1.0.0"
+    "strip-bom": "^1.0.0",
+    "expect-called": ">=0.3.0"
   },
   "devDependencies": {
     "istanbul": "~0.3.13",
