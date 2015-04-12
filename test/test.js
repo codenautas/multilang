@@ -1,5 +1,6 @@
 "use strict";
 
+var _ = require('lodash');
 var expect = require('expect.js');
 var fs = require('fs-promise');
 var multilang = require('..');
@@ -7,19 +8,6 @@ var stripBom = require('strip-bom');
 var expectCalled = require('expect-called');
  
 describe('multilang', function(){
-    describe('integration', function(){
-        it.skip('generate the spanish file of the example', function(done){
-            fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
-                return fs.readFile('./examples/multilenguaje.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
-                    var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
-                    expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
-                    done();
-                });
-            }).catch(function(err){
-                done(err);
-            })
-        });
-    });
     describe('step by step', function(){
         it('obtain languages from header', function(){
             var header='\n\n\n<!--multilang v0 ru:rusky.html fr:french.html de:german.html-->\n\n\n';
@@ -165,6 +153,19 @@ describe('multilang', function(){
             });
         });
     });
+    describe('integration', function(){
+        it.skip('generate the spanish file of the example', function(done){
+            fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
+                return fs.readFile('./examples/multilenguaje.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
+                    var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
+                    expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
+                    done();
+                });
+            }).catch(function(err){
+                done(err);
+            })
+        });
+    });
     describe('controls', function(){
         it.skip('generate the spanish file of the example', function(done){
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
@@ -214,6 +215,74 @@ describe('multilang', function(){
             }).catch(function(err){
                 done(err);
             })
+        });
+        it.skip('generate warnings controling --lang:xx-- directive',function(){
+            var doc='\n'+
+                '<!--multilang v0 fr:nome.md es:nombre.md en:name.md-->\r\n'+
+                '[--lang:es--]\r\n'+ // line 3
+                'spanish text\n'+
+                '\n'+
+                '\t  [--lang:fr-->\n'+ // line 6
+                '<--lang:*--]\n'+ // line 7
+                '[--lang:fr-->\n'+ // line 8
+                'french text\n'+ 
+                '<--lang:es--] \t \r\n'+ 
+                '<--lang:en--] \t \r\n'+ // line 11
+                'you must inclue --lang:fr-- in the file, but not in this way\n'+ // line 12
+                'if you want to include &gt;--lang:fr--&amp; in the file yo must enclose in html entities \n'+ 
+                '[--lang:ru--]\n'+ // line 14
+                '[--lang:fr-->\n'+
+                '';
+            var warnings=multilang.getWarningsLangDirective(doc);
+            warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
+            expect(warnings).to.eql([
+                {line: 3, text:'unbalanced start "["'},
+                {line: 6, text:'missing section for lang %', params:['en']}, // there must be sections for all languages
+                {line: 7, text:'lang:* must be after other lang:* or after last lang section (%)', params:['en']},
+                {line: 7, text:'lang:* must ends with ">"'},
+                {line: 8, text:'main lang must end with ">" (lang:%)', params:['en']},
+                {line:11, text:'unbalanced "<"'},
+                {line:12, text:'lang clausule must no be included in text line'},
+                {line:14, text:'lang:% not included in the header', params:['ru']},
+                {line:16, text:'missing section for lang $', params:['es']},
+                {line:16, text:'missing section for lang $', params:['en']} // at the end of the file
+            ]);
+        });
+        it.skip('generate warnings controling buttons',function(){
+            var doc='\ufeff'+
+                '<!--multilang v0 en:nome.md es:nombre.md it:name.md-->\r\n'+ // line 1
+                'the buttons section\n'+ 
+                'ends here\n'+ 
+                '\n'+
+                'Text for all languages';
+            var control=expectCalled.control(multilang,'generateButtons',{returns:[
+                'the buttons section\n'+ 
+                'ends here\n',
+                'other button section for wrong answer\n',
+                'the buttons section\n' // for incomplete 
+            ]});
+            var warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([]); // ok, no warnings
+            var warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([{line:2, text:'button section does not match. Expected:\n'+'other button section for wrong answer\n'}]); 
+            var warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([{line:2, text:'button section does not match. Expected:\n'+'the buttons section\n'}]); 
+            control.stopControl();
+        });
+        it.skip('generate warnings controling buttons position',function(){
+            var doc='\ufeff'+
+                '<--lang:es-->\n'+
+                '<!--multilang v0 en:nome.md es:nombre.md it:name.md-->\r\n'+ // line 2
+                'the buttons section\n'+ 
+                'ends here\n'+ 
+                '\n'+
+                'Text for all languages';
+            var control=expectCalled.control(multilang,'generateButtons',{returns:[
+                'the buttons section\n'+ 
+                'ends here\n'
+            ]});
+            var warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([{line:3, text:'button section must be in main language or in all languages'}]); 
         });
     });
 });

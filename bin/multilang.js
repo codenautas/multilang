@@ -87,4 +87,12 @@ multilang.parseLang=function parseLang(lang){
     return yaml.safeLoad(stripBom(fs.readFileSync(langFile, 'utf8')));
 }
 
+multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
+    return [{line:1, text:'no warning controls yet'}]
+}
+
+multilang.getWarningsButtons=function getWarningsLangDirective(doc){
+    return [{line:1, text:'no control warnings for buttons yet'}]
+}
+
 module.exports = multilang;
