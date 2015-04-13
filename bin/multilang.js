@@ -95,4 +95,8 @@ multilang.getWarningsButtons=function getWarningsLangDirective(doc){
     return [{line:1, text:'no control warnings for buttons yet'}]
 }
 
+multilang.getWarnings=function getWarningsLangDirective(doc){
+    return this.getWarningsButtons(doc).concat(this.getWarningsLangDirective(doc));
+}
+
 module.exports = multilang;

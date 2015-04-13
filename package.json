@@ -17,7 +17,8 @@
     "lodash": ">=3.6.0",
     "promise": ">=7.0.0",
     "strip-bom": "^1.0.0",
-    "expect-called": ">=0.3.0"
+    "expect-called": ">=0.3.0",
+    "parameters": ">=0.1.4"
   },
   "devDependencies": {
     "istanbul": "~0.3.13",

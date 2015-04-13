@@ -283,6 +283,28 @@ describe('multilang', function(){
             ]});
             var warnings=multilang.getWarningsButtons(doc);
             expect(warnings).to.eql([{line:3, text:'button section must be in main language or in all languages'}]); 
+            control.stopControl();
+        });
+        it/*.skip*/('generate warnings by calling warning parts',function(){
+            var doc='some doc';
+            var getWarningsButtonsControl=expectCalled.control(multilang,'getWarningsButtons',{returns:[[
+                {line:3, text:'this', params:[1,2,3]},
+                {line:4, text:'other text'}
+            ]]});
+            var getWarningsLangDirectiveControl=expectCalled.control(multilang,'getWarningsLangDirective',{returns:[[
+                {line:11, text:'one %', params:['es']},
+                {line:1, text:'two'}
+            ]]});
+            var warnings=multilang.getWarnings(doc);
+            warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
+            expect(warnings).to.eql([
+                {line:1, text:'two'},
+                {line:3, text:'this', params:[1,2,3]},
+                {line:4, text:'other text'},
+                {line:11, text:'one %', params:['es']}
+            ]); 
+            getWarningsLangDirectiveControl.stopControl();
+            getWarningsButtonsControl.stopControl();
         });
     });
 });
