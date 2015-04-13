@@ -19,9 +19,9 @@ also available in:
 [![Spanish](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)](LEEME.md)
 
 <!--lang:en-->
-In a file type Markdown or HTML you writte documentation in multiple languages.
+In a Markdown or HTML-like file is written the documentation in multiple languages.
 
-One of these languages ​​is the principal, the others are comented with &lt;!-- and --&gt;
+One of these languages ​​is the main, the others are commented with &lt;!-- and --&gt;
 
 Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
 
@@ -54,14 +54,14 @@ $ multilang doc-en.md
 ```
 
 <!--lang:en-->
-Generates one the .md files for the other languages writed in `doc-en.md`
+A .md file is generated for the other languages written in `doc-en.md` file
 <!--lang:es--]
 Genera los archivos especificados en la cabecera del archivo para los idiomas secundarios.
 
 [!--lang:en-->
 ## Multilanguage document format
 
-Any HTML or Markdown document is a multilenguage document if has a main *multilanguage* directive. 
+Any HTML or Markdown document is a multilenguage document if it has a main *multilanguage* directive. 
 
 ### Example
 
@@ -138,7 +138,7 @@ la presencia de los links a los otros documentos. Tiene el siguiente formato
 ```
 
 <!--lang:es-->
-is the directive for declare the place for the button section
+is the directive for declaring the place for the button section
 
 <!--lang:es--]
 
@@ -158,7 +158,7 @@ Las secciones o subsecciones donde se cambia de idioma están señaladas con la 
 ```
 
 <!--lang:es-->
-is the directive for declare the language of the next section (use * from all languages)
+is the directive for declaring the language of the next section (use * from all languages)
 
 <!--lang:es--]
 
