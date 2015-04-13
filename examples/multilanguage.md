@@ -1,5 +1,5 @@
 ﻿<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md -->
-<!--multilang buttons -->
+<!--multilang buttons-->
 language: ![English](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)
 also available in:
 [![Spanish](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)](multilenguaje.md) - 

@@ -9,7 +9,7 @@ NO MODIFIQUE ESTE ARCHIVO. FUE GENERADO AUTOMÁTICAMENTE POR multilang.js
 
 
 -->
-<!--multilang buttons -->
+<!--multilang buttons-->
 idioma: ![castellano](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)
 también disponible en:
 [![inglés](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](multilanguage.md) -
