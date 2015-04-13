@@ -32,7 +32,7 @@ Uno de esos lenguajes es el principal, los otros están comentados con &lt;!-- y
 
 Luego con `multilang` se extraen los otros lenguajes generando un archivo para cada uno de los otros lenguajes definidos
 
-<!--lang:en-->
+[!--lang:en-->
 ## Install
 <!--lang:es--]
 ## Instalación

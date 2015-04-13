@@ -85,6 +85,11 @@ describe('multilang', function(){
                 ''+ // zero lines
                 '[!--lang:*--]\n'+
                 'this is for all langs\n'+
+                '```\n'+ // start of textual doc: Do not parse directives here!
+                'textual text\n'+
+                '<!--lang:es-->\n'+ // fake directive, is in textual section
+                'more textual text\n'+
+                '```\n'+ // end of textual section
                 'last line could not have endline marker';
             var separatedDoc = multilang.splitDoc(doc);
             expect(separatedDoc).to.eql([
@@ -99,7 +104,16 @@ describe('multilang', function(){
                         '\n\n'
                 },
                 {langs:{ yy:true, zz:true }, text:''},
-                {all:true, text:'this is for all langs\n'+'last line could not have endline marker'}
+                {
+                    all:true, 
+                    text:'this is for all langs\n'+
+                        '```\n'+ 
+                        'textual text\n'+
+                        '<!--lang:es-->\n'+ 
+                        'more textual text\n'+
+                        '```\n'+ 
+                        'last line could not have endline marker'
+                }
             ]);
         });
         it('parse yaml files', function(){
@@ -227,9 +241,14 @@ describe('multilang', function(){
                 'french text\n'+ 
                 '<--lang:es--] \t \r\n'+ 
                 '<--lang:en--] \t \r\n'+ // line 11
-                'you must inclue --lang:fr-- in the file, but not in this way\n'+ // line 12
-                'if you want to include &gt;--lang:fr--&amp; in the file yo must enclose in html entities \n'+ 
-                '[--lang:ru--]\n'+ // line 14
+                'you may inclue --lang:fr-- in the file, but not in this way\n'+ // line 12
+                'if you want to include it you must enclose it in textual text like this:\n'+ 
+                '```\n'+
+                'example code with\n'+
+                '<--lang:en--]\n'+ 
+                'some directives\n'+
+                '```\r\n'+
+                '[--lang:ru--]\n'+ // line 19
                 '[--lang:fr-->\n'+
                 '';
             var warnings=multilang.getWarningsLangDirective(doc);
@@ -242,14 +261,14 @@ describe('multilang', function(){
                 {line: 8, text:'main lang must end with ">" (lang:%)', params:['en']},
                 {line:11, text:'unbalanced "<"'},
                 {line:12, text:'lang clausule must no be included in text line'},
-                {line:14, text:'lang:% not included in the header', params:['ru']},
-                {line:16, text:'missing section for lang $', params:['es']},
-                {line:16, text:'missing section for lang $', params:['en']} // at the end of the file
+                {line:19, text:'lang:% not included in the header', params:['ru']},
+                {line:21, text:'missing section for lang $', params:['es']},
+                {line:21, text:'missing section for lang $', params:['en']} // at the end of the file
             ]);
         });
         it.skip('generate warnings controling buttons',function(){
             var doc='\ufeff'+
-                '<!--multilang v0 en:nome.md es:nombre.md it:name.md-->\r\n'+ // line 1
+                '<!--multilang v0 fr:nome.md es:nombre.md it:name.md-->\r\n'+ // line 1
                 'the buttons section\n'+ 
                 'ends here\n'+ 
                 '\n'+
@@ -266,12 +285,14 @@ describe('multilang', function(){
             expect(warnings).to.eql([{line:2, text:'button section does not match. Expected:\n'+'other button section for wrong answer\n'}]); 
             var warnings=multilang.getWarningsButtons(doc);
             expect(warnings).to.eql([{line:2, text:'button section does not match. Expected:\n'+'the buttons section\n'}]); 
+            expect(control.calls.length).to.eql(1);
+            expect(control.calls[0][1]).to.eql('fr');
             control.stopControl();
         });
-        it/*.skip*/('generate warnings controling buttons position',function(){
+        it.skip('generate warnings controling buttons position',function(){
             var doc='\ufeff'+
                 '<--lang:es-->\n'+
-                '<!--multilang v0 en:nome.md es:nombre.md it:name.md-->\r\n'+ // line 2
+                '<!--multilang v0 fr:nome.md es:nombre.md it:name.md-->\r\n'+ // line 2
                 'the buttons section\n'+ 
                 'ends here\n'+ 
                 '\n'+
@@ -282,6 +303,8 @@ describe('multilang', function(){
             ]});
             var warnings=multilang.getWarningsButtons(doc);
             expect(warnings).to.eql([{line:3, text:'button section must be in main language or in all languages'}]); 
+            expect(control.calls.length).to.eql(1);
+            expect(control.calls[0][1]).to.eql('fr');
             control.stopControl();
         });
         it/*.skip*/('generate warnings by calling warning parts',function(){
