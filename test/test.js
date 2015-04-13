@@ -169,7 +169,6 @@ describe('multilang', function(){
     describe('controls', function(){
         it.skip('generate the spanish file of the example', function(done){
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
-                englishDoc = stripBom(englishDoc);
                 var splitDocControl = expectCalled.control(multilang,'splitDoc',{returns:[
                     {special: 'header', withBom:false}, 
                     {langs: {en: true}, text:"in other lang don't put"},
