@@ -9,13 +9,13 @@ var multilang={}
 
 multilang.langs={
     en:{
-        name: 'english',
+        name: 'English',
         abr: 'en',
         languages:{
-            en: 'english',
-            es: 'spanish',
-            it: 'italian',
-            ru: 'russian'
+            en: 'English',
+            es: 'Spanish',
+            it: 'Italian',
+            ru: 'Russian'
         },
         phrases:{
             language: 'language',
@@ -63,6 +63,7 @@ var imgUrl = 'https://github.com/codenautas/multilang/blob/master/img/';
 multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
     var obtainedLangs = this.obtainLangs(documentTextHeader);
     if(null == this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
+    console.log(this.langs);
     var ln = _.merge({}, this.langs.en, this.langs[lang]); 
     var r='<!--multilang buttons -->\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
@@ -91,8 +92,25 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     return [{line:1, text:'no warning controls yet'}]
 }
 
+multilang.findDefaultLanguage=function() {
+    for(var i=0; i<this.langs.length; ++i) {
+        if(this.langs[i].defaultLang) { return this.langs[i]; }
+    }
+    return null;
+}
+
 multilang.getWarningsButtons=function getWarningsLangDirective(doc){
-    return [{line:1, text:'no control warnings for buttons yet'}]
+    var buttons = this.generateButtons(doc, this.findDefaultLanguage());
+    var docLines = doc.split("\n");
+    var btnLines = buttons.split("\n");
+    for(var ln=0; ln<docLines.length; ++ln) {
+        if(docLines[ln].match(/^(<!--multilang)/)) {
+            if(!btnLines[0].match(/^(<!--multilang buttons -->)/)) {
+                return [{line:ln+2, text:'button section must be in main language or in all languages'}]
+            }
+        }
+    }
+    return [];
 }
 
 multilang.getWarnings=function getWarningsLangDirective(doc){
