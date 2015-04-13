@@ -1,10 +1,11 @@
-<!--multilang v0 en:README.md es:LEEME.md -->
+<!--
+
+GENERADO MANUALMENTE A LA ESPERA QUE TERMINEMOS multilang
+
+-->
 # multilang
-<!--lang:en-->
-Tools for multilanguage &amp; Markdown multilang
-<!--lang:es--]
+
 Herramientas multilenguaje (primeramente para Markdown)
-[!--lang:*-->
 
 ![designing](https://img.shields.io/badge/stability-desgining-red.svg)
 [![NPM Version][npm-image]][npm-url]
@@ -14,56 +15,28 @@ Herramientas multilenguaje (primeramente para Markdown)
 [![Test Coverage][coveralls-image]][coveralls-url]
 [![Code Climate][climate-image]][climate-url]
 <!--multilang buttons -->
-language: ![English](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)
-also available in:
-[![Spanish](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)](LEEME.md)
+idioma: ![castellano](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)
+también disponible en: [![inglés](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](README.md)
 
-<!--lang:en-->
-In a file type Markdown or HTML you writte documentation in multiple languages.
-
-One of these languages ​​is the principal, the others are comented with &lt; and &gt;
-
-Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
-
-<!--lang:es--]
 En un archivo tipo Markdown o html se escribe documentación en varios idiomas. 
 
 Uno de esos lenguajes es el principal, los otros están comentados con &lt;!-- y --&gt;
 
 Luego con `multilang` se extraen los otros lenguajes generando un archivo para cada uno de los otros lenguajes definidos
 
-<!--lang:en-->
-## Install
-<!--lang:es--]
 ## Instalación
-[!--lang:*-->
 
 ```sh
 $ npm install multilang -g
 ```
-<!--lang:en-->
-## Use
-
-<!--lang:es--]
 ## Uso
-
-[!--lang:*-->
 
 ```
 $ multilang doc-en.md
 ```
 
-<!--lang:en-->
-Generates one the .md files for the other languages writed in `doc-en.md`
-<!--lang:es--]
 Genera los archivos especificados en la cabecera del archivo para los idiomas secundarios.
 
-[!--lang:en-->
-## Multilanguage document format
-
-Any HTML or Markdown document is a multilenguage document if has a main *multilanguage* directive. 
-
-<!--lang:es--]
 ## Formato del documento multilenguaje
 
 Un documento multilenguaje es un documento HTML o Markdown escrito en un idioma principal,
@@ -104,9 +77,6 @@ Cuando empiece la sección del idioma principal en vez de un corchete "]" la dir
 así se cierra el comentario HTML. Cuando termina la sección del idioma principal el siguiente indicador de idioma comienza con 
 un signo de menor "<" en vez de un corchete "[" para que empiece un nuevo cometario HTML 
 y no se visualice el texto en los idiomas secundarios. 
-
-[!--lang:*-->
-
 
 ## License
 
