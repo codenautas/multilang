@@ -269,7 +269,7 @@ describe('multilang', function(){
             expect(warnings).to.eql([{line:2, text:'button section does not match. Expected:\n'+'the buttons section\n'}]); 
             control.stopControl();
         });
-        it.skip('generate warnings controling buttons position',function(){
+        it/*.skip*/('generate warnings controling buttons position',function(){
             var doc='\ufeff'+
                 '<--lang:es-->\n'+
                 '<!--multilang v0 en:nome.md es:nombre.md it:name.md-->\r\n'+ // line 2
