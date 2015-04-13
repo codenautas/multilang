@@ -101,22 +101,15 @@ multilang.findDefaultLanguage=function() {
 
 multilang.getWarningsButtons=function getWarningsLangDirective(doc){
     var buttons = this.generateButtons(doc, this.findDefaultLanguage());
-    //console.log("DOC:\n"+doc+"\nDOC END\n");
-    //console.log("GB:\n"+buttons+"\nGB END\n");
     var docLines = doc.split("\n");
     var btnLines = buttons.split("\n");
     for(var ln=0; ln<docLines.length; ++ln) {
-        //console.log("["+ln+"]" + docLines[ln]);
         if(docLines[ln].match(/^(<!--multilang)/)) {
             if(!btnLines[0].match(/^(<!--multilang buttons -->)/)) {
                 return [{line:ln+2, text:'button section must be in main language or in all languages'}]
             }
         }
     }
-    //if(!btnLines[2] && !btnLines[2].match(/\[!\[[^\]]+\]\/\(https:\/\/.*\/lang-[a-z]{2}.png\)( -)?/)) {
-    //    return [{line:3, text:'button section must be in main language or in all languages'}]
-    //}
-    //return [{line:1, text:'no control warnings for buttons yet'}]
     return [];
 }
 
