@@ -21,7 +21,7 @@ also available in:
 <!--lang:en-->
 In a file type Markdown or HTML you writte documentation in multiple languages.
 
-One of these languages ​​is the principal, the others are comented with &lt; and &gt;
+One of these languages ​​is the principal, the others are comented with &lt;!-- and --&gt;
 
 Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
 
@@ -32,7 +32,7 @@ Uno de esos lenguajes es el principal, los otros están comentados con &lt;!-- y
 
 Luego con `multilang` se extraen los otros lenguajes generando un archivo para cada uno de los otros lenguajes definidos
 
-<!--lang:en-->
+[!--lang:en-->
 ## Install
 <!--lang:es--]
 ## Instalación
