@@ -241,9 +241,14 @@ describe('multilang', function(){
                 'french text\n'+ 
                 '<--lang:es--] \t \r\n'+ 
                 '<--lang:en--] \t \r\n'+ // line 11
-                'you must inclue --lang:fr-- in the file, but not in this way\n'+ // line 12
-                'if you want to include &gt;--lang:fr--&amp; in the file yo must enclose in html entities \n'+ 
-                '[--lang:ru--]\n'+ // line 14
+                'you may inclue --lang:fr-- in the file, but not in this way\n'+ // line 12
+                'if you want to include it you must enclose it in textual text like this:\n'+ 
+                '```\n'+
+                'example code with\n'+
+                '<--lang:en--]\n'+ 
+                'some directives\n'+
+                '```\r\n'+
+                '[--lang:ru--]\n'+ // line 19
                 '[--lang:fr-->\n'+
                 '';
             var warnings=multilang.getWarningsLangDirective(doc);
@@ -256,9 +261,9 @@ describe('multilang', function(){
                 {line: 8, text:'main lang must end with ">" (lang:%)', params:['en']},
                 {line:11, text:'unbalanced "<"'},
                 {line:12, text:'lang clausule must no be included in text line'},
-                {line:14, text:'lang:% not included in the header', params:['ru']},
-                {line:16, text:'missing section for lang $', params:['es']},
-                {line:16, text:'missing section for lang $', params:['en']} // at the end of the file
+                {line:19, text:'lang:% not included in the header', params:['ru']},
+                {line:21, text:'missing section for lang $', params:['es']},
+                {line:21, text:'missing section for lang $', params:['en']} // at the end of the file
             ]);
         });
         it.skip('generate warnings controling buttons',function(){
