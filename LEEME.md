@@ -42,9 +42,40 @@ Genera los archivos especificados en la cabecera del archivo para los idiomas se
 Un documento multilenguaje es un documento HTML o Markdown escrito en un idioma principal,
 que contiene dentro del mismo documento la traducción a uno o varios idiomas secundarios. 
 
+### Ejemplo
+
+```
+<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->
+<!--multilanguage buttons-->
+language: English see also: [Spanish](README.md) [French](LISEZMOI.md)
+
+<!--lang:en-->
+This is a little example
+
+<!--lang:es--]
+Este es un pequeño ejemplo
+
+[!--lang:fr--]
+Ce est un petit exemple
+
+[!--lang:*-->
+All you need is multilang!
+
+<!--lang:en-->
+"*" means all languages
+
+<!--lang:es--]
+"*" es para indicar todos los idiomas
+
+[!--lang:fr--]
+"*" est d'indiquer toutes les langues
+```
+
 El documento tiene en algún lugar un renglón con la directiva multilenguaje. Ejemplo:
 
-***&lt;!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md--&gt;***
+```
+<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->
+```
 
  * *v0* es la versión del formato multilenguaje, 
  * *en* es el lenguaje principal [ISO 639-1](http://es.wikipedia.org/wiki/ISO_639-1), en este caso inglés
@@ -56,7 +87,9 @@ El documento tiene en algún lugar un renglón con la directiva multilenguaje. E
 El siguiente renglón después de la directiva multilenguaje es la directiva que indica 
 la presencia de los links a los otros documentos. Tiene el siguiente formato
 
-***&lt;!--multilanguage buttons--&gt;***
+```
+<!--multilanguage buttons-->
+```
 
 Lo siguientes renlgones son los botones y links a los otros lenguajes. 
 
@@ -67,9 +100,12 @@ intercalando los idiomas en el orden en que están definidos en la directiva mul
 
 Las secciones o subsecciones donde se cambia de idioma están señaladas con la directiva
 
-***&#x5b;--lang:fr--&#x5d;***
+```
+[--lang:fr--]
+```
 
  * *fr* en este ejemplo es indica que los renglones siguientes están escritos en francés
+ * las secciones pueden empezar o terminar con [ o < y > o ]
  
 Cuando una parte del texto sea para todos los idiomas se puede poner un asterisco "*" en vez del código de idioma.
 
