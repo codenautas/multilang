@@ -21,7 +21,7 @@ also available in:
 <!--lang:en-->
 In a Markdown or HTML-like file is written the documentation in multiple languages.
 
-One of these languages ​​is the main, the others are commented with &lt; and &gt;
+One of these languages ​​is the main, the others are commented with &lt;!-- and --&gt;
 
 Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
 
