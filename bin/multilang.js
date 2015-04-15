@@ -43,7 +43,7 @@ multilang.changeDoc=function changeDoc(documentText,lang){
                 return buttonSection;
             default:
                 throw new Error('multilang.changeDoc special part not recognized '+part.special);
-        }else{
+        } else {
             if(part.all || part.langs[lang]){
                 return part.text;
             }
@@ -121,8 +121,7 @@ multilang.splitDoc=function splitDoc(documentText){
                     r.push({special:m[2]});
                     inButtons=true;
                 }
-            }
-            else {
+            } else {
                 m = !inTextual && line.match(/([<\[])!--lang:(.*)--([>\]])/);
                 if(m) {
                     inLang = true;
@@ -134,12 +133,12 @@ multilang.splitDoc=function splitDoc(documentText){
                             okLangs[langs[l]] = true;
                         }
                         r.push({'langs': okLangs});                        
+                    } else {
+                        r.push({'all': true});
                     }
-                    else { r.push({'all': true}); }
                     r[r.length-1].text = '';
                     continue;
-                }
-                else {
+                } else {
                     if(!inButtons && !inLang && ""!=line) {
                         r.push({all:true, text: docLines[ln]+'\n'});
                     }
@@ -150,8 +149,7 @@ multilang.splitDoc=function splitDoc(documentText){
             if(""==line) {
                 inButtons = false;
             }
-        }
-        else if(inLang) {
+        } else if(inLang) {
             r[r.length-1].text += docLines[ln];
             if(ln != docLines.length-1) { r[r.length-1].text +='\n'; }
             if(""==line) {
