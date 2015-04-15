@@ -103,7 +103,64 @@ multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
 }
 
 multilang.splitDoc=function splitDoc(documentText){
-    return [];
+    var r = [];
+    r.push({special:'header', withBom:'\uFEFF'==documentText.substring(0, 1)});
+    var doc = r[0].withBom ? documentText.substring(1) : documentText;
+    var docLines = doc.split("\n");
+    var inButtons=false;
+    var inTextual=false;
+    var inLang=false;
+    for(var ln=0; ln<docLines.length; ++ln) {
+        var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
+        //console.log(ln+": '"+line+"' inLang("+(inLang ? "true" : "false")+"))");
+        if(line.match("```")) { inTextual = !inTextual; }
+        if(!inButtons) {
+            var m=line.match(/^(<!--multilang (.*)(-->)+)/);
+            if(m){
+                if("buttons"==m[2]) {
+                    r.push({special:m[2]});
+                    inButtons=true;
+                }
+            }
+            else {
+                m = !inTextual && line.match(/([<\[])!--lang:(.*)--([>\]])/);
+                if(m) {
+                    inLang = true;
+                    // m[1]: LB, m[2]: val, m[3]: RB
+                    if("*" != m[2]) {
+                        var langs = m[2].split(",");
+                        var okLangs = {};
+                        for(var l=0; l<langs.length; ++l) {
+                            okLangs[langs[l]] = true;
+                        }
+                        r.push({'langs': okLangs});                        
+                    }
+                    else { r.push({'all': true}); }
+                    r[r.length-1].text = '';
+                    continue;
+                }
+                else {
+                    if(!inButtons && !inLang && ""!=line) {
+                        r.push({all:true, text: docLines[ln]+'\n'});
+                    }
+                }
+            }
+        }
+        if(inButtons) {
+            if(""==line) {
+                inButtons = false;
+            }
+        }
+        else if(inLang) {
+            r[r.length-1].text += docLines[ln];
+            if(ln != docLines.length-1) { r[r.length-1].text +='\n'; }
+            if(""==line) {
+                r[r.length-1].text += '\n';
+                inLang = false;
+            }
+        }
+    }
+    return r;
 }
 
 multilang.parseLang=function parseLang(lang){

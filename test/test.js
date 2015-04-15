@@ -70,7 +70,7 @@ describe('multilang', function(){
                 '[![ruso](https://github.com/codenautas/multilang/blob/master/img/lang-ru.png)](мультиязычный.md)'
             );
         });
-        it.skip('separate the content of original doc', function(){
+        it('separate the content of original doc', function(){
             var doc='\ufeffFirst lines\n'+
                 '<!--multilang v0 xxxxxxxxxxxxxxxxx-->  \n'+ // ignored when split
                 '<!--multilang buttons-->  \t \n'+
