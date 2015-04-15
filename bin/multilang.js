@@ -176,14 +176,14 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
 }
 
 // va el main lang
-multilang.findDefaultLanguage=function() {
+multilang.findDefaultLanguage=function findDefaultLanguage() {
     for(var i=0; i<this.langs.length; ++i) {
         if(this.langs[i].defaultLang) { return this.langs[i]; }
     }
     return null;
 }
 
-multilang.getWarningsButtons=function getWarningsLangDirective(doc){
+multilang.getWarningsButtons=function getWarningsButtons(doc){
     var buttons = this.generateButtons(doc, this.findDefaultLanguage());
     var docLines = doc.split("\n");
     var btnLines = buttons.split("\n");
@@ -197,7 +197,7 @@ multilang.getWarningsButtons=function getWarningsLangDirective(doc){
     return [];
 }
 
-multilang.getWarnings=function getWarningsLangDirective(doc){
+multilang.getWarnings=function getWarnings(doc){
     return this.getWarningsButtons(doc).concat(this.getWarningsLangDirective(doc));
 }
 
