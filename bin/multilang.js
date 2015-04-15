@@ -5,6 +5,10 @@ var yaml = require('js-yaml');
 var fs = require('fs-promise');
 var stripBom = require('strip-bom');
 
+// locals
+// matches: m[1]: LB, m[2]: val, m[3]: RB
+var reLangSec=/([<\[])!--lang:(.*)--([>\]])/;
+
 var multilang={}
 
 multilang.defLang='en';
@@ -122,10 +126,9 @@ multilang.splitDoc=function splitDoc(documentText){
                     inButtons=true;
                 }
             } else {
-                m = !inTextual && line.match(/([<\[])!--lang:(.*)--([>\]])/);
+                m = !inTextual && line.match(reLangSec);
                 if(m) {
                     inLang = true;
-                    // m[1]: LB, m[2]: val, m[3]: RB
                     if("*" != m[2]) {
                         var langs = m[2].split(",");
                         var okLangs = {};
@@ -172,7 +175,24 @@ multilang.parseLang=function parseLang(lang){
 }
 
 multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
-    return [{line:1, text:'no warning controls yet'}]
+    var obtainedLangs=this.obtainLangs(doc);
+    var warns=[];
+    var docLines = doc.split("\n");
+    var firstSectionFound=false;
+    for(var ln=0; ln<docLines.length; ++ln) {
+        var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
+        //console.log(ln+1+":"+line);
+        var m=line.match(reLangSec);
+        if(m) {
+            console.log("match: ", m);
+            if(!firstSectionFound && '['== m[1]) {
+                warns.push({line: ln+1, text: 'unbalanced start "["' });
+            }
+            firstSectionFound=true;
+        }
+    }
+    return warns;
+    //return [{line:1, text:'no warning controls yet'}]
 }
 
 // va el main lang

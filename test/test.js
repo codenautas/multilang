@@ -236,24 +236,24 @@ describe('multilang', function(){
         it.skip('generate warnings controling --lang:xx-- directive',function(){
             var doc='\n'+
                 '<!--multilang v0 fr:nome.md es:nombre.md en:name.md-->\r\n'+
-                '[--lang:es--]\r\n'+ // line 3
+                '[!--lang:es--]\r\n'+ // line 3
                 'spanish text\n'+
                 '\n'+
-                '\t  [--lang:fr-->\n'+ // line 6
-                '<--lang:*--]\n'+ // line 7
-                '[--lang:fr-->\n'+ // line 8
+                '\t  [!--lang:fr-->\n'+ // line 6
+                '<!--lang:*--]\n'+ // line 7
+                '[!--lang:fr-->\n'+ // line 8
                 'french text\n'+ 
-                '<--lang:es--] \t \r\n'+ 
-                '<--lang:en--] \t \r\n'+ // line 11
+                '<!--lang:es--] \t \r\n'+ 
+                '<!--lang:en--] \t \r\n'+ // line 11
                 'you may inclue --lang:fr-- in the file, but not in this way\n'+ // line 12
                 'if you want to include it you must enclose it in textual text like this:\n'+ 
                 '```\n'+
                 'example code with\n'+
-                '<--lang:en--]\n'+ 
+                '<!--lang:en--]\n'+ 
                 'some directives\n'+
                 '```\r\n'+
-                '[--lang:ru--]\n'+ // line 19
-                '[--lang:fr-->\n'+
+                '[!--lang:ru--]\n'+ // line 19
+                '[!--lang:fr-->\n'+
                 '';
             var warnings=multilang.getWarningsLangDirective(doc);
             warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
