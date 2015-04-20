@@ -300,7 +300,6 @@ describe('multilang', function(){
             var control=expectCalled.control(multilang,'generateButtons',{returns:[
                 '<!--multilang buttons-->\n'+
                 'the buttons section\n' +
-                //'<!--multilang buttons-->\n'+
                 'ends here\n', // call #1
                 '<!--multilang buttons-->\n'+
                 'other button section for wrong answer\n', // call #2
@@ -312,8 +311,6 @@ describe('multilang', function(){
             expect(warnings).to.eql([{line:5, text:'button section does not match. Expected:\n'+'other button section for wrong answer\n'}]); 
             var warnings=multilang.getWarningsButtons(doc);
             expect(warnings).to.eql([{line:4, text:'button section does not match. Expected:\n'+'the buttons section\n'}]); 
-            //expect(control.calls.length).to.eql(1);
-            //expect(control.calls[0][1]).to.eql('fr');
             control.stopControl();
         });
         it('generate warnings controling buttons position',function(){
