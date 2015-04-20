@@ -246,22 +246,23 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     return warns;
 }
 
-// va el main lang
-multilang.findDefaultLanguage=function findDefaultLanguage() {
-    for(var i=0; i<this.langs.length; ++i) {
-        if(this.langs[i].defaultLang) { return this.langs[i]; }
-    }
-    return null;
-}
-
 multilang.getWarningsButtons=function getWarningsButtons(doc){
-    var buttons = this.generateButtons(doc, this.findDefaultLanguage());
+    console.log(doc);
     var docLines = doc.split("\n");
-    var btnLines = buttons.split("\n");
+    var buttons = "";
+    var btnLines = [];
     for(var ln=0; ln<docLines.length; ++ln) {
         if(docLines[ln].match(/^(<!--multilang)/)) {
+            buttons = this.generateButtons(doc, this.langs[this.defLang]);
+            btnLines = buttons.split("\n");
             if(!btnLines[0].match(/^(<!--multilang buttons-->)/)) {
                 return [{line:ln+2, text:'button section must be in main language or in all languages'}]
+            } else { // we've got buttons
+                for(var bl=1; bl<btnLines.length; ++bl) {
+                    if(docLines[ln+bl] != btnLines[bl]) {
+                        return [{line:ln+bl+2, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'}]
+                    }                    
+                }
             }
         }
     }
