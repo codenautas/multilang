@@ -247,26 +247,36 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
 }
 
 multilang.getWarningsButtons=function getWarningsButtons(doc){
-    console.log(doc);
     var docLines = doc.split("\n");
     var buttons = "";
     var btnLines = [];
+    var bl = 0;
+    var warns=[];
+    var inButtonsSection=false;
     for(var ln=0; ln<docLines.length; ++ln) {
         if(docLines[ln].match(/^(<!--multilang)/)) {
             buttons = this.generateButtons(doc, this.langs[this.defLang]);
             btnLines = buttons.split("\n");
-            if(!btnLines[0].match(/^(<!--multilang buttons-->)/)) {
-                return [{line:ln+2, text:'button section must be in main language or in all languages'}]
-            } else { // we've got buttons
-                for(var bl=1; bl<btnLines.length; ++bl) {
-                    if(docLines[ln+bl] != btnLines[bl]) {
-                        return [{line:ln+bl+2, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'}]
-                    }                    
+            // if(!btnLines[0].match(/^(<!--multilang buttons-->)/)) {
+               // warns.push({line:ln+2, text:'button section must be in main language or in all languages'});
+            // }
+            inButtonsSection=true;
+            bl = 0;
+        }
+        if(docLines[ln]=='') {
+            inButtonsSection = false;
+            btnLines = [];
+        }
+        if(inButtonsSection) {
+            if(btnLines.length>bl) {
+                if(btnLines[bl] != "" && docLines[ln] != btnLines[bl]) {
+                    warns.push({line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'});
                 }
+                ++bl;
             }
         }
     }
-    return [];
+    return warns;
 }
 
 multilang.getWarnings=function getWarnings(doc){
