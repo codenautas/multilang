@@ -8,6 +8,7 @@ var stripBom = require('strip-bom');
 // locals
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
 var reLangSec=/([<\[])!--lang:(.*)--([>\]])/;
+var imgUrl = 'https://github.com/codenautas/multilang/blob/master/img/';
 
 var multilang={}
 
@@ -84,8 +85,6 @@ multilang.obtainLangs=function obtainLangs(documentTextHeader){
     }
     return {main:def_lang, langs:all_langs};
 }
-
-var imgUrl = 'https://github.com/codenautas/multilang/blob/master/img/';
 
 multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
     var obtainedLangs = this.obtainLangs(documentTextHeader);
@@ -253,15 +252,27 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
     var bl = 0;
     var warns=[];
     var inButtonsSection=false;
+    var inLang = false;
     for(var ln=0; ln<docLines.length; ++ln) {
+        if(!inLang) {
+            var m = docLines[ln].match(reLangSec);
+            if(m) {
+                inLang = m[1];
+            }
+        }
+        else if(inLang && docLines[ln]=="") {
+            inLang = false;
+        }
         if(docLines[ln].match(/^(<!--multilang)/)) {
-            buttons = this.generateButtons(doc, this.langs[this.defLang]);
-            btnLines = buttons.split("\n");
-            // if(!btnLines[0].match(/^(<!--multilang buttons-->)/)) {
-               // warns.push({line:ln+2, text:'button section must be in main language or in all languages'});
-            // }
-            inButtonsSection=true;
-            bl = 0;
+            if(inLang && inLang != this.defLang) {
+               warns.push({line:ln+1, text:'button section must be in main language or in all languages'});
+            }
+            else {
+                buttons = this.generateButtons(doc, this.langs[this.defLang]);
+                btnLines = buttons.split("\n");
+                inButtonsSection=true;
+                bl = 0;
+            }
         }
         if(docLines[ln]=='') {
             inButtonsSection = false;

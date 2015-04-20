@@ -299,7 +299,7 @@ describe('multilang', function(){
             //expect(control.calls[0][1]).to.eql('fr');
             control.stopControl();
         });
-        it.skip('generate warnings controling buttons position',function(){
+        it('generate warnings controling buttons position',function(){
             var doc='\ufeff'+
                 '<!--multilang v0 fr:nome.md es:nombre.md it:name.md-->\r\n'+ // line 1
                 '<!--lang:es-->\n'+
@@ -318,7 +318,7 @@ describe('multilang', function(){
             expect(control.calls.length).to.eql(0);
             control.stopControl();
         });
-        it/*.skip*/('generate warnings by calling warning parts',function(){
+        it('generate warnings by calling warning parts',function(){
             var doc='some doc';
             var getWarningsButtonsControl=expectCalled.control(multilang,'getWarningsButtons',{returns:[[
                 {line:3, text:'this', params:[1,2,3]},
