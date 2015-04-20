@@ -8,6 +8,7 @@ var stripBom = require('strip-bom');
 // locals
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
 var reLangSec=/([<\[])!--lang:(.*)--([>\]])/;
+var imgUrl = 'https://github.com/codenautas/multilang/blob/master/img/';
 
 var multilang={}
 
@@ -30,8 +31,8 @@ multilang.langs={
         }
     }
 }
-// esto se va a inicializar con los yaml de ./langs/lang-*.yaml
 
+// esto se va a inicializar con los yaml de ./langs/lang-*.yaml
 multilang.changeDoc=function changeDoc(documentText,lang){
     var langConv = this.parseLang(lang);
     var obtainedLangs=this.obtainLangs(documentText);
@@ -44,7 +45,7 @@ multilang.changeDoc=function changeDoc(documentText,lang){
                     +langConv.phrases['DO NOT MODIFY DIRECTLY']
                     +'\n\n\n\n\n-->\n'
             case 'buttons':
-                return buttonSection;
+                return buttonSection+ '\n\n';
             default:
                 throw new Error('multilang.changeDoc special part not recognized '+part.special);
         } else {
@@ -54,26 +55,12 @@ multilang.changeDoc=function changeDoc(documentText,lang){
             return '';
         }
     }).join('');
-    /*
-    var r='<!-- \n\n\n\n\n'
-         +langConv.phrases['DO NOT MODIFY DIRECTLY']
-         +' \n\n\n\n\n-->\n'
-         + this.generateButtons(documentText, lang);
-    // parsear tags
-    var pat= new RegExp('\\[!--lang:('+lang+'|\\*)--]([^[]+)', 'g');
-    var s;
-    while(null != (s = pat.exec(documentText))) {
-        r += '\n' + s[2].replace(/\n*$/,'');
-    }
-    r += '\n';
-    return r;
-    */
 }
 
-multilang.obtainLangs=function obtainLangs(documentTextHeader){
+multilang.obtainLangs=function obtainLangs(docHeader){
     var all_langs = {};
     var def_lang = null; 
-    var langs = /<!--multilang v[0-9]+\s+(.+)(-->)/.exec(documentTextHeader);
+    var langs = /<!--multilang v[0-9]+\s+(.+)(-->)/.exec(docHeader);
     if(langs) {
         var lang_re = /([a-z]{2}):([^.]+\.(md|html))/g;
         var lang;
@@ -85,12 +72,11 @@ multilang.obtainLangs=function obtainLangs(documentTextHeader){
     return {main:def_lang, langs:all_langs};
 }
 
-var imgUrl = 'https://github.com/codenautas/multilang/blob/master/img/';
-
-multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
-    var obtainedLangs = this.obtainLangs(documentTextHeader);
+multilang.generateButtons=function generateButtons(docHeader,lang) {
+    var obtainedLangs = docHeader.main && docHeader.langs ?
+                            docHeader :
+                            this.obtainLangs(docHeader);
     if(null == this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
-    console.log(this.langs);
     var ln = _.merge({}, this.langs[this.defLang], this.langs[lang]); 
     var r='<!--multilang buttons-->\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
@@ -116,7 +102,6 @@ multilang.splitDoc=function splitDoc(documentText){
     var inLang=false;
     for(var ln=0; ln<docLines.length; ++ln) {
         var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
-        //console.log(ln+": '"+line+"' inLang("+(inLang ? "true" : "false")+"))");
         if(line.match("```")) { inTextual = !inTextual; }
         if(!inButtons) {
             var m=line.match(/^(<!--multilang (.*)(-->)+)/);
@@ -155,10 +140,6 @@ multilang.splitDoc=function splitDoc(documentText){
         } else if(inLang) {
             r[r.length-1].text += docLines[ln];
             if(ln != docLines.length-1) { r[r.length-1].text +='\n'; }
-            if(""==line) {
-                r[r.length-1].text += '\n';
-                inLang = false;
-            }
         }
     }
     return r;
@@ -246,26 +227,49 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     return warns;
 }
 
-// va el main lang
-multilang.findDefaultLanguage=function findDefaultLanguage() {
-    for(var i=0; i<this.langs.length; ++i) {
-        if(this.langs[i].defaultLang) { return this.langs[i]; }
-    }
-    return null;
-}
-
 multilang.getWarningsButtons=function getWarningsButtons(doc){
-    var buttons = this.generateButtons(doc, this.findDefaultLanguage());
     var docLines = doc.split("\n");
-    var btnLines = buttons.split("\n");
+    var buttons = "";
+    var btnLines = [];
+    var bl = 0;
+    var warns=[];
+    var inButtonsSection=false;
+    var inLang = false;
     for(var ln=0; ln<docLines.length; ++ln) {
+        if(!inLang) {
+            var m = docLines[ln].match(reLangSec);
+            if(m) {
+                inLang = m[1];
+            }
+        }
+        else if(inLang && docLines[ln]=="") {
+            inLang = false;
+        }
         if(docLines[ln].match(/^(<!--multilang)/)) {
-            if(!btnLines[0].match(/^(<!--multilang buttons-->)/)) {
-                return [{line:ln+2, text:'button section must be in main language or in all languages'}]
+            if(inLang && inLang != this.defLang) {
+               warns.push({line:ln+1, text:'button section must be in main language or in all languages'});
+            }
+            else {
+                buttons = this.generateButtons(doc, this.langs[this.defLang]);
+                btnLines = buttons.split("\n");
+                inButtonsSection=true;
+                bl = 0;
+            }
+        }
+        if(docLines[ln]=='') {
+            inButtonsSection = false;
+            btnLines = [];
+        }
+        if(inButtonsSection) {
+            if(btnLines.length>bl) {
+                if(btnLines[bl] != "" && docLines[ln] != btnLines[bl]) {
+                    warns.push({line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'});
+                }
+                ++bl;
             }
         }
     }
-    return [];
+    return warns;
 }
 
 multilang.getWarnings=function getWarnings(doc){
