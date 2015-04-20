@@ -6,7 +6,7 @@ var fs = require('fs-promise');
 var stripBom = require('strip-bom');
 
 // locals
-// matches: m[1]: LB, m[2]: val, m[3]: RB
+// matches: m[1]: LB, m[2]: lang, m[3]: RB
 var reLangSec=/([<\[])!--lang:(.*)--([>\]])/;
 
 var multilang={}
@@ -176,23 +176,74 @@ multilang.parseLang=function parseLang(lang){
 
 multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     var obtainedLangs=this.obtainLangs(doc);
+    var obtainedLangsKeys = Object.keys(obtainedLangs.langs);
     var warns=[];
     var docLines = doc.split("\n");
     var firstSectionFound=false;
-    for(var ln=0; ln<docLines.length; ++ln) {
+    var foundLangs=[];
+    var prevLang="";
+    var inCode = false;
+    var ln=0;
+    for(  ; ln<docLines.length; ++ln) {
         var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
-        //console.log(ln+1+":"+line);
-        var m=line.match(reLangSec);
-        if(m) {
-            console.log("match: ", m);
-            if(!firstSectionFound && '['== m[1]) {
-                warns.push({line: ln+1, text: 'unbalanced start "["' });
+        if(line.match(/^(```)$/)) { inCode = !inCode; }
+        if(!inCode) {
+            var m=line.match(reLangSec);
+            if(m) {
+                foundLangs.push(m[2]);
+                if(!firstSectionFound && '['== m[1]) {
+                    warns.push({line: ln+1, text: 'unbalanced start "["' });
+                }
+                if(m[3]=='>') { // must have all languages
+                    for(var lp in obtainedLangs.langs) {
+                        var lang = obtainedLangs.langs[lp];
+                        if(-1==foundLangs.indexOf(lp)) {
+                            warns.push({line: ln+1, text: 'missing section for lang %', params: [lp]});
+                        }
+                    }
+                    foundLangs=[obtainedLangs.main];
+                    firstSectionFound=false;
+                }
+                if("*" == m[2]) {
+                    if(prevLang != "*") {
+                        warns.push({line: ln+1, text: 'lang:* must be after other lang:* or after last lang section (%)',
+                                    params: [obtainedLangsKeys[obtainedLangsKeys.length-1]] });
+                    }
+                    if(">" != m[3]) {
+                        warns.push({line: ln+1, text: 'lang:* must end with ">"'});
+                    }
+                }
+                if(obtainedLangs.main == m[2] && ">" != m[3]) {
+                    warns.push({line: ln+1, text: 'main lang must end with ">" (lang:%)', params: [obtainedLangs.main]});
+                }
+                if(obtainedLangsKeys[obtainedLangsKeys.length-1] == m[2]
+                   && m[1]=="<"
+                   && ">" != m[3])
+                {
+                    warns.push({line: ln+1, text: 'unbalanced \"<\"'});
+                }
+                if("*" != m[2] && -1 == obtainedLangsKeys.indexOf(m[2])) {
+                    warns.push({line: ln+1, text: 'lang:% not included in the header', params: [m[2]]});
+                }
+                firstSectionFound=true;
+                prevLang = m[2];
+
+                } else { // in language body
+                // check for lang clause
+                if(line.match(/--lang:(.*)--/)) {
+                    warns.push({line: ln+1, text: 'lang clause must not be included in text line'});
+                }
             }
-            firstSectionFound=true;
+        }
+    }
+    // check missing langs
+    for(var lp in obtainedLangs.langs) {
+        var lang = obtainedLangs.langs[lp];
+        if(-1==foundLangs.indexOf(lp)) {
+            warns.push({line: ln, text: 'missing section for lang %', params: [lp]});
         }
     }
     return warns;
-    //return [{line:1, text:'no warning controls yet'}]
 }
 
 // va el main lang

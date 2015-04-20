@@ -233,7 +233,7 @@ describe('multilang', function(){
                 done(err);
             })
         });
-        it.skip('generate warnings controling --lang:xx-- directive',function(){
+        it('generate warnings controling --lang:xx-- directive',function(){
             var doc='\n'+
                 '<!--multilang v0 fr:nome.md es:nombre.md en:name.md-->\r\n'+
                 '[!--lang:es--]\r\n'+ // line 3
@@ -241,11 +241,11 @@ describe('multilang', function(){
                 '\n'+
                 '\t  [!--lang:fr-->\n'+ // line 6
                 '<!--lang:*--]\n'+ // line 7
-                '[!--lang:fr-->\n'+ // line 8
+                '[!--lang:fr--]\n'+ // line 8
                 'french text\n'+ 
                 '<!--lang:es--] \t \r\n'+ 
                 '<!--lang:en--] \t \r\n'+ // line 11
-                'you may inclue --lang:fr-- in the file, but not in this way\n'+ // line 12
+                'you may include --lang:fr-- in the file, but not in this way\n'+ // line 12
                 'if you want to include it you must enclose it in textual text like this:\n'+ 
                 '```\n'+
                 'example code with\n'+
@@ -261,13 +261,13 @@ describe('multilang', function(){
                 {line: 3, text:'unbalanced start "["'},
                 {line: 6, text:'missing section for lang %', params:['en']}, // there must be sections for all languages
                 {line: 7, text:'lang:* must be after other lang:* or after last lang section (%)', params:['en']},
-                {line: 7, text:'lang:* must ends with ">"'},
-                {line: 8, text:'main lang must end with ">" (lang:%)', params:['en']},
+                {line: 7, text:'lang:* must end with ">"'},
+                {line: 8, text:'main lang must end with ">" (lang:%)', params:['fr']},
                 {line:11, text:'unbalanced "<"'},
-                {line:12, text:'lang clausule must no be included in text line'},
+                {line:12, text:'lang clause must not be included in text line'},
                 {line:19, text:'lang:% not included in the header', params:['ru']},
-                {line:21, text:'missing section for lang $', params:['es']},
-                {line:21, text:'missing section for lang $', params:['en']} // at the end of the file
+                {line:21, text:'missing section for lang %', params:['es']},
+                {line:21, text:'missing section for lang %', params:['en']} // at the end of the file
             ]);
         });
         it.skip('generate warnings controling buttons',function(){
