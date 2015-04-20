@@ -71,10 +71,10 @@ multilang.changeDoc=function changeDoc(documentText,lang){
     */
 }
 
-multilang.obtainLangs=function obtainLangs(documentTextHeader){
+multilang.obtainLangs=function obtainLangs(docHeader){
     var all_langs = {};
     var def_lang = null; 
-    var langs = /<!--multilang v[0-9]+\s+(.+)(-->)/.exec(documentTextHeader);
+    var langs = /<!--multilang v[0-9]+\s+(.+)(-->)/.exec(docHeader);
     if(langs) {
         var lang_re = /([a-z]{2}):([^.]+\.(md|html))/g;
         var lang;
@@ -86,10 +86,12 @@ multilang.obtainLangs=function obtainLangs(documentTextHeader){
     return {main:def_lang, langs:all_langs};
 }
 
-multilang.generateButtons=function generateButtons(documentTextHeader,lang) {
-    var obtainedLangs = this.obtainLangs(documentTextHeader);
+multilang.generateButtons=function generateButtons(docHeader,lang) {
+    var obtainedLangs = docHeader.main && docHeader.langs ?
+                            docHeader :
+                            this.obtainLangs(docHeader);
     if(null == this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
-    console.log(this.langs);
+    //console.log(this.langs);
     var ln = _.merge({}, this.langs[this.defLang], this.langs[lang]); 
     var r='<!--multilang buttons-->\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';

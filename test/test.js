@@ -32,7 +32,7 @@ describe('multilang', function(){
                 }
             });
         });
-        it.skip('generate the button section overriding defaults', function(){
+        it('generate the button section overriding defaults', function(){
             expect(!!multilang.langs).to.be.eql(true);
             multilang.langs.fr=frenchIncompleteExample;
             var docLangs={
@@ -183,7 +183,7 @@ describe('multilang', function(){
         });
     });
     describe('controls', function(){
-        it/*.skip*/('generate the french text of the fake', function(done){
+        it('generate the french text of the fake', function(done){
             multilang.langs.fr=frenchIncompleteExample;
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
                 englishDoc=stripBom(englishDoc);
