@@ -283,6 +283,8 @@ multilang.main=function main(parameters){
         return fs.writeFile(parameters.out, otherLangContent);
     }).then(function(){
         return Promise.resolve(0);
+    }).catch(function(err){
+        return Promise.reject(err);
     });
 };
 

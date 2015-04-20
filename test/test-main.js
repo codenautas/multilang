@@ -32,4 +32,27 @@ describe('multilang.main', function(){
             writeFileControl.stopControl();
         });
     });
+    it('do simple task',function(done){
+        var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve('content of INPUT')]});
+        var changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
+        var writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.reject(new Error("invalid name"))]});
+        multilang.main({
+            input:'INPUT.md',
+            lang:'xx',
+            out:'OUTPUT.md',
+            silent:true
+        }).then(function(exitCode){
+            done("Must return a reject promise, because writeFile fails");
+        }).catch(function(err){
+            expect(err).to.be.a(Error);
+            expect(err.message).to.match(/invalid name/);
+            done();
+        }).then(function(){
+            readFileControl .stopControl();
+            changeDocControl.stopControl();
+            writeFileControl.stopControl();
+        }).catch(function(err){
+            done(err);
+        });
+    });
 });
