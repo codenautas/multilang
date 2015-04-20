@@ -92,7 +92,15 @@ describe('multilang', function(){
                 'more textual text\n'+
                 '```\n'+ // end of textual section
                 'last line could not have endline marker';
+            doc += '\n<!--lang:es--]\n'+
+                   '# Multilenguaje (Multilanguage)\n'+
+                   '\n'+
+                   'Esto es una prueba de archivos markdown multilenguajes.\n'+
+                   '\n'+
+                   'El principal objetivo es escribir la documentación en un único fuente.\n'+
+                   '\n';
             var separatedDoc = multilang.splitDoc(doc);
+            //console.log("SD", separatedDoc);
             expect(separatedDoc).to.eql([
                 {special: 'header', withBom:true},
                 {all:true, text:'First lines\n'},
@@ -113,7 +121,16 @@ describe('multilang', function(){
                         '<!--lang:es-->\n'+ 
                         'more textual text\n'+
                         '```\n'+ 
-                        'last line could not have endline marker'
+                        'last line could not have endline marker\n'
+                },
+                {   
+                    langs:{ es:true }, 
+                    text:'# Multilenguaje (Multilanguage)\n'+
+                         '\n'+
+                         'Esto es una prueba de archivos markdown multilenguajes.\n'+
+                         '\n'+
+                         'El principal objetivo es escribir la documentación en un único fuente.\n'+
+                         '\n'
                 }
             ]);
         });
@@ -170,7 +187,7 @@ describe('multilang', function(){
         });
     });
     describe('integration', function(){
-        it.skip('generate the spanish file of the example', function(done){
+        it('generate the spanish file of the example', function(done){
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/multilenguaje.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
@@ -204,7 +221,7 @@ describe('multilang', function(){
                 var obtainedDoc = multilang.changeDoc(englishDoc,'fr');
                 var fakeDoc='<!-- \n\n\n\n\n'+multilang.langs.en.phrases['DO NOT MODIFY DIRECTLY']+'\n\n\n\n\n-->\n'+
                     "top line in french\r\n\n"+
-                    '<--button line-->\n\r\nactual lang:<img src=this.png>\n'+
+                    '<--button line-->\n\r\nactual lang:<img src=this.png>\n\n\n'+
                     'second section in french\n\n\n'+
                     'section in mixed lang\nfor various langs\n\n'+
                     'section for all';
