@@ -4,6 +4,7 @@ var _ = require("lodash");
 var yaml = require('js-yaml');
 var fs = require('fs-promise');
 var stripBom = require('strip-bom');
+var Promise = require('promise');
 
 // locals
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
@@ -275,5 +276,14 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
 multilang.getWarnings=function getWarnings(doc){
     return this.getWarningsButtons(doc).concat(this.getWarningsLangDirective(doc));
 }
+
+multilang.main=function main(parameters){
+    return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
+        var otherLangContent=multilang.changeDoc(readContent,parameters.lang);
+        return fs.writeFile(parameters.out, otherLangContent);
+    }).then(function(){
+        return Promise.resolve(0);
+    });
+};
 
 module.exports = multilang;
