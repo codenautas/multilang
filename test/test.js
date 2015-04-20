@@ -50,7 +50,7 @@ describe('multilang', function(){
                 '[![anglais](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](readme.md)'
             );
         });
-        it.skip('generate the button section from yamls', function(){
+        it('generate the button section from yamls', function(){
             var docLangs={
                 main:'en',
                 langs:{
