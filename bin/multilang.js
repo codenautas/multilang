@@ -35,8 +35,9 @@ multilang.langs={
 
 // esto se va a inicializar con los yaml de ./langs/lang-*.yaml
 multilang.changeDoc=function changeDoc(documentText,lang){
-    var langConv = this.parseLang(lang);
     var obtainedLangs=this.obtainLangs(documentText);
+    lang = lang ? lang : this.defLang;
+    var langConv = this.parseLang(lang);
     var buttonSection=this.generateButtons(obtainedLangs,lang);
     var parts=this.splitDoc(documentText);
     return parts.map(function(part){
@@ -279,7 +280,7 @@ multilang.getWarnings=function getWarnings(doc){
 
 multilang.main=function main(parameters){
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
-        var otherLangContent=multilang.changeDoc(readContent,parameters.lang);
+        var otherLangContent=multilang.changeDoc(readContent, parameters.lang);
         return fs.writeFile(parameters.out, otherLangContent);
     }).then(function(){
         return Promise.resolve(0);

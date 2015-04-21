@@ -32,7 +32,7 @@ describe('multilang.main', function(){
             writeFileControl.stopControl();
         });
     });
-    it('do simple task',function(done){
+    it('fail on simple task',function(done){
         var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve('content of INPUT')]});
         var changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
         var writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.reject(new Error("invalid name"))]});

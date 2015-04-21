@@ -18,7 +18,8 @@
     "promise": ">=7.0.0",
     "strip-bom": "^1.0.0",
     "expect-called": ">=0.3.2",
-    "parameters": ">=0.1.4"
+    "parameters": ">=0.1.4",
+    "commander": ">=2.8.0"
   },
   "devDependencies": {
     "istanbul": "~0.3.13",
