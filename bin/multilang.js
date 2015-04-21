@@ -36,7 +36,7 @@ multilang.langs={
 // esto se va a inicializar con los yaml de ./langs/lang-*.yaml
 multilang.changeDoc=function changeDoc(documentText,lang){
     var obtainedLangs=this.obtainLangs(documentText);
-    lang = lang ? lang : this.defLang;
+    if(!lang) { lang : this.defLang; }
     var langConv = this.parseLang(lang);
     var buttonSection=this.generateButtons(obtainedLangs,lang);
     var parts=this.splitDoc(documentText);
@@ -279,9 +279,28 @@ multilang.getWarnings=function getWarnings(doc){
 }
 
 multilang.main=function main(parameters){
+    if(!parameters.silent) { process.stdout.write("Processing '"+parameters.input+"'...\n"); }
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
-        var otherLangContent=multilang.changeDoc(readContent, parameters.lang);
-        return fs.writeFile(parameters.out, otherLangContent);
+        if(!parameters.out) {
+            // iterate over all languages
+            if(!parameters.silent) { process.stdout.write("Generating all languages...\n"); }
+            var obtainedLangs=multilang.obtainLangs(readContent);
+            for(var lang in obtainedLangs.langs) {
+                var oFile = obtainedLangs.langs[lang].fileName;
+                if(!parameters.silent) { process.stdout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n"); }
+                    var changedContent=multilang.changeDoc(readContent, lang);
+                    fs.writeFile(oFile, changedContent).then(function(){
+                        return Promise.resolve(0);
+                    }).catch(function(err){
+                        return Promise.reject(err);
+                    });
+            }
+        }
+        else {
+            if(!parameters.silent) { process.stdout.write("Generating '"+parameters.out+"'..."); }
+            var otherLangContent=multilang.changeDoc(readContent, parameters.lang);
+            return fs.writeFile(parameters.out, otherLangContent);
+        }
     }).then(function(){
         return Promise.resolve(0);
     }).catch(function(err){
