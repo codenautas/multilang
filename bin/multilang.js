@@ -36,7 +36,6 @@ multilang.langs={
 // esto se va a inicializar con los yaml de ./langs/lang-*.yaml
 multilang.changeDoc=function changeDoc(documentText,lang){
     var obtainedLangs=this.obtainLangs(documentText);
-    if(!lang) { lang : this.defLang; }
     var langConv = this.parseLang(lang);
     var buttonSection=this.generateButtons(obtainedLangs,lang);
     var parts=this.splitDoc(documentText);
@@ -281,30 +280,26 @@ multilang.getWarnings=function getWarnings(doc){
 multilang.main=function main(parameters){
     if(!parameters.silent) { process.stdout.write("Processing '"+parameters.input+"'...\n"); }
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
-        if(!parameters.out) {
-            // iterate over all languages
-            if(!parameters.silent) { process.stdout.write("Generating all languages...\n"); }
-            var obtainedLangs=multilang.obtainLangs(readContent);
-            for(var lang in obtainedLangs.langs) {
-                var oFile = obtainedLangs.langs[lang].fileName;
-                if(!parameters.silent) { process.stdout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n"); }
-                    var changedContent=multilang.changeDoc(readContent, lang);
-                    fs.writeFile(oFile, changedContent).then(function(){
-                        return Promise.resolve(0);
-                    }).catch(function(err){
-                        return Promise.reject(err);
-                    });
-            }
+        var obtainedLangs=multilang.obtainLangs(readContent);
+        var langs=parameters.langs || _.keys(obtainedLangs.langs); // warning the main lang is in the list
+        langs=langs.filter(function(lang){ return lang!=obtainedLangs.main; });
+        if(langs.length>1 && parameters.output){
+            throw new Error('parameter output with more than one lang');
         }
-        else {
-            if(!parameters.silent) { process.stdout.write("Generating '"+parameters.out+"'..."); }
-            var otherLangContent=multilang.changeDoc(readContent, parameters.lang);
-            return fs.writeFile(parameters.out, otherLangContent);
+        if(langs.length<1){
+            throw new Error('no lang specified (or main lang specified)');
         }
+        if(!parameters.silent && !parameters.langs) { process.stdout.write("Generating all languages...\n"); }
+        return Promise.all(langs.map(function(lang){
+            var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
+            if(!parameters.silent) { process.stdout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n"); }
+            var changedContent=multilang.changeDoc(readContent, lang);
+            return fs.writeFile(oFile, changedContent).then(function(){
+                if(!parameters.silent) { process.stdout.write("Generated '"+lang+"', file '"+oFile+"'.\n"); }
+            });
+        }));
     }).then(function(){
         return Promise.resolve(0);
-    }).catch(function(err){
-        return Promise.reject(err);
     });
 };
 
