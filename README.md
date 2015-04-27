@@ -6,7 +6,7 @@ Tools for multilanguage &amp; Markdown multilang
 Herramientas multilenguaje (primeramente para Markdown)
 [!--lang:*-->
 
-![designing](https://img.shields.io/badge/stability-desgining-red.svg)
+![extending](https://img.shields.io/badge/stability-extending-orange.svg)
 [![version](https://img.shields.io/npm/v/multilang.svg)](https://npmjs.org/package/multilang)
 [![downloads](https://img.shields.io/npm/dm/multilang.svg)](https://npmjs.org/package/multilang)
 [![linux](https://img.shields.io/travis/codenautas/multilang/master.svg)](https://travis-ci.org/codenautas/multilang)
