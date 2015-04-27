@@ -10,7 +10,6 @@ Herramientas multilenguaje (primeramente para Markdown)
 [![version](https://img.shields.io/npm/v/multilang.svg)](https://npmjs.org/package/multilang)
 [![downloads](https://img.shields.io/npm/dm/multilang.svg)](https://npmjs.org/package/multilang)
 [![linux](https://img.shields.io/travis/codenautas/multilang/master.svg)](https://travis-ci.org/codenautas/multilang)
-[![Windows Build][appveyor-image]][appveyor-url]
 [![coverage](https://img.shields.io/coveralls/codenautas/multilang/master.svg)](https://coveralls.io/r/codenautas/multilang)
 [![climate](https://img.shields.io/codeclimate/github/codenautas/multilang.svg)](https://codeclimate.com/github/codenautas/multilang)
 <!--multilang buttons -->
@@ -179,5 +178,3 @@ y no se visualice el texto en los idiomas secundarios.
 
 [MIT](LICENSE)
 
-[appveyor-image]: https://img.shields.io/appveyor/ci/emilioplatzer/multilang/master.svg?label=windows&style=flat
-[appveyor-url]: https://ci.appveyor.com/project/emilioplatzer/multilang
