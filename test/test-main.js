@@ -18,11 +18,12 @@ describe('multilang.main', function(){
             input:'INPUT.md',
             langs:['xx'],
             output:'OUTPUT.md',
+            directory:'aDirectory',
             silent:true
         }).then(function(exitCode){
             expect(readFileControl .calls).to.eql([['INPUT.md',{encoding: 'utf8'}]]);
             expect(changeDocControl.calls).to.eql([['content of INPUT','xx']]);
-            expect(writeFileControl.calls).to.eql([['OUTPUT.md','valid content']]);
+            expect(writeFileControl.calls).to.eql([['aDirectory\\OUTPUT.md','valid content']]);
             expect(exitCode).to.eql(0);
             done();
         }).catch(function(err){
@@ -42,6 +43,7 @@ describe('multilang.main', function(){
             input:'INPUT.md',
             langs:['xx'],
             output:'OUTPUT.md',
+            directory:'aDirectory',
             silent:true
         }).then(function(exitCode){
             done("Must return a reject promise, because writeFile fails");

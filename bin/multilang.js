@@ -5,6 +5,7 @@ var yaml = require('js-yaml');
 var fs = require('fs-promise');
 var stripBom = require('strip-bom');
 var Promise = require('promise');
+var path = require('path');
 
 // locals
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
@@ -149,8 +150,10 @@ multilang.splitDoc=function splitDoc(documentText){
 multilang.parseLang=function parseLang(lang){
     if(this.langs[lang]){
         var theLang=this.langs[lang];
-    }else{
-        var langFile = './langs/lang-'+lang+'.yaml';
+    }else {
+        var langDir = path.dirname(path.resolve(module.filename));
+        langDir = langDir.substr(0, langDir.length-4); // erase '/bin'
+        var langFile = path.normalize(langDir+'/langs/lang-'+lang+'.yaml');
         theLang=yaml.safeLoad(stripBom(fs.readFileSync(langFile, 'utf8')));
     }
     return _.merge({}, this.langs[this.defLang], theLang)
@@ -289,9 +292,13 @@ multilang.main=function main(parameters){
         if(langs.length<1){
             throw new Error('no lang specified (or main lang specified)');
         }
+        if(!parameters.directory) {
+            throw new Error('no output directory specified');
+        }
         if(!parameters.silent && !parameters.langs) { process.stdout.write("Generating all languages...\n"); }
         return Promise.all(langs.map(function(lang){
             var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
+            oFile = path.normalize(parameters.directory + "/" + oFile);
             if(!parameters.silent) { process.stdout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n"); }
             var changedContent=multilang.changeDoc(readContent, lang);
             return fs.writeFile(oFile, changedContent).then(function(){
