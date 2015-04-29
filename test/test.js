@@ -42,8 +42,6 @@ describe('multilang', function(){
                     fr:{fileName:'lisezmoi.md'},
                 }
             }
-            // https://raw.githubusercontent.com/codenautas/multilang/master/img/
-            // https://raw.githubusercontent.com/codenautas/multilang/master/img/
             var buttonSection = multilang.generateButtons(docLangs,'fr');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons-->\n'+
@@ -221,7 +219,7 @@ describe('multilang', function(){
                 ]});
                 var obtainLangsControl = expectCalled.control(multilang,'obtainLangs');
                 var obtainedDoc = multilang.changeDoc(englishDoc,'fr');
-                var fakeDoc='<!-- \n\n\n\n\n'+multilang.langs.en.phrases['DO NOT MODIFY DIRECTLY']+'\n\n\n\n\n-->\n'+
+                var fakeDoc='<!-- multilang from multilanguage.md\n\n\n\n\n'+multilang.langs.en.phrases['DO NOT MODIFY DIRECTLY']+'\n\n\n\n\n-->\n'+
                     "top line in french\r\n\n"+
                     '<--button line-->\n\r\nactual lang:<img src=this.png>\n\n\n'+
                     'second section in french\n\n\n'+

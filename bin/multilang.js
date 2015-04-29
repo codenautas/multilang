@@ -44,9 +44,12 @@ multilang.changeDoc=function changeDoc(documentText,lang){
         if('special' in part) {
             switch(part.special){
                 case 'header':
-                    return (part.withBom?'\ufeff':'')+'<!-- \n\n\n\n\n'
-                        +langConv.phrases['DO NOT MODIFY DIRECTLY']
-                        +'\n\n\n\n\n-->\n'
+                    return (part.withBom?'\ufeff':'')+
+                        '<!-- multilang from '+
+                        obtainedLangs.langs[obtainedLangs.main].fileName+
+                        '\n\n\n\n\n'+
+                        langConv.phrases['DO NOT MODIFY DIRECTLY']+
+                        '\n\n\n\n\n-->\n'
                 case 'buttons':
                     return buttonSection+ '\n\n';
                 default:
