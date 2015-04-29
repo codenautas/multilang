@@ -2,7 +2,7 @@
 
 var program = require('commander');
 var multilang = require('./multilang');
-var fsp = require('fs-promise');
+var fs = require('fs-promise');
 var Promise = require('promise');
 var path = require('path');
 
