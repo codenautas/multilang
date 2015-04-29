@@ -1,10 +1,10 @@
 ﻿<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md -->
 <!--multilang buttons-->
-language: ![English](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)
+language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
 also available in:
-[![Spanish](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)](multilenguaje.md) - 
-[![Italian](https://github.com/codenautas/multilang/blob/master/img/lang-it.png)](multilingua.md) -
-[![Russian](https://github.com/codenautas/multilang/blob/master/img/lang-ru.png)](мультиязычный.md)
+[![Spanish](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](multilenguaje.md) - 
+[![Italian](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-it.png)](multilingua.md) -
+[![Russian](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md)
 
 <!--lang:en-->
 # Multilanguage
