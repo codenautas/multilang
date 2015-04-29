@@ -15,8 +15,8 @@ Herramientas multilenguaje (primeramente para Markdown)
 [![Test Coverage][coveralls-image]][coveralls-url]
 [![Code Climate][climate-image]][climate-url]
 <!--multilang buttons -->
-idioma: ![castellano](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)
-también disponible en: [![inglés](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](README.md)
+idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)
+también disponible en: [![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md)
 
 En un archivo tipo Markdown o html se escribe documentación en varios idiomas. 
 

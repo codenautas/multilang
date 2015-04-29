@@ -42,12 +42,14 @@ describe('multilang', function(){
                     fr:{fileName:'lisezmoi.md'},
                 }
             }
+            // https://raw.githubusercontent.com/codenautas/multilang/master/img/
+            // https://raw.githubusercontent.com/codenautas/multilang/master/img/
             var buttonSection = multilang.generateButtons(docLangs,'fr');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons-->\n'+
-                'langue: ![français](https://github.com/codenautas/multilang/blob/master/img/lang-fr.png)\n'+ 
+                'langue: ![français](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-fr.png)\n'+ 
                 'also available in:\n'+
-                '[![anglais](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](readme.md)'
+                '[![anglais](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](readme.md)'
             );
         });
         it('generate the button section from yamls', function(){
@@ -63,11 +65,11 @@ describe('multilang', function(){
             var buttonSection = multilang.generateButtons(docLangs,'es');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons-->\n'+
-                'idioma: ![castellano](https://github.com/codenautas/multilang/blob/master/img/lang-es.png)\n'+
+                'idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)\n'+
                 'también disponible en:\n'+
-                '[![inglés](https://github.com/codenautas/multilang/blob/master/img/lang-en.png)](multilanguage.md) -\n'+
-                '[![italiano](https://github.com/codenautas/multilang/blob/master/img/lang-it.png)](multilingua.md) -\n'+
-                '[![ruso](https://github.com/codenautas/multilang/blob/master/img/lang-ru.png)](мультиязычный.md)'
+                '[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](multilanguage.md) -\n'+
+                '[![italiano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-it.png)](multilingua.md) -\n'+
+                '[![ruso](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md)'
             );
         });
         it('separate the content of original doc', function(){

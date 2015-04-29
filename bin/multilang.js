@@ -10,7 +10,7 @@ var path = require('path');
 // locals
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
 var reLangSec=/([<\[])!--lang:(.*)--([>\]])/;
-var imgUrl = 'https://github.com/codenautas/multilang/blob/master/img/';
+var imgUrl = 'https://raw.githubusercontent.com/codenautas/multilang/master/img/';
 
 var multilang={};
 
