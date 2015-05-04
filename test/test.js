@@ -187,9 +187,20 @@ describe('multilang', function(){
         });
     });
     describe('integration', function(){
-        it('generate the spanish file of the example', function(done){
+        it('generate the spanish file of the example (multilanguaje)', function(done){
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/multilenguaje.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
+                    var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
+                    expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
+                    done();
+                });
+            }).catch(function(err){
+                done(err);
+            })
+        });
+        it.skip('generate the spanish file of the other example (with-spaces) for bug reported #9', function(done){
+            fs.readFile('./examples/with-spaces.md',{encoding: 'utf8'}).then(function(englishDoc){
+                return fs.readFile('./examples/con-espacios.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
                     expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
                     done();
