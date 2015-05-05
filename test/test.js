@@ -45,6 +45,7 @@ describe('multilang', function(){
             var buttonSection = multilang.generateButtons(docLangs,'fr');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons-->\n'+
+                '\n'+
                 'langue: ![français](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-fr.png)\n'+ 
                 'also available in:\n'+
                 '[![anglais](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](readme.md)'
@@ -63,6 +64,7 @@ describe('multilang', function(){
             var buttonSection = multilang.generateButtons(docLangs,'es');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons-->\n'+
+                '\n'+
                 'idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)\n'+
                 'también disponible en:\n'+
                 '[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](multilanguage.md) -\n'+
@@ -73,7 +75,11 @@ describe('multilang', function(){
         it('separate the content of original doc', function(){
             var doc='\ufeffFirst lines\n'+
                 '<!--multilang v0 xxxxxxxxxxxxxxxxx-->  \n'+ // ignored when split
+                'Other lines\n'+
+                '\n'+
+                'Not ignored\n'+
                 '<!--multilang buttons-->  \t \n'+
+                '\n'+
                 'not blank line\n'+
                 'other not blank line\n'+
                 ' \t \r\n'+ // one blank line separates de header, may by has or not spaces or \r before the \n
@@ -102,9 +108,13 @@ describe('multilang', function(){
             var separatedDoc = multilang.splitDoc(doc);
             expect(separatedDoc).to.eql([
                 {special: 'header', withBom:true},
-                {all:true, text:'First lines\n'},
-                {special: 'buttons', header:true},
-                {special: 'buttons', text:'not blank line', generate:true},
+                {all:true, text:
+                    'First lines\n'+
+                    'Other lines\n'+
+                    '\n'+
+                    'Not ignored\n'
+                },
+                {special: 'buttons'},
                 {all:true, text:'if no prefix is for all languajes\n'},
                 {   
                     langs:{ xx:true }, 
@@ -304,15 +314,18 @@ describe('multilang', function(){
                 'any text does not mind\n'+
                 '\n'+
                 '<!--multilang buttons-->\n'+ // line 4
+                '\n'+
                 'the buttons section\n'+ 
                 'ends here\n'+ 
                 '\n'+
                 'Text for all languages';
             var control=expectCalled.control(multilang,'generateButtons',{returns:[
                 '<!--multilang buttons-->\n'+
+                '\n'+
                 'the buttons section\n' +
                 'ends here\n', // call #1
                 '<!--multilang buttons-->\n'+
+                '\n'+
                 'other button section for wrong answer\n', // call #2
                 'the buttons section\n' // call #3: for incomplete 
             ]});
@@ -332,6 +345,7 @@ describe('multilang', function(){
                 'other spanish text\n'+
                 'even more\n'+
                 '<!--multilang buttons-->\n'+ // line 6
+                '\n'+ 
                 'the buttons section\n'+ 
                 'ends here\n'+ 
                 '\n'+
