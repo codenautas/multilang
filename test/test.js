@@ -59,7 +59,7 @@ describe('multilang', function(){
                     it:{fileName:'multilingua.md'  },
                     ru:{fileName:'мультиязычный.md'}
                 }
-            }
+            };
             var buttonSection = multilang.generateButtons(docLangs,'es');
             expect(buttonSection).to.eql(
                 '<!--multilang buttons-->\n'+
@@ -100,11 +100,11 @@ describe('multilang', function(){
                    'El principal objetivo es escribir la documentación en un único fuente.\n'+
                    '\n';
             var separatedDoc = multilang.splitDoc(doc);
-            //console.log("SD", separatedDoc);
             expect(separatedDoc).to.eql([
                 {special: 'header', withBom:true},
                 {all:true, text:'First lines\n'},
-                {special: 'buttons'},
+                {special: 'buttons', header:true},
+                {special: 'buttons', text:'not blank line', generate:true},
                 {all:true, text:'if no prefix is for all languajes\n'},
                 {   
                     langs:{ xx:true }, 
@@ -198,7 +198,7 @@ describe('multilang', function(){
                 done(err);
             })
         });
-        it.skip('generate the spanish file of the other example (with-spaces) for bug reported #9', function(done){
+        it('generate the spanish file of the other example (with-spaces) for bug reported #9', function(done){
             fs.readFile('./examples/with-spaces.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/con-espacios.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
@@ -211,7 +211,7 @@ describe('multilang', function(){
         });
     });
     describe('controls', function(){
-        it('generate the french text of the fake', function(done){
+        it.skip('generate the french text of the fake', function(done){
             multilang.langs.fr=frenchIncompleteExample;
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
                 englishDoc=stripBom(englishDoc);
