@@ -270,10 +270,6 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
                 bl = 0; 
             }
         }
-        if(docLines[ln]==='') {
-            inButtonsSection = false;
-            btnLines = [];
-        }
         if(inButtonsSection) {
             if(btnLines.length>bl) {
                 if(btnLines[bl] != "" && docLines[ln] != btnLines[bl]) {
