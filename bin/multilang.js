@@ -315,6 +315,7 @@ multilang.getWarnings=function getWarnings(doc){
 };
 
 multilang.main=function main(parameters){
+    //return Promise.reject(3);
     if(!parameters.silent) { process.stdout.write("Processing '"+parameters.input+"'...\n"); }
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
         var obtainedLangs=multilang.obtainLangs(readContent);

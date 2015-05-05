@@ -55,7 +55,7 @@ if(!params.directory) {
         multilang.main(params).then(function(){
             process.stderr.write("Done!");
         }).catch(function(err){
-            //process.stderr.write("ERROR\n"+err);
+            process.stderr.write("ERROR\n"+err);
         });
     }).catch(function(err) {
         process.stderr.write("ERROR: "+err.message);
