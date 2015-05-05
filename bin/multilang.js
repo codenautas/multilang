@@ -39,8 +39,7 @@ multilang.changeDoc=function changeDoc(documentText,lang){
     var obtainedLangs=this.obtainLangs(documentText);
     var langConv = this.parseLang(lang);
     var parts=this.splitDoc(documentText);
-    var buttonSection=this.generateButtons(obtainedLangs,lang, true); // we just need the content
-    var buttonsGenerated=false;
+    var buttonSection=this.generateButtons(obtainedLangs,lang); // we just need the content
     return parts.map(function(part){
         if('special' in part) {
             switch(part.special){
@@ -52,25 +51,13 @@ multilang.changeDoc=function changeDoc(documentText,lang){
                         langConv.phrases['DO NOT MODIFY DIRECTLY']+
                         '\n\n\n\n\n-->\n'
                 case 'buttons':
-                    buttonsGenerated = true;
-                     if(part.generate) {
-                         return buttonSection+'\n';
-                     }
-                     else if(part.header) {
-                         return '<!--multilang buttons-->\n';
-                     } else {
-                         return part.text+'\n';
-                     }
+                     return buttonSection+'\n\n';
                 default:
                     throw new Error('multilang.changeDoc special part not recognized '+part.special);
             }
         } else {
             if(part.all || part.langs[lang]){
                 return part.text;
-            }
-            else if(buttonsGenerated) {
-                buttonsGenerated = false;
-                return '\n';
             }
             return '';
         }
@@ -92,12 +79,11 @@ multilang.obtainLangs=function obtainLangs(docHeader){
     return {main:def_lang, langs:all_langs};
 };
 
-multilang.generateButtons=function generateButtons(docHeader,lang, justTheContent) {
+multilang.generateButtons=function generateButtons(docHeader,lang) {
     var obtainedLangs = docHeader.main && docHeader.langs ? docHeader : this.obtainLangs(docHeader);
     if(null == this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
     var ln = _.merge({}, this.langs[this.defLang], this.langs[lang]); 
-    var r='';
-    if(!justTheContent) { r+='<!--multilang buttons-->\n'; }
+    var r='<!--multilang buttons-->\n\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
     r += ln.phrases['also available in']+':';
     var gotToStrip=false;
@@ -119,8 +105,8 @@ multilang.splitDoc=function splitDoc(documentText){
     var inButtons=false;
     var inTextual=false;
     var inLang=false;
-    var buttonContentStart=false;
-    var buttonContentEnd=false;
+    var inAll=false;
+    var haveButtonsContent=false;
     for(var ln=0; ln<docLines.length; ++ln) {
         var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
         if(line.match("```")) { inTextual = !inTextual; }
@@ -128,14 +114,17 @@ multilang.splitDoc=function splitDoc(documentText){
             var m=line.match(/^(<!--multilang (.*)(-->)+)/);
             if(m){
                 if("buttons"===m[2]) {
-                    r.push({special:m[2], header:true});
+                    r.push({special:m[2]});
                     inButtons=true;
+                    inAll=false;
                     continue;
                 }
+                else { continue; }
             } else {
                 m = line.match(reLangSec);
                 if(m) {
                     inLang = true;
+                    inAll=false;
                     if("*" !== m[2]) {
                         var langs = m[2].split(",");
                         var okLangs = {};
@@ -148,33 +137,20 @@ multilang.splitDoc=function splitDoc(documentText){
                     }
                     r[r.length-1].text = '';
                     continue;
-                } else {
-                    if(!inLang) {
-                        if(""!==line) {
-                            r.push({all:true, text: docLines[ln]+'\n'});
-                        } else {
-                            r.push({all:true, text: '\n'});
-                        }
-                    }
+                } else if(!inLang && !inAll) {
+                    inAll = true;
+                    r.push({all:true, text: ''});
                 }
             }
         }
         if(inButtons) {
-            if("" !== line) {
-                if(!buttonContentStart) {
-                    buttonContentStart=true;
-                    r.push({special:"buttons", text: line, generate:true});
-                }
-            } else {
-                if(buttonContentStart) { buttonContentEnd=true; }
+            if("" !== line && !haveButtonsContent) {
+                haveButtonsContent=true;
             }
-            if(! buttonContentStart && ! buttonContentEnd) {
-                r.push({special:"buttons", text: line});
-            }
-            if(buttonContentStart && buttonContentEnd && ""===line ) {
+            if(haveButtonsContent && ""===line ) {
                 inButtons = false;
             }
-        } else if(inLang) {
+        } else if(inLang || inAll) {
             r[r.length-1].text += docLines[ln];
             if(ln != docLines.length-1) { r[r.length-1].text +='\n'; }
         }
