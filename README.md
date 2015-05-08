@@ -53,11 +53,15 @@ $ multilang doc-en.md
 ```
 
 <!--lang:en-->
+
 A .md file is generated for the other languages written in `doc-en.md` file
+
 <!--lang:es--]
+
 Genera los archivos especificados en la cabecera del archivo para los idiomas secundarios.
 
 [!--lang:en-->
+
 ## Multilanguage document format
 
 Any HTML or Markdown document is a multilenguage document if it has a main *multilanguage* directive. 
@@ -65,6 +69,7 @@ Any HTML or Markdown document is a multilenguage document if it has a main *mult
 ### Example
 
 <!--lang:es--]
+
 ## Formato del documento multilenguaje
 
 Un documento multilenguaje es un documento HTML o Markdown escrito en un idioma principal,
@@ -177,4 +182,3 @@ y no se visualice el texto en los idiomas secundarios.
 ## License
 
 [MIT](LICENSE)
-
