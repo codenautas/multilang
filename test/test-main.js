@@ -7,6 +7,7 @@ var multilang = require('..');
 var stripBom = require('strip-bom');
 var expectCalled = require('expect-called');
 var Promise = require('promise');
+var path = require('path');
  
 describe('multilang.main', function(){
     it('do simple task',function(done){
@@ -23,7 +24,7 @@ describe('multilang.main', function(){
         }).then(function(exitCode){
             expect(readFileControl .calls).to.eql([['INPUT.md',{encoding: 'utf8'}]]);
             expect(changeDocControl.calls).to.eql([['content of INPUT','xx']]);
-            expect(writeFileControl.calls).to.eql([['aDirectory\\OUTPUT.md','valid content']]);
+            expect(writeFileControl.calls).to.eql([['aDirectory'+path.sep+'OUTPUT.md','valid content']]);
             expect(exitCode).to.eql(0);
             done();
         }).catch(function(err){
