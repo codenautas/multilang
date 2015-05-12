@@ -145,7 +145,7 @@ multilang.splitDoc=function splitDoc(documentText){
             if(haveButtonsContent && ""===line ) {
                 inButtons = false;
             }
-        } else if(inLang || inAll) {
+        } else {
             r[r.length-1].text += docLines[ln];
             if(ln != docLines.length-1) { r[r.length-1].text +='\n'; }
         }
@@ -282,7 +282,6 @@ multilang.getWarnings=function getWarnings(doc){
 };
 
 multilang.main=function main(parameters){
-    //return Promise.reject(3);
     if(!parameters.silent) { process.stdout.write("Processing '"+parameters.input+"'...\n"); }
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
         var obtainedLangs=multilang.obtainLangs(readContent);
