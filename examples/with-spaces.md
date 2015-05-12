@@ -1,4 +1,4 @@
-﻿# Multilanguage
+# Multilanguage
 
 This is an example of multilanguage markdown file.
 

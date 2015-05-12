@@ -52,8 +52,6 @@ multilang.changeDoc=function changeDoc(documentText,lang){
                         '\n\n\n\n\n-->\n'
                 case 'buttons':
                      return buttonSection+'\n\n';
-                default:
-                    throw new Error('multilang.changeDoc special part not recognized '+part.special);
             }
         } else {
             if(part.all || part.langs[lang]){
