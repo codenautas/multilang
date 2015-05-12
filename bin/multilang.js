@@ -78,20 +78,17 @@ multilang.obtainLangs=function obtainLangs(docHeader){
 };
 
 multilang.generateButtons=function generateButtons(docHeader,lang) {
-    var obtainedLangs = docHeader.main && docHeader.langs ? docHeader : this.obtainLangs(docHeader);
     if(null == this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
     var ln = _.merge({}, this.langs[this.defLang], this.langs[lang]); 
     var r='<!--multilang buttons-->\n\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
     r += ln.phrases['also available in']+':';
-    var gotToStrip=false;
-    for(var lother in obtainedLangs.langs) {
+    for(var lother in docHeader.langs) {
         if(lother === lang) { continue; } 
-        gotToStrip=true;
         var lname = ln.languages[lother];
-        r += '\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+obtainedLangs.langs[lother].fileName+') -';
+        r += '\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+docHeader.langs[lother].fileName+') -';
     }
-    if(gotToStrip) { r = r.substring(0, r.length-2); }
+    r = r.substring(0, r.length-2);
     return r;
 };
 
