@@ -9,7 +9,7 @@ var expectCalled = require('expect-called');
 var Promise = require('promise');
 var path = require('path');
  
-describe('multilang.main coverage', function(){
+describe.skip('multilang.main coverage', function(){
     var obtainLangsControl;
     var readFileControl;
     var changeDocControl;

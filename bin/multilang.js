@@ -298,6 +298,10 @@ multilang.main=function main(parameters){
             throw new Error('no output directory specified');
         }
         if(!parameters.langs) { chanout.write("Generating all languages...\n"); }
+        // comentar estas 3:
+        // if(!parameters.silent){
+        //     (parameters.chanerr || process.stderr).write(multilang.getWarnings(readContent));
+        // }
         return Promise.all(langs.map(function(lang){
             var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
             oFile = path.normalize(parameters.directory + "/" + oFile);
