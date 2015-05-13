@@ -282,7 +282,8 @@ multilang.getWarnings=function getWarnings(doc){
 };
 
 multilang.main=function main(parameters){
-    if(!parameters.silent) { process.stdout.write("Processing '"+parameters.input+"'...\n"); }
+    var chanout = parameters.silent ? { write: function write(){} } : parameters.chanout || process.stdout;
+    chanout.write("Processing '"+parameters.input+"'...\n"); 
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
         var obtainedLangs=multilang.obtainLangs(readContent);
         var langs=parameters.langs || _.keys(obtainedLangs.langs); // warning the main lang is in the list
@@ -296,14 +297,14 @@ multilang.main=function main(parameters){
         if(!parameters.directory) {
             throw new Error('no output directory specified');
         }
-        if(!parameters.silent && !parameters.langs) { process.stdout.write("Generating all languages...\n"); }
+        if(!parameters.langs) { chanout.write("Generating all languages...\n"); }
         return Promise.all(langs.map(function(lang){
             var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
             oFile = path.normalize(parameters.directory + "/" + oFile);
-            if(!parameters.silent) { process.stdout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n"); }
+            chanout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n"); 
             var changedContent=multilang.changeDoc(readContent, lang);
             return fs.writeFile(oFile, changedContent).then(function(){
-                if(!parameters.silent) { process.stdout.write("Generated '"+lang+"', file '"+oFile+"'.\n"); }
+                chanout.write("Generated '"+lang+"', file '"+oFile+"'.\n"); 
             });
         }));
     }).then(function(){
