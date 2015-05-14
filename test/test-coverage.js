@@ -9,24 +9,16 @@ var expectCalled = require('expect-called');
 var Promise = require('promise');
 var path = require('path');
  
-describe.skip('multilang.main coverage', function(){
+describe('multilang.main coverage 2', function(){
     var obtainLangsControl;
     var readFileControl;
     var changeDocControl;
     var writeFileControl;
-    beforeEach(function(){
+    function tipicalTest(done, diferences){
         obtainLangsControl=expectCalled.control(multilang,'obtainLangs',{returns:[{main:'mm', langs:{xx:{fileName:'xx.md'}}}]});
         readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve('content of INPUT')]});
         changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
         writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.resolve()]});
-    });
-    afterEach(function(){
-        readFileControl .stopControl();
-        changeDocControl.stopControl();
-        writeFileControl.stopControl();
-        obtainLangsControl.stopControl();
-    });
-    it('do simple task, verbose',function(done){
         var old_stdout = process.stdout.write;
         process.stdout.write = function() {};
         multilang.main({
@@ -45,7 +37,34 @@ describe.skip('multilang.main coverage', function(){
         }).catch(function(err){
             process.stdout.write = old_stdout;
             done(err);
+        }).then(function(){
+            readFileControl .stopControl();
+            changeDocControl.stopControl();
+            writeFileControl.stopControl();
+            obtainLangsControl.stopControl();
         });
+    }
+    it('do simple task, verbose',function(done){
+        tipicalTest(done,{});
+    });
+});    
+
+describe.skip('multilang.main coverage', function(){
+    var obtainLangsControl;
+    var readFileControl;
+    var changeDocControl;
+    var writeFileControl;
+    beforeEach(function(){
+        obtainLangsControl=expectCalled.control(multilang,'obtainLangs',{returns:[{main:'mm', langs:{xx:{fileName:'xx.md'}}}]});
+        readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve('content of INPUT')]});
+        changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
+        writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.resolve()]});
+    });
+    afterEach(function(){
+        readFileControl .stopControl();
+        changeDocControl.stopControl();
+        writeFileControl.stopControl();
+        obtainLangsControl.stopControl();
     });
     it('do another simple task, verbose',function(done){
         var old_stdout = process.stdout.write;

@@ -54,7 +54,7 @@ describe('multilang.main', function(){
     it('do simple task silently',function(done){
         doSimpleSuccessTask(done, {silent:true });
     });
-    it('do simple task with warnings',function(done){
+    it.skip('do simple task with warnings',function(done){
         var getWarningsControl=expectCalled.control(multilang,'getWarnings',{returns:['this is the warning\n with 2 lines']});
         var chanout = new MiniStreamCapture();
         var chanerr = new MiniStreamCapture();
