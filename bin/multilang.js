@@ -106,7 +106,7 @@ multilang.splitDoc=function splitDoc(documentText){
         var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
         if(line.match("```")) { inTextual = !inTextual; }
         if(!inTextual && !inButtons) {
-            var m=line.match(/^(<!--multilang (.*)(-->)+)/);
+            var m=line.match(/^(<!--multilang (.*\S+)((\s)*-->)+)/);
             if(m){
                 if("buttons"===m[2]) {
                     r.push({special:m[2]});
@@ -280,12 +280,10 @@ multilang.getWarnings=function getWarnings(doc){
 
 multilang.stringizeWarnings=function stringizeWarnings(warns) {
     var r='';
-    if(warns.join) {
-        for(var w=0; w<warns.length; ++w) {
-            var text = warns[w].text;
-            if(warns[w].params) { text = text.replace('%', warns[w].params); }
-            r += 'line ' + warns[w].line + ': ' + text + '\n';
-        }
+    for(var w=0; w<warns.length; ++w) {
+        var text = warns[w].text;
+        if(warns[w].params) { text = text.replace('%', warns[w].params); }
+        r += 'line ' + warns[w].line + ': ' + text + '\n';
     }
     return r;
 }

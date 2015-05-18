@@ -397,11 +397,5 @@ describe('multilang', function(){
             expect(stringizedWarn).to.eql('');
             done();
         });
-        it('stringizeWarnings with wrong input', function(done){
-            var warns = 'this is not an array';
-            var stringizedWarn = multilang.stringizeWarnings(warns);
-            expect(stringizedWarn).to.eql('');
-            done();
-        });
     });
 });
