@@ -49,7 +49,7 @@ multilang.changeDoc=function changeDoc(documentText,lang){
                         obtainedLangs.langs[obtainedLangs.main].fileName+
                         '\n\n\n\n\n'+
                         langConv.phrases['DO NOT MODIFY DIRECTLY']+
-                        '\n\n\n\n\n-->\n'
+                        '\n\n\n\n\n-->\n';
                 case 'buttons':
                      return buttonSection+'\n\n';
             }
@@ -78,7 +78,7 @@ multilang.obtainLangs=function obtainLangs(docHeader){
 };
 
 multilang.generateButtons=function generateButtons(docHeader,lang) {
-    if(null == this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
+    if(! this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
     var ln = _.merge({}, this.langs[this.defLang], this.langs[lang]); 
     var r='<!--multilang buttons-->\n\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
@@ -94,7 +94,7 @@ multilang.generateButtons=function generateButtons(docHeader,lang) {
 
 multilang.splitDoc=function splitDoc(documentText){
     var r = [];
-    r.push({special:'header', withBom:'\uFEFF'==documentText.substring(0, 1)});
+    r.push({special:'header', withBom:'\uFEFF'===documentText.substring(0, 1)});
     var doc = r[0].withBom ? documentText.substring(1) : documentText;
     var docLines = doc.split("\n");
     var inButtons=false;
@@ -147,7 +147,7 @@ multilang.splitDoc=function splitDoc(documentText){
             }
         } else {
             r[r.length-1].text += docLines[ln];
-            if(ln != docLines.length-1) { r[r.length-1].text +='\n'; }
+            if(ln !== docLines.length-1) { r[r.length-1].text +='\n'; }
         }
     }
     return r;
@@ -188,7 +188,6 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                 }
                 if(m[3]==='>') { // must have all languages
                     for(var lp in obtainedLangs.langs) {
-                        var lang = obtainedLangs.langs[lp];
                         if(-1===foundLangs.indexOf(lp)) {
                             warns.push({line: ln+1, text: 'missing section for lang %', params: [lp]});
                         }
@@ -197,7 +196,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                     firstSectionFound=false;
                 }
                 if("*" === m[2]) {
-                    if(prevLang != "*") {
+                    if(prevLang !== "*") {
                         warns.push({line: ln+1, text: 'lang:* must be after other lang:* or after last lang section (%)',
                                     params: [obtainedLangsKeys[obtainedLangsKeys.length-1]] });
                     }
@@ -208,10 +207,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                 if(obtainedLangs.main === m[2] && ">" !== m[3]) {
                     warns.push({line: ln+1, text: 'main lang must end with ">" (lang:%)', params: [obtainedLangs.main]});
                 }
-                if(obtainedLangsKeys[obtainedLangsKeys.length-1] == m[2]
-                   && m[1]==="<"
-                   && ">" !== m[3])
-                {
+                if(obtainedLangsKeys[obtainedLangsKeys.length-1] === m[2] && m[1]==="<" && ">" !== m[3]) {
                     warns.push({line: ln+1, text: 'unbalanced \"<\"'});
                 }
                 if("*" !== m[2] && -1 === obtainedLangsKeys.indexOf(m[2])) {
@@ -267,7 +263,7 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
         }
         if(inButtonsSection) {
             if(btnLines.length>bl) {
-                if(btnLines[bl] != "" && docLines[ln] != btnLines[bl]) {
+                if(btnLines[bl] !== "" && docLines[ln] !== btnLines[bl]) {
                     warns.push({line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'});
                 }
                 ++bl;
@@ -299,7 +295,7 @@ multilang.main=function main(parameters){
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
         var obtainedLangs=multilang.obtainLangs(readContent);
         var langs=parameters.langs || _.keys(obtainedLangs.langs); // warning the main lang is in the list
-        langs=langs.filter(function(lang){ return lang!=obtainedLangs.main; });
+        langs=langs.filter(function(lang){ return lang !== obtainedLangs.main; });
         if(langs.length>1 && parameters.output){
             throw new Error('parameter output with more than one lang');
         }
