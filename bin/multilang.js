@@ -282,7 +282,9 @@ multilang.stringizeWarnings=function stringizeWarnings(warns) {
     if(warns.join) {
         var w=0
         for(; w<warns.length; ++w) {
-            r += 'line ' + warns[w].line + ': ' + warns[w].text+ '\n';
+            var text = warns[w].text;
+            if(warns[w].params) { text = text.replace('%', warns[w].params); }
+            r += 'line ' + warns[w].line + ': ' + text + '\n';
         }
         if(w) { r = r.substr(0, r.length-1); } // erase '\n'
     }
