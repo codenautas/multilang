@@ -54,8 +54,8 @@ describe('multilang.main', function(){
     it('do simple task silently',function(done){
         doSimpleSuccessTask(done, {silent:true });
     });
-    it.skip('do simple task with warnings',function(done){
-        var getWarningsControl=expectCalled.control(multilang,'getWarnings',{returns:['this is the warning\n with 2 lines']});
+    it('do simple task with warnings',function(done){
+        var getWarningsControl=expectCalled.control(multilang,'getWarnings',{returns:[[{line: 1, text:'this is the warning\n with 2 lines'}]]});
         var chanout = new MiniStreamCapture();
         var chanerr = new MiniStreamCapture();
         doSimpleSuccessTask(function(err){
@@ -68,7 +68,7 @@ describe('multilang.main', function(){
                         "Generating 'xx', writing to 'aDirectory\\OUTPUT.md'...\n"+
                         "Generated 'xx', file 'aDirectory\\OUTPUT.md'.\n"
                     );
-                    expect(chanerr.getContent()).to.eql('this is the warning\n with 2 lines');
+                    expect(chanerr.getContent()).to.eql("line 1: this is the warning\n with 2 lines");
                     expect(getWarningsControl.calls).to.eql([[contentOfDoc]]);
                     done();
                 }catch(err){

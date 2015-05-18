@@ -17,25 +17,30 @@ describe('multilang coverage', function(){
     var changeDocControl;
     var writeFileControl;
     function tipicalTest(done, opts){
-        obtainLangsControl=expectCalled.control(multilang,'obtainLangs',{returns:[{main:'mm', langs:{xx:{fileName:'xx.md'}}}]});
+        var olcReturn={main:'mm', langs:{xx:{fileName:'xx.md'}}};
+        obtainLangsControl=expectCalled.control(multilang,'obtainLangs',
+                                                    {returns:[olcReturn, olcReturn]});
         readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve('content of INPUT')]});
         changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
         writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.resolve()]});
         var old_stdout = process.stdout.write;
-        if(opts.turnOffStdOut){
+        var old_stderr = process.stderr.write;
+        if(opts.turnOffOutput){
             process.stdout.write = function() {};
+            process.stderr.write = function() {};
         }
         multilang.main({
             input:'INPUT.md',
             langs:opts.langs,
             output:'OUTPUT.md',
             directory: opts.noInputDir ? null : 'aDirectory',
-            silent: ! opts.turnOffStdOut
+            silent: ! opts.turnOffOutput
         }).then(function(exitCode){
             if(opts.esperaError){
                 done(new Error('esperaba un error en esta prueba'));
             }else{
                 process.stdout.write = old_stdout;
+                process.stderr.write = old_stderr;
                 expect(readFileControl .calls).to.eql([['INPUT.md',{encoding: 'utf8'}]]);
                 expect(changeDocControl.calls).to.eql([['content of INPUT','xx']]);
                 expect(writeFileControl.calls).to.eql([['aDirectory'+path.sep+'OUTPUT.md','valid content']]);
@@ -56,6 +61,7 @@ describe('multilang coverage', function(){
             done
         ).then(function(){
             process.stdout.write = old_stdout;
+            process.stderr.write = old_stderr;
             readFileControl .stopControl();
             changeDocControl.stopControl();
             writeFileControl.stopControl();
@@ -63,10 +69,10 @@ describe('multilang coverage', function(){
         });
     }
     it('do simple task, verbose',function(done){
-        tipicalTest(done,{langs:['xx'],turnOffStdOut:true});
+        tipicalTest(done,{langs:['xx'],turnOffOutput:true});
     });
     it('do another simple task, verbose',function(done){
-        tipicalTest(done,{langs:null,turnOffStdOut:true});
+        tipicalTest(done,{langs:null,turnOffOutput:true});
     });
     it('generating errors in parameters.langs',function(done){
         tipicalTest(done,{langs:['mm'],esperaError:/no lang specified \(or main lang specified\)/});

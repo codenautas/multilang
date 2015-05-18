@@ -379,4 +379,26 @@ describe('multilang', function(){
             getWarningsButtonsControl.stopControl();
         });
     });
+    describe('auxiliary functions', function(){
+        it('stringizeWarnings correct input', function(done){
+            var warns = [
+                {line: 2, text: 'text from line two'},
+                {line: 4, text: 'this is the text of line four'}
+            ];
+            var stringizedWarn = multilang.stringizeWarnings(warns);
+            expect(stringizedWarn).to.eql("line 2: text from line two\nline 4: this is the text of line four");
+            done();
+        });
+        it('stringizeWarnings with null input', function(done){
+            var stringizedWarn = multilang.stringizeWarnings([]);
+            expect(stringizedWarn).to.eql('');
+            done();
+        });
+        it('stringizeWarnings with wrong input', function(done){
+            var warns = 'this is not an array';
+            var stringizedWarn = multilang.stringizeWarnings(warns);
+            expect(stringizedWarn).to.eql('');
+            done();
+        });
+    });
 });

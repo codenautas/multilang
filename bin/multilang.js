@@ -254,12 +254,12 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
         else if(inLang && docLines[ln]==="") {
             inLang = false;
         }
-        if(docLines[ln].match(/^(<!--multilang)/)) {
+        if(docLines[ln].match(/^(<!--multilang buttons)/)) {
             if(inLang && inLang !== this.defLang) {
                warns.push({line:ln+1, text:'button section must be in main language or in all languages'});
             }
             else {
-                var buttons = this.generateButtons(doc, this.langs[this.defLang]);
+                var buttons = this.generateButtons(doc, this.defLang);
                 btnLines = buttons.split("\n");
                 inButtonsSection=true;
                 bl = 0; 
@@ -281,6 +281,18 @@ multilang.getWarnings=function getWarnings(doc){
     return this.getWarningsButtons(doc).concat(this.getWarningsLangDirective(doc));
 };
 
+multilang.stringizeWarnings=function stringizeWarnings(warns) {
+    var r='';
+    if(warns.join) {
+        var w=0
+        for(; w<warns.length; ++w) {
+            r += 'line ' + warns[w].line + ': ' + warns[w].text+ '\n';
+        }
+        if(w) { r = r.substr(0, r.length-1); } // erase '\n'
+    }
+    return r;
+}
+
 multilang.main=function main(parameters){
     var chanout = parameters.silent ? { write: function write(){} } : parameters.chanout || process.stdout;
     chanout.write("Processing '"+parameters.input+"'...\n"); 
@@ -299,9 +311,10 @@ multilang.main=function main(parameters){
         }
         if(!parameters.langs) { chanout.write("Generating all languages...\n"); }
         // comentar estas 3:
-        // if(!parameters.silent){
-        //     (parameters.chanerr || process.stderr).write(multilang.getWarnings(readContent));
-        // }
+        if(!parameters.silent){
+            (parameters.chanerr || process.stderr).write(multilang.stringizeWarnings(multilang.getWarnings(readContent)));
+            //(parameters.chanerr || process.stderr).write(multilang.getWarnings(readContent));
+        }
         return Promise.all(langs.map(function(lang){
             var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
             oFile = path.normalize(parameters.directory + "/" + oFile);
