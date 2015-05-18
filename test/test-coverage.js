@@ -8,8 +8,10 @@ var stripBom = require('strip-bom');
 var expectCalled = require('expect-called');
 var Promise = require('promise');
 var path = require('path');
- 
-describe('multilang.main coverage 2', function(){
+
+describe('multilang coverage', function(){
+
+    describe('multilang.main', function(){
     var obtainLangsControl;
     var readFileControl;
     var changeDocControl;
@@ -27,8 +29,8 @@ describe('multilang.main coverage 2', function(){
             input:'INPUT.md',
             langs:opts.langs,
             output:'OUTPUT.md',
-            directory:'aDirectory',
-            silent:false
+            directory: opts.noInputDir ? null : 'aDirectory',
+            silent: ! opts.turnOffStdOut
         }).then(function(exitCode){
             if(opts.esperaError){
                 done(new Error('esperaba un error en esta prueba'));
@@ -48,12 +50,12 @@ describe('multilang.main coverage 2', function(){
                 expect(err.message).to.match(opts.esperaError);
                 done();
             }else{
-                process.stdout.write = old_stdout;
                 done(err);
             }
         }).catch(
             done
         ).then(function(){
+            process.stdout.write = old_stdout;
             readFileControl .stopControl();
             changeDocControl.stopControl();
             writeFileControl.stopControl();
@@ -69,81 +71,12 @@ describe('multilang.main coverage 2', function(){
     it('generating errors in parameters.langs',function(done){
         tipicalTest(done,{langs:['mm'],esperaError:/no lang specified \(or main lang specified\)/});
     });    
-});    
-
-describe.skip('multilang.main coverage', function(){
-    var obtainLangsControl;
-    var readFileControl;
-    var changeDocControl;
-    var writeFileControl;
-    beforeEach(function(){
-        obtainLangsControl=expectCalled.control(multilang,'obtainLangs',{returns:[{main:'mm', langs:{xx:{fileName:'xx.md'}}}]});
-        readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve('content of INPUT')]});
-        changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
-        writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.resolve()]});
-    });
-    afterEach(function(){
-        readFileControl .stopControl();
-        changeDocControl.stopControl();
-        writeFileControl.stopControl();
-        obtainLangsControl.stopControl();
-    });
-    it('generating errors in parameters.langs',function(done){
-        var invalidLangs = ['mm'];
-        //console.log("obtainLangsControl", obtainLangsControl);
-        obtainLangsControl.remainReturns[0].langs = invalidLangs;
-        multilang.main({
-            input:'INPUT.md',
-            langs:invalidLangs,
-            output:'OUTPUT.md',
-            directory:'aDirectory',
-            silent:true
-        }).then(function(returnErr){
-            done(returnErr);
-        }).catch(function(err){
-            // console.log("err", err);
-            expect(writeFileControl.calls.length).to.eql(0);
-            expect(readFileControl .calls).to.eql([['INPUT.md',{encoding: 'utf8'}]]);
-            expect(changeDocControl.calls.length).to.eql(0);
-            done();
-        });
-    });
     it('generating errors in parameters.langs & output',function(done){
-        var invalidLangs = ['mm', 'yy', 'pp'];
-        obtainLangsControl.remainReturns[0].langs = invalidLangs;
-        multilang.main({
-            input:'INPUT.md',
-            langs:invalidLangs,
-            output:'OUTPUT.md',
-            directory:'aDirectory',
-            silent:true
-        }).then(function(returnErr){
-            // console.log(returnErr);
-            done(returnErr);
-        }).catch(function(err){
-            //console.log("err", err);
-            expect(writeFileControl.calls.length).to.eql(0);
-            expect(readFileControl .calls).to.eql([['INPUT.md',{encoding: 'utf8'}]]);
-            expect(changeDocControl.calls.length).to.eql(0);
-            done();
-        });
+        tipicalTest(done,{langs:['mm', 'yy', 'pp'],esperaError:/parameter output with more than one lang/});
     });
     it('generating errors in parameters.directory',function(done){
-        multilang.main({
-            input:'INPUT.md',
-            langs:['xx'],
-            output:'OUTPUT.md',
-            directory:null,
-            silent:true
-        }).then(function(returnErr){
-            // console.log(returnErr);
-            done(returnErr);
-        }).catch(function(err){
-            //console.log("err", err);
-            expect(writeFileControl.calls.length).to.eql(0);
-            expect(readFileControl .calls).to.eql([['INPUT.md',{encoding: 'utf8'}]]);
-            expect(changeDocControl.calls.length).to.eql(0);
-            done();
-        });
+        tipicalTest(done,{langs:null, noInputDir:true, esperaError:/no output directory specified/});
     });
+});    
+
 });
