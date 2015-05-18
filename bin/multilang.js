@@ -88,7 +88,7 @@ multilang.generateButtons=function generateButtons(docHeader,lang) {
         var lname = ln.languages[lother];
         r += '\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+docHeader.langs[lother].fileName+') -';
     }
-    r = r.substring(0, r.length-2);
+    if(r[r.length-1]!== ':') { r = r.substring(0, r.length-2); }
     return r;
 };
 
@@ -174,6 +174,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     var firstSectionFound=false;
     var foundLangs=[];
     var prevLang="";
+    var lastLang = obtainedLangsKeys[obtainedLangsKeys.length-1];
     var inCode = false;
     var ln=0;
     for(  ; ln<docLines.length; ++ln) {
@@ -196,9 +197,9 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                     firstSectionFound=false;
                 }
                 if("*" === m[2]) {
-                    if(prevLang !== "*") {
+                    if(prevLang !== "*" && prevLang !== lastLang) {
                         warns.push({line: ln+1, text: 'lang:* must be after other lang:* or after last lang section (%)',
-                                    params: [obtainedLangsKeys[obtainedLangsKeys.length-1]] });
+                                    params: [lastLang] });
                     }
                     if(">" !== m[3]) {
                         warns.push({line: ln+1, text: 'lang:* must end with ">"'});
@@ -207,7 +208,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                 if(obtainedLangs.main === m[2] && ">" !== m[3]) {
                     warns.push({line: ln+1, text: 'main lang must end with ">" (lang:%)', params: [obtainedLangs.main]});
                 }
-                if(obtainedLangsKeys[obtainedLangsKeys.length-1] === m[2] && m[1]==="<" && ">" !== m[3]) {
+                if(lastLang === m[2] && m[1]==="<" && ">" !== m[3]) {
                     warns.push({line: ln+1, text: 'unbalanced \"<\"'});
                 }
                 if("*" !== m[2] && -1 === obtainedLangsKeys.indexOf(m[2])) {
@@ -306,10 +307,8 @@ multilang.main=function main(parameters){
             throw new Error('no output directory specified');
         }
         if(!parameters.langs) { chanout.write("Generating all languages...\n"); }
-        // comentar estas 3:
         if(!parameters.silent){
             (parameters.chanerr || process.stderr).write(multilang.stringizeWarnings(multilang.getWarnings(readContent)));
-            //(parameters.chanerr || process.stderr).write(multilang.getWarnings(readContent));
         }
         return Promise.all(langs.map(function(lang){
             var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
