@@ -280,13 +280,11 @@ multilang.getWarnings=function getWarnings(doc){
 multilang.stringizeWarnings=function stringizeWarnings(warns) {
     var r='';
     if(warns.join) {
-        var w=0
-        for(; w<warns.length; ++w) {
+        for(var w=0; w<warns.length; ++w) {
             var text = warns[w].text;
             if(warns[w].params) { text = text.replace('%', warns[w].params); }
             r += 'line ' + warns[w].line + ': ' + text + '\n';
         }
-        if(w) { r = r.substr(0, r.length-1); } // erase '\n'
     }
     return r;
 }

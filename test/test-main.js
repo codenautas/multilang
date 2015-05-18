@@ -65,10 +65,10 @@ describe('multilang.main', function(){
                 try{
                     expect(chanout.getContent()).to.eql(
                         "Processing 'INPUT.md'...\n"+
-                        "Generating 'xx', writing to 'aDirectory\\OUTPUT.md'...\n"+
-                        "Generated 'xx', file 'aDirectory\\OUTPUT.md'.\n"
+                        "Generating 'xx', writing to 'aDirectory"+path.sep+"OUTPUT.md'...\n"+
+                        "Generated 'xx', file 'aDirectory"+path.sep+"OUTPUT.md'.\n"
                     );
-                    expect(chanerr.getContent()).to.eql("line 1: this is the warning\n with 2 lines");
+                    expect(chanerr.getContent()).to.eql("line 1: this is the warning\n with 2 lines\n");
                     expect(getWarningsControl.calls).to.eql([[contentOfDoc]]);
                     done();
                 }catch(err){

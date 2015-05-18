@@ -389,7 +389,7 @@ describe('multilang', function(){
             var stringizedWarn = multilang.stringizeWarnings(warns);
             expect(stringizedWarn).to.eql("line 2: text from line two\n" +
                                           "line 57: this is the text of line fifty seven and has parameters (en)\n" +
-                                          "line 4: this is the text of line four");
+                                          "line 4: this is the text of line four\n");
             done();
         });
         it('stringizeWarnings with null input', function(done){
