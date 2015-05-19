@@ -208,7 +208,7 @@ describe('multilang', function(){
                 done(err);
             })
         });
-        it('generate the spanish file of the other example (with-spaces) for bug reported #9', function(done){
+        it('generate the spanish file of the other example (with-spaces) (bug #9)', function(done){
             fs.readFile('./examples/with-spaces.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/con-espacios.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
@@ -281,7 +281,7 @@ describe('multilang', function(){
                 '<!--lang:*--]\n'+ // line 7
                 '[!--lang:fr--]\n'+ // line 8
                 'french text\n'+ 
-                '<!--lang:es--] \t \r\n'+ 
+                '<!--lang:es--] \t \r\n'+ // line 10
                 '<!--lang:en--] \t \r\n'+ // line 11
                 'you may include --lang:fr-- in the file, but not in this way\n'+ // line 12
                 'if you want to include it you must enclose it in textual text like this:\n'+ 
@@ -294,18 +294,27 @@ describe('multilang', function(){
                 '[!--lang:fr-->\n'+
                 '';
             var warnings=multilang.getWarningsLangDirective(doc);
-            warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
+            //warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
             expect(warnings).to.eql([
                 {line: 3, text:'unbalanced start "["'},
-                {line: 6, text:'missing section for lang %', params:['en']}, // there must be sections for all languages
+                {line: 6, text:'unbalanced start "["'},
                 {line: 7, text:'lang:* must be after other lang:* or after last lang section (%)', params:['en']},
                 {line: 7, text:'lang:* must end with ">"'},
+                {line: 7, text:'missing section for lang %', params:['es']}, // there must be sections for all languages
+                {line: 7, text:'missing section for lang %', params:['en']}, // there must be sections for all languages
+                {line: 8, text:'unbalanced start "["'},
                 {line: 8, text:'main lang must end with ">" (lang:%)', params:['fr']},
-                {line:11, text:'unbalanced "<"'},
+                
+                {line: 10, text:'unbalanced "["'},
+                {line:11, text:'unbalanced "["'},
                 {line:12, text:'lang clause must not be included in text line'},
                 {line:19, text:'lang:% not included in the header', params:['ru']},
+                {line:20, text:'unbalanced start "["'},
+                
                 {line:21, text:'missing section for lang %', params:['es']},
-                {line:21, text:'missing section for lang %', params:['en']} // at the end of the file
+                {line:21, text:'missing section for lang %', params:['en']}, // at the end of the file
+                {line:21, text:'last lang must be \"*\" or \"%"\"', params:['en']}
+
             ]);
         });
         it('generate warnings controling buttons',function(){

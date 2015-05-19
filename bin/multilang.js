@@ -166,35 +166,61 @@ multilang.parseLang=function parseLang(lang){
     return _.merge({}, this.langs[this.defLang], theLang);
 };
 
+multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang, actualLang, warns, line) {
+    var prev=null;
+    var testing=false;
+    for(var actual in olangs) {
+        if(!testing && prev && prevLang && prev==prevLang) {
+            testing = true;
+        }
+        if(testing && (actual!=actualLang && prevLang != prev)) {
+            warns.push({line: line, text: 'missing section for lang %', params: [prev]});
+        }
+        if(actual == actualLang) { break; }
+        prev = actual;
+    }
+    if(actualLang=="*" && prev !==prevLang) {
+        warns.push({line: line, text: 'missing section for lang %', params: [prev]})
+    }
+}
+
 multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     var obtainedLangs=this.obtainLangs(doc);
     var obtainedLangsKeys = Object.keys(obtainedLangs.langs);
     var warns=[];
     var docLines = doc.split("\n");
-    var firstSectionFound=false;
-    var foundLangs=[];
-    var prevLang="";
+    var firstSection=true;
+    var prevLang=null, curLang=null;
     var lastLang = obtainedLangsKeys[obtainedLangsKeys.length-1];
     var inCode = false;
     var ln=0;
+    var prevClosing="";
     for(  ; ln<docLines.length; ++ln) {
         var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
-        if(line.match(/^(```)$/)) { inCode = !inCode; }
+        if(line.match(/^(```)/)) { inCode = !inCode; }
         if(!inCode) {
             var m=line.match(reLangSec);
             if(m) {
-                foundLangs.push(m[2]);
-                if(!firstSectionFound && '['=== m[1]) {
-                    warns.push({line: ln+1, text: 'unbalanced start "["' });
+                curLang = m[2];
+                if(firstSection) {
+                    firstSection = false;
+                    prevLang = obtainedLangs.main;
                 }
-                if(m[3]==='>') { // must have all languages
-                    for(var lp in obtainedLangs.langs) {
-                        if(-1===foundLangs.indexOf(lp)) {
-                            warns.push({line: ln+1, text: 'missing section for lang %', params: [lp]});
-                        }
+                if(!prevClosing || prevClosing==">" || curLang==obtainedLangs.main) {
+                    if('['=== m[1]) {
+                        warns.push({line: ln+1, text: 'unbalanced start "["' });
                     }
-                    foundLangs=[obtainedLangs.main];
-                    firstSectionFound=false;
+                    if(obtainedLangs.main === curLang && ">" !== m[3]) {
+                        warns.push({line: ln+1, text: 'main lang must end with ">" (lang:%)', params: [obtainedLangs.main]});
+                    }
+                }
+                if(prevClosing !== '') {
+                    if(prevClosing === "]" && m[1] !== "[") {
+                        warns.push({line: ln+1, text: 'unbalanced "["'});
+                    }
+                    else if(prevClosing===">" && m[1] !== "<") {
+                        warns.push({line: ln+1, text: 'unbalanced "<"'});
+                    }
                 }
                 if("*" === m[2]) {
                     if(prevLang !== "*" && prevLang !== lastLang) {
@@ -205,19 +231,13 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                         warns.push({line: ln+1, text: 'lang:* must end with ">"'});
                     }
                 }
-                if(obtainedLangs.main === m[2] && ">" !== m[3]) {
-                    warns.push({line: ln+1, text: 'main lang must end with ">" (lang:%)', params: [obtainedLangs.main]});
+                if("*" !== curLang && -1 === obtainedLangsKeys.indexOf(curLang)) {
+                    warns.push({line: ln+1, text: 'lang:% not included in the header', params: [curLang]});
                 }
-                if(lastLang === m[2] && m[1]==="<" && ">" !== m[3]) {
-                    warns.push({line: ln+1, text: 'unbalanced \"<\"'});
-                }
-                if("*" !== m[2] && -1 === obtainedLangsKeys.indexOf(m[2])) {
-                    warns.push({line: ln+1, text: 'lang:% not included in the header', params: [m[2]]});
-                }
-                firstSectionFound=true;
-                prevLang = m[2];
-
-                } else { // in language body
+                multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, curLang, warns, ln+1);
+                prevClosing = m[3];
+                prevLang = curLang;
+            } else { // in language body
                 // check for lang clause
                 if(line.match(/--lang:(.*)--/)) {
                     warns.push({line: ln+1, text: 'lang clause must not be included in text line'});
@@ -225,11 +245,9 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
             }
         }
     }
-    // check missing langs
-    for(var ol in obtainedLangs.langs) {
-        if(-1===foundLangs.indexOf(ol)) {
-            warns.push({line: ln, text: 'missing section for lang %', params: [ol]});
-        }
+    multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, '*', warns, ln);
+    if(prevLang != "*" && prevLang != lastLang) {
+        warns.push({line: ln, text: 'last lang must be \"*\" or \"%"\"', params: [lastLang]});
     }
     return warns;
 };
