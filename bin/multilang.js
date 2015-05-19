@@ -179,7 +179,7 @@ multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang,
         if(actual == actualLang) { break; }
         prev = actual;
     }
-    if(actualLang=="*" && prev !==prevLang) {
+    if(actualLang=="*" && prevLang != actualLang && prev !==prevLang) {
         warns.push({line: line, text: 'missing section for lang %', params: [prev]})
     }
 }
@@ -189,12 +189,11 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     var obtainedLangsKeys = Object.keys(obtainedLangs.langs);
     var warns=[];
     var docLines = doc.split("\n");
-    var firstSection=true;
     var prevLang=null, curLang=null;
     var lastLang = obtainedLangsKeys[obtainedLangsKeys.length-1];
     var inCode = false;
     var ln=0;
-    var prevClosing="";
+    var prevClosing=false;
     for(  ; ln<docLines.length; ++ln) {
         var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
         if(line.match(/^(```)/)) { inCode = !inCode; }
@@ -202,12 +201,8 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
             var m=line.match(reLangSec);
             if(m) {
                 curLang = m[2];
-                if(firstSection) {
-                    firstSection = false;
-                    prevLang = obtainedLangs.main;
-                }
                 if(!prevClosing || prevClosing==">" || curLang==obtainedLangs.main) {
-                    if('['=== m[1]) {
+                    if(prevClosing !==']' && '['=== m[1]) {
                         warns.push({line: ln+1, text: 'unbalanced start "["' });
                     }
                     if(obtainedLangs.main === curLang && ">" !== m[3]) {
@@ -217,8 +212,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                 if(prevClosing !== '') {
                     if(prevClosing === "]" && m[1] !== "[") {
                         warns.push({line: ln+1, text: 'unbalanced "["'});
-                    }
-                    else if(prevClosing===">" && m[1] !== "<") {
+                    } else if(prevClosing===">" && m[1] !== "<") {
                         warns.push({line: ln+1, text: 'unbalanced "<"'});
                     }
                 }
@@ -265,15 +259,13 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
             if(m) {
                 inLang = m[1];
             }
-        }
-        else if(inLang && docLines[ln]==="") {
+        } else if(inLang && docLines[ln]==="") {
             inLang = false;
         }
         if(docLines[ln].match(/^(<!--multilang buttons)/)) {
             if(inLang && inLang !== this.defLang) {
                warns.push({line:ln+1, text:'button section must be in main language or in all languages'});
-            }
-            else {
+            } else {
                 var buttons = this.generateButtons(doc, this.defLang);
                 btnLines = buttons.split("\n");
                 inButtonsSection=true;
