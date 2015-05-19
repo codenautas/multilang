@@ -406,5 +406,20 @@ describe('multilang', function(){
             expect(stringizedWarn).to.eql('');
             done();
         });
+        it.skip('generate warnings controling ] [ balanced',function(){
+            var doc='\n'+
+                '<!--multilang v0 en:README.md es:LEEME.md -->\n'+
+                'english text (also seen in spanish)\n'+
+                '<!--lang:es--]\n'+ 
+                'spanish text\n'+
+                '\t  [!--lang:en-->\n'+
+                'english text 2\n'+
+                '<!--lang:es--]\n'+
+                'spanhis text 2\n'+
+                '[!--lang:*-->\n'+
+                '';
+            var warnings=multilang.getWarningsLangDirective(doc);
+            expect(warnings).to.eql([]);
+        });
     });
 });
