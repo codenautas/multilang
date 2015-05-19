@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 "use strict";
 
 var program = require('commander');
@@ -51,13 +53,14 @@ params.directory = program.directory;
 if(!params.directory) {
     realPath(params.input).then(function(dir) {
         params.directory = dir;
-        console.log("Using directory: ", params.directory);
+        //console.log("Using directory: ", params.directory);
         multilang.main(params).then(function(){
             process.stderr.write("Done!");
         }).catch(function(err){
             process.stderr.write("ERROR\n"+err);
         });
     }).catch(function(err) {
+    	//console.log("DIR", err);
         process.stderr.write("ERROR: "+err.message);
         program.help();
     });
@@ -66,6 +69,7 @@ else {
     multilang.main(params).then(function(){
         process.stderr.write("Done!");
     }).catch(function(err){
+    	//console.log("ELSE", err);
         process.stderr.write("ERROR: "+err.message);
     });
 }

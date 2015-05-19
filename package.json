@@ -4,13 +4,20 @@
   "version": "0.1.0",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
-  "repository": "codenautas/multilang",
+  "repository": "https://github.com/codenautas/multilang",
   "contributors": [
     {
       "name": "Emilio Platzer",
       "email": "emilioplatzer@gmail.com"
+    },
+    {
+      "name": "Diego Florio",
+      "email": "diegoefe@gmail.com"
     }
   ],
+  "bin": {
+    "multilang": "./bin/multilang-run.js"
+  },
   "dependencies": {
     "fs-promise": ">=0.3.1",
     "js-yaml": ">=3.2.7",
