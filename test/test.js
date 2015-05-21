@@ -396,6 +396,22 @@ describe('multilang', function(){
             var warnings=multilang.getWarningsLangDirective(doc);
             expect(warnings).to.eql([]);
         });
+        it.skip('generate warnings in first or last ] [',function(){
+            var doc='\n'+
+                '<!--multilang v0 en:README.md es:LEEME.md -->\n'+
+                'english text (also seen in spanish)\n'+
+                'spanish text\n'+
+                '\t  [!--lang:en-->\n'+ // line 5
+                'english text 2\n'+
+                '<!--lang:es--]\n'+
+                'spanhis text 2\n'+ // line 8
+                '';
+            var warnings=multilang.getWarningsLangDirective(doc);
+            expect(warnings).to.eql([
+                {line: 5, text:'unbalanced start "["'},
+                {line: 8, text:'last lang directive could\'n finish in "]"'}
+            ]);
+        });
     });
     describe('auxiliary functions', function(){
         it('stringizeWarnings correct input', function(done){
