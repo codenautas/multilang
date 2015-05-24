@@ -3,7 +3,9 @@
 Tools for multilanguage &amp; Markdown multilang
 
 <!--lang:es--]
+
 Herramientas multilenguaje (primeramente para Markdown)
+
 [!--lang:*-->
 
 [![version](https://img.shields.io/npm/v/multilang.svg)](https://npmjs.org/package/multilang)
@@ -12,7 +14,6 @@ Herramientas multilenguaje (primeramente para Markdown)
 [![coverage](https://img.shields.io/coveralls/codenautas/multilang/master.svg)](https://coveralls.io/r/codenautas/multilang)
 [![climate](https://img.shields.io/codeclimate/github/codenautas/multilang.svg)](https://codeclimate.com/github/codenautas/multilang)
 
-<!--multilang v0 en:README.md es:LEEME.md -->
 
 <!--multilang buttons-->
 
@@ -21,6 +22,7 @@ also available in:
 [![Spanish](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](LEEME.md)
 
 <!--lang:en-->
+
 In a Markdown or HTML-like file is written the documentation in multiple languages.
 
 One of these languages ​​is the main, the others are commented with &lt;!-- and --&gt;
@@ -28,6 +30,7 @@ One of these languages ​​is the main, the others are commented with &lt;!-- 
 Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
 
 <!--lang:es--]
+
 En un archivo tipo Markdown o html se escribe documentación en varios idiomas. 
 
 Uno de esos lenguajes es el principal, los otros están comentados con &lt;!-- y --&gt;
@@ -35,18 +38,25 @@ Uno de esos lenguajes es el principal, los otros están comentados con &lt;!-- y
 Luego con `multilang` se extraen los otros lenguajes generando un archivo para cada uno de los otros lenguajes definidos
 
 [!--lang:en-->
+
 ## Install
+
 <!--lang:es--]
+
 ## Instalación
+
 [!--lang:*-->
 
 ```sh
 $ npm install multilang -g
 ```
+
 <!--lang:en-->
+
 ## Use
 
 <!--lang:es--]
+
 ## Uso
 
 [!--lang:*-->
@@ -220,7 +230,7 @@ o basadas en [promesas](http://npmjs.com/package/fs-promise)
 como se ilustra en [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
 
 función              | uso
----------------------|------------------------------
+---------------------|-------------------------------
 changeDoc(text,lang) | dado un texto multilang y un código de lenguaje obtiene el texto correspondiente a ese lenguaje
 getWarnings(text)    | obtiene una lista de advertencias a partir de un texto multilang
 
