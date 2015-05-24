@@ -10,6 +10,9 @@ NO MODIFIQUE ESTE ARCHIVO. FUE GENERADO AUTOMÁTICAMENTE POR multilang.js
 
 -->
 # multilang
+
+Tools for multilanguage &amp; Markdown multilang
+
 Herramientas multilenguaje (primeramente para Markdown)
 
 [![version](https://img.shields.io/npm/v/multilang.svg)](https://npmjs.org/package/multilang)
@@ -17,6 +20,7 @@ Herramientas multilenguaje (primeramente para Markdown)
 [![linux](https://img.shields.io/travis/codenautas/multilang/master.svg)](https://travis-ci.org/codenautas/multilang)
 [![coverage](https://img.shields.io/coveralls/codenautas/multilang/master.svg)](https://coveralls.io/r/codenautas/multilang)
 [![climate](https://img.shields.io/codeclimate/github/codenautas/multilang.svg)](https://codeclimate.com/github/codenautas/multilang)
+
 
 <!--multilang buttons-->
 
@@ -163,10 +167,10 @@ use las versiones asincrónicas
 o basadas en [promesas](http://npmjs.com/package/fs-promise)
 como se ilustra en [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
 
-función   | uso
-----------|-------
-changeDoc | dado un texto multilang y un código de lenguaje obtiene el texto correspondiente a ese lenguaje
-warnings  | obtiene una lista de advertencias a partir de un texto multilang
+función              | uso
+---------------------|------------------------------
+changeDoc(text,lang) | dado un texto multilang y un código de lenguaje obtiene el texto correspondiente a ese lenguaje
+getWarnings(text)    | obtiene una lista de advertencias a partir de un texto multilang
 
 
 ## License

@@ -1,7 +1,7 @@
-<!--multilang v0 en:README.md es:LEEME.md -->
 # multilang
-<!--lang:en-->
+
 Tools for multilanguage &amp; Markdown multilang
+
 <!--lang:es--]
 Herramientas multilenguaje (primeramente para Markdown)
 [!--lang:*-->
@@ -11,6 +11,8 @@ Herramientas multilenguaje (primeramente para Markdown)
 [![linux](https://img.shields.io/travis/codenautas/multilang/master.svg)](https://travis-ci.org/codenautas/multilang)
 [![coverage](https://img.shields.io/coveralls/codenautas/multilang/master.svg)](https://coveralls.io/r/codenautas/multilang)
 [![climate](https://img.shields.io/codeclimate/github/codenautas/multilang.svg)](https://codeclimate.com/github/codenautas/multilang)
+
+<!--multilang v0 en:README.md es:LEEME.md -->
 
 <!--multilang buttons-->
 
@@ -205,10 +207,10 @@ use async
 or [promise](http://npmjs.com/package/fs-promise) version 
 as you can see in [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
 
-function  | use
-----------|-------
-changeDoc | get a multilang text and a language code and returns de text of specified lang
-warnings  | get a list of warnings for a multilang text
+function             | use
+---------------------|------------------------------
+changeDoc(text,lang) | get a multilang text and a language code and returns de text of specified lang
+warnings(text)       | get a list of warnings for a multilang text
 
 <!--lang:es--]
 
@@ -217,10 +219,10 @@ use las versiones asincrónicas
 o basadas en [promesas](http://npmjs.com/package/fs-promise)
 como se ilustra en [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
 
-función   | uso
-----------|-------
-changeDoc | dado un texto multilang y un código de lenguaje obtiene el texto correspondiente a ese lenguaje
-warnings  | obtiene una lista de advertencias a partir de un texto multilang
+función              | uso
+---------------------|------------------------------
+changeDoc(text,lang) | dado un texto multilang y un código de lenguaje obtiene el texto correspondiente a ese lenguaje
+getWarnings(text)    | obtiene una lista de advertencias a partir de un texto multilang
 
 [!--lang:*-->
 
