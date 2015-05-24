@@ -13,7 +13,9 @@ NO MODIFIQUE ESTE ARCHIVO. FUE GENERADO AUTOMÁTICAMENTE POR multilang.js
 
 Tools for multilanguage &amp; Markdown multilang
 
+
 Herramientas multilenguaje (primeramente para Markdown)
+
 
 [![version](https://img.shields.io/npm/v/multilang.svg)](https://npmjs.org/package/multilang)
 [![downloads](https://img.shields.io/npm/dm/multilang.svg)](https://npmjs.org/package/multilang)
@@ -28,17 +30,22 @@ idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/mas
 también disponible en:
 [![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md)
 
+
 En un archivo tipo Markdown o html se escribe documentación en varios idiomas. 
 
-Uno de esos lenguajes es el principal, los otros están comentados con &lt;!-- y --&gt;
+Uno de esos lenguajes es el principal, los otros están comentados con [!-- y --]
 
 Luego con `multilang` se extraen los otros lenguajes generando un archivo para cada uno de los otros lenguajes definidos
 
+
 ## Instalación
+
 
 ```sh
 $ npm install multilang -g
 ```
+
+
 ## Uso
 
 
@@ -93,8 +100,6 @@ El documento tiene en algún lugar un renglón con la directiva multilenguaje. E
 <!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->
 ```
 
-is the directive for declare the languages
-
 
  * *v0* es la versión del formato multilenguaje, 
  * *en* es el lenguaje principal [ISO 639-1](http://es.wikipedia.org/wiki/ISO_639-1), en este caso inglés
@@ -111,8 +116,6 @@ la presencia de los links a los otros documentos. Tiene el siguiente formato
 <!--multilanguage buttons-->
 ```
 
-is the directive for declaring the place for the button section
-
 
 Lo siguientes renlgones son los botones y links a los otros lenguajes. 
 
@@ -127,8 +130,6 @@ Las secciones o subsecciones donde se cambia de idioma están señaladas con la 
 ```
 [!--lang:fr--]
 ```
-
-is the directive for declaring the language of the next section (use * from all languages)
 
 
  * *fr* en este ejemplo es indica que los renglones siguientes están escritos en francés
@@ -162,13 +163,13 @@ console.log('spanish.md',spanishText);
 ```
 
 
-(note acerca del ejemplo anterior: no use funciones ***Sync***rónicas en producción, 
+(nota acerca del ejemplo anterior: no use funciones ***Sync***rónicas en producción, 
 use las versiones asincrónicas 
 o basadas en [promesas](http://npmjs.com/package/fs-promise)
 como se ilustra en [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
 
 función              | uso
----------------------|------------------------------
+---------------------|-------------------------------
 changeDoc(text,lang) | dado un texto multilang y un código de lenguaje obtiene el texto correspondiente a ese lenguaje
 getWarnings(text)    | obtiene una lista de advertencias a partir de un texto multilang
 

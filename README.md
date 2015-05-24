@@ -14,6 +14,7 @@ Herramientas multilenguaje (primeramente para Markdown)
 [![coverage](https://img.shields.io/coveralls/codenautas/multilang/master.svg)](https://coveralls.io/r/codenautas/multilang)
 [![climate](https://img.shields.io/codeclimate/github/codenautas/multilang.svg)](https://codeclimate.com/github/codenautas/multilang)
 
+<!--multilang v0 en:README.md es:LEEME.md -->
 
 <!--multilang buttons-->
 
@@ -33,7 +34,7 @@ Then with ` multilang` the other languages ​​are extracted to generate one f
 
 En un archivo tipo Markdown o html se escribe documentación en varios idiomas. 
 
-Uno de esos lenguajes es el principal, los otros están comentados con &lt;!-- y --&gt;
+Uno de esos lenguajes es el principal, los otros están comentados con [!-- y --]
 
 Luego con `multilang` se extraen los otros lenguajes generando un archivo para cada uno de los otros lenguajes definidos
 
@@ -133,7 +134,7 @@ El documento tiene en algún lugar un renglón con la directiva multilenguaje. E
 <!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->
 ```
 
-<!--lang:es-->
+<!--lang:en-->
 is the directive for declare the languages
 
 <!--lang:es--]
@@ -154,7 +155,8 @@ la presencia de los links a los otros documentos. Tiene el siguiente formato
 <!--multilanguage buttons-->
 ```
 
-<!--lang:es-->
+<!--lang:en-->
+
 is the directive for declaring the place for the button section
 
 <!--lang:es--]
@@ -174,8 +176,8 @@ Las secciones o subsecciones donde se cambia de idioma están señaladas con la 
 [!--lang:fr--]
 ```
 
-<!--lang:es-->
-is the directive for declaring the language of the next section (use * from all languages)
+<!--lang:en-->
+xx2 is the directive for declaring the language of the next section (use * from all languages)
 
 <!--lang:es--]
 
@@ -224,7 +226,7 @@ warnings(text)       | get a list of warnings for a multilang text
 
 <!--lang:es--]
 
-(note acerca del ejemplo anterior: no use funciones ***Sync***rónicas en producción, 
+(nota acerca del ejemplo anterior: no use funciones ***Sync***rónicas en producción, 
 use las versiones asincrónicas 
 o basadas en [promesas](http://npmjs.com/package/fs-promise)
 como se ilustra en [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
