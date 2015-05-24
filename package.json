@@ -1,7 +1,7 @@
 {
   "name": "multilang",
   "description": "Tools for multilanguage and Markdown multilang",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "https://github.com/codenautas/multilang",
@@ -20,18 +20,20 @@
   },
   "dependencies": {
     "fs-promise": ">=0.3.1",
-    "js-yaml": ">=3.2.7",
-    "lodash": ">=3.6.0",
-    "promise": ">=7.0.0",
+    "js-yaml": ">=3.3.1",
+    "lodash": ">=3.9.1",
     "strip-bom": "^1.0.0",
-    "expect-called": ">=0.3.2",
     "parameters": ">=0.1.4",
-    "commander": ">=2.8.0"
+    "commander": ">=2.8.1",
+    
+    "best-promise": ">=0.1.2"
   },
   "devDependencies": {
-    "istanbul": "~0.3.13",
-    "mocha": "~2.2.4",
-    "expect.js": ">=0.3.1"
+    "istanbul": "~0.3.14",
+    "mocha": "~2.2.5",
+    "expect.js": ">=0.3.1",
+
+    "expect-called": ">=0.4.0"
   },
   "engines": {
     "node": ">= 0.8.0"

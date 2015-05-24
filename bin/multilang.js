@@ -2,7 +2,7 @@
 
 var _ = require("lodash");
 var yaml = require('js-yaml');
-var Promise = require('promise');
+var Promise = require('best-promise');
 var fs = require('fs-promise');
 var stripBom = require('strip-bom');
 var path = require('path');

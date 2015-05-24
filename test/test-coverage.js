@@ -2,11 +2,11 @@
 
 var _ = require('lodash');
 var expect = require('expect.js');
+var Promise = require('best-promise');
 var fs = require('fs-promise');
 var multilang = require('..');
 var stripBom = require('strip-bom');
 var expectCalled = require('expect-called');
-var Promise = require('promise');
 var path = require('path');
 
 describe('multilang coverage', function(){

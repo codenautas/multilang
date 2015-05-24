@@ -12,12 +12,12 @@ NO MODIFIQUE ESTE ARCHIVO. FUE GENERADO AUTOMÁTICAMENTE POR multilang.js
 # multilang
 Herramientas multilenguaje (primeramente para Markdown)
 
-![extending](https://img.shields.io/badge/stability-extending-orange.svg)
 [![version](https://img.shields.io/npm/v/multilang.svg)](https://npmjs.org/package/multilang)
 [![downloads](https://img.shields.io/npm/dm/multilang.svg)](https://npmjs.org/package/multilang)
 [![linux](https://img.shields.io/travis/codenautas/multilang/master.svg)](https://travis-ci.org/codenautas/multilang)
 [![coverage](https://img.shields.io/coveralls/codenautas/multilang/master.svg)](https://coveralls.io/r/codenautas/multilang)
 [![climate](https://img.shields.io/codeclimate/github/codenautas/multilang.svg)](https://codeclimate.com/github/codenautas/multilang)
+
 <!--multilang buttons-->
 
 idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)
@@ -121,7 +121,7 @@ Las secciones o subsecciones donde se cambia de idioma están señaladas con la 
 
 
 ```
-[--lang:fr--]
+[!--lang:fr--]
 ```
 
 is the directive for declaring the language of the next section (use * from all languages)
@@ -138,7 +138,39 @@ un signo de menor "<" en vez de un corchete "[" para que empiece un nuevo cometa
 y no se visualice el texto en los idiomas secundarios. 
 
 
+## API
+
+```js
+
+var fs = require('fs');
+var multilang = require('multilang');
+
+var englishText = fs.readFileSync('README.md', {encoding:'utf8'});
+
+var warnings = multilang.getWarnings(englishText);
+if(warnings.lengt){
+    console.log('WARN', warnings);
+}
+
+var spanishText = multilang.changeDoc(englishText,'es');
+
+console.log('spanish.md',spanishText);
+```
+
+
+(note acerca del ejemplo anterior: no use funciones ***Sync***rónicas en producción, 
+use las versiones asincrónicas 
+o basadas en [promesas](http://npmjs.com/package/fs-promise)
+como se ilustra en [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
+
+función   | uso
+----------|-------
+changeDoc | dado un texto multilang y un código de lenguaje obtiene el texto correspondiente a ese lenguaje
+warnings  | obtiene una lista de advertencias a partir de un texto multilang
+
 
 ## License
 
 [MIT](LICENSE)
+
+...................................
