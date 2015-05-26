@@ -308,7 +308,7 @@ describe('multilang', function(){
                 {line:19, text:'lang:% not included in the header', params:['ru']},
                 {line:21, text:'missing section for lang %', params:['es']},
                 {line:21, text:'missing section for lang %', params:['en']}, // at the end of the file
-                {line:21, text:'last lang must be \"*\" or \"%"\"', params:['en']}
+                {line:20, text:'last lang must be \"*\" or \"%"\"', params:['en']}
             ]);
         });
         it('generate warnings controling buttons',function(){
@@ -409,7 +409,7 @@ describe('multilang', function(){
             var warnings=multilang.getWarningsLangDirective(doc);
             expect(warnings).to.eql([
                 {line: 5, text:'unbalanced start "["'},
-                {line: 9, text:'last lang directive could\'n finish in "]"'} // it's line 9 because it's the last line (not 8)
+                {line: 7, text:'last lang directive could\'n finish in "]"'}
             ]);
         });
     });
