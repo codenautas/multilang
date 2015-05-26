@@ -202,8 +202,8 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
             if(m) {
                 curLang = m[2];
                 if(!prevClosing || prevClosing==">" || curLang==obtainedLangs.main) {
-                    if(prevClosing !==']' && '['=== m[1]) {
-                        warns.push({line: ln+1, text: 'unbalanced start "["' });
+                    if((!prevClosing && '<'!== m[1]) || (prevClosing !==']' && '['=== m[1])) {
+                        warns.push({line: ln+1, text: 'unbalanced start "'+m[1]+'"' });
                     }
                     if(obtainedLangs.main === curLang && ">" !== m[3]) {
                         warns.push({line: ln+1, text: 'main lang must end with ">" (lang:%)', params: [obtainedLangs.main]});
@@ -242,6 +242,10 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, '*', warns, ln);
     if(prevLang != "*" && prevLang != lastLang) {
         warns.push({line: ln, text: 'last lang must be \"*\" or \"%"\"', params: [lastLang]});
+    }
+    if(prevLang && prevClosing && prevClosing != ">") {
+        warns.push({line: ln, text: 'last lang directive could\'n finish in "'+prevClosing+'"'});
+        
     }
     return warns;
 };

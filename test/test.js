@@ -396,7 +396,7 @@ describe('multilang', function(){
             var warnings=multilang.getWarningsLangDirective(doc);
             expect(warnings).to.eql([]);
         });
-        it.skip('generate warnings in first or last ] [',function(){
+        it('generate warnings in first or last ] [',function(){
             var doc='\n'+
                 '<!--multilang v0 en:README.md es:LEEME.md -->\n'+
                 'english text (also seen in spanish)\n'+
@@ -409,7 +409,7 @@ describe('multilang', function(){
             var warnings=multilang.getWarningsLangDirective(doc);
             expect(warnings).to.eql([
                 {line: 5, text:'unbalanced start "["'},
-                {line: 8, text:'last lang directive could\'n finish in "]"'}
+                {line: 9, text:'last lang directive could\'n finish in "]"'} // it's line 9 because it's the last line (not 8)
             ]);
         });
     });
