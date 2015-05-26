@@ -260,15 +260,14 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
     var inButtonsSection=false;
     var inLang = false;
     for(var ln=0; ln<docLines.length; ++ln) {
+        var docLine = docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
         if(!inLang) {
-            var m = docLines[ln].match(reLangSec);
-            if(m) {
-                inLang = m[1];
-            }
-        } else if(inLang && docLines[ln]==="") {
+            var m = docLine.match(reLangSec);
+            if(m) { inLang = m[2]; }
+        } else if(inLang && docLine==="") {
             inLang = false;
         }
-        if(docLines[ln].match(/^(<!--multilang buttons)/)) {
+        if(docLine.match(/^(<!--multilang buttons)/)) {
             if(inLang && inLang !== this.defLang) {
                warns.push({line:ln+1, text:'button section must be in main language or in all languages'});
             } else {
@@ -280,7 +279,7 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
         }
         if(inButtonsSection) {
             if(btnLines.length>bl) {
-                if(btnLines[bl] !== "" && docLines[ln] !== btnLines[bl]) {
+                if(btnLines[bl] !== "" && docLine !== btnLines[bl]) {
                     warns.push({line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'});
                 }
                 ++bl;
