@@ -295,6 +295,7 @@ describe('multilang', function(){
                 '';
             var warnings=multilang.getWarningsLangDirective(doc);
             //warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
+            //console.log("warnings", warnings);
             expect(warnings).to.eql([
                 {line: 3, text:'unbalanced start "["'},
                 {line: 7, text:'lang:* must be after other lang:* or after last lang section (%)', params:['en']},
@@ -381,10 +382,11 @@ describe('multilang', function(){
             getWarningsLangDirectiveControl.stopControl();
             getWarningsButtonsControl.stopControl();
         });
+        var headerEnEs3lines='\n'+
+            '<!--multilang v0 en:README.md es:LEEME.md -->\n'+
+            'english text (also seen in spanish)\n';
         it('generate warnings controling ] [ balanced',function(){
-            var doc='\n'+
-                '<!--multilang v0 en:README.md es:LEEME.md -->\n'+
-                'english text (also seen in spanish)\n'+
+            var doc=headerEnEs3lines +
                 '<!--lang:es--]\n'+ 
                 'spanish text\n'+
                 '\t  [!--lang:en-->\n'+
@@ -397,9 +399,7 @@ describe('multilang', function(){
             expect(warnings).to.eql([]);
         });
         it('generate warnings in first or last ] [',function(){
-            var doc='\n'+
-                '<!--multilang v0 en:README.md es:LEEME.md -->\n'+
-                'english text (also seen in spanish)\n'+
+            var doc=headerEnEs3lines +
                 'spanish text\n'+
                 '\t  [!--lang:en-->\n'+ // line 5
                 'english text 2\n'+
@@ -410,6 +410,21 @@ describe('multilang', function(){
             expect(warnings).to.eql([
                 {line: 5, text:'unbalanced start "["'},
                 {line: 7, text:'last lang directive could\'n finish in "]"'}
+            ]);
+        });
+        it('generate warnings controlling missing language directives (bug #15)',function(){
+            var doc=headerEnEs3lines +
+                'spanish text\n'+
+                '\t<!--lang:en-->\n'+
+                'english text 2\n'+
+                '<!--lang:es-->\n'+
+                'spanish text\n'+
+                '<!--lang:es-->\n'+ // line 9
+                'more spanish text 2\n'+
+                '';
+            var warnings=multilang.getWarningsLangDirective(doc);
+            expect(warnings).to.eql([
+                {line: 9, text:'missing section for lang %', params:['en']}
             ]);
         });
     });

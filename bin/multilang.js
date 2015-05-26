@@ -166,21 +166,29 @@ multilang.parseLang=function parseLang(lang){
     return _.merge({}, this.langs[this.defLang], theLang);
 };
 
-multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang, actualLang, warns, line) {
+multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang, actualLang, warns, line, isFirstSection) {
+    if("*" != actualLang && !olangs[actualLang]) { return; }
     var prev=null;
     var testing=false;
+    var secondLang = false;
     for(var actual in olangs) {
-        if(!testing && prev && prevLang && prev==prevLang) {
-            testing = true;
-        }
-        if(testing && (actual!=actualLang && prevLang != prev)) {
-            warns.push({line: line, text: 'missing section for lang %', params: [prev]});
+        if(!secondLang && prev) { secondLang = actual; }
+        if(!testing && prev==prevLang) { testing = true; }
+        if(testing && prev && actual != actualLang) {
+            if((!isFirstSection || actual != secondLang) && prevLang != prev) {
+                warns.push({line: line, text: 'missing section for lang %', params: [prev]});
+            }
         }
         if(actual == actualLang) { break; }
         prev = actual;
     }
-    if(actualLang=="*" && prevLang != actualLang && prev !==prevLang) {
-        warns.push({line: line, text: 'missing section for lang %', params: [prev]})
+    if(actualLang=="*") {
+        if(prevLang != actualLang && prev !==prevLang) {
+            warns.push({line: line, text: 'missing section for lang %', params: [prev]});
+        }
+    }
+    else if(!isFirstSection && prevLang == actualLang) {
+        warns.push({line: line, text: 'missing section for lang %', params: [prev]});
     }
 }
 
@@ -195,6 +203,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     var ln=0;
     var prevClosing=false;
     var lastLangLine=false;
+    var isFirstSection=true;
     for(  ; ln<docLines.length; ++ln) {
         var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
         if(line.match(/^(```)/)) { inCode = !inCode; }
@@ -230,7 +239,8 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                 if("*" !== curLang && -1 === obtainedLangsKeys.indexOf(curLang)) {
                     warns.push({line: ln+1, text: 'lang:% not included in the header', params: [curLang]});
                 }
-                multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, curLang, warns, ln+1);
+                multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, curLang, warns, ln+1, isFirstSection);
+                isFirstSection=false;
                 prevClosing = m[3];
                 prevLang = curLang;
             } else { // in language body
