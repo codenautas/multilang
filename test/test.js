@@ -427,6 +427,23 @@ describe('multilang', function(){
                 {line: 9, text:'missing section for lang %', params:['en']}
             ]);
         });
+        it('generate warnings controlling missing sections (#11)',function(){
+            var doc='\n'+
+                '<!--not multilang v0 en:README.md es:LEEME.md -->\n'+
+                'english text (also seen in spanish)\n' +
+                'spanish text\n'+
+                '\t<!--lang:en-->\n'+
+                'english text 2\n'+
+                '<!--lang:es-->\n'+
+                'spanish text\n'+
+                '';
+            var warnings=multilang.getWarnings(doc);
+            expect(warnings).to.eql([
+                {line:0, text:'missing section <!--multilang buttons-->'},
+                {line:0, text:'missing section <!--multilang ...->'}
+                
+            ]);
+        });
     });
     describe('auxiliary functions', function(){
         it('stringizeWarnings correct input', function(done){

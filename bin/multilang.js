@@ -193,71 +193,75 @@ multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang,
 }
 
 multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
-    var obtainedLangs=this.obtainLangs(doc);
-    var obtainedLangsKeys = Object.keys(obtainedLangs.langs);
     var warns=[];
-    var docLines = doc.split("\n");
-    var prevLang=null, curLang=null;
-    var lastLang = obtainedLangsKeys[obtainedLangsKeys.length-1];
-    var inCode = false;
-    var ln=0;
-    var prevClosing=false;
-    var lastLangLine=false;
-    var isFirstSection=true;
-    for(  ; ln<docLines.length; ++ln) {
-        var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
-        if(line.match(/^(```)/)) { inCode = !inCode; }
-        if(!inCode) {
-            var m=line.match(reLangSec);
-            if(m) {
-                curLang = m[2];
-                lastLangLine = ln+1;
-                if(!prevClosing || prevClosing==">" || curLang==obtainedLangs.main) {
-                    if((!prevClosing && '<'!== m[1]) || (prevClosing !==']' && '['=== m[1])) {
-                        warns.push({line: ln+1, text: 'unbalanced start "'+m[1]+'"' });
-                    }
-                    if(obtainedLangs.main === curLang && ">" !== m[3]) {
-                        warns.push({line: ln+1, text: 'main lang must end with ">" (lang:%)', params: [obtainedLangs.main]});
-                    }
-                }
-                if(prevClosing !== '') {
-                    if(prevClosing === "]" && m[1] !== "[") {
-                        warns.push({line: ln+1, text: 'unbalanced "["'});
-                    } else if(prevClosing===">" && m[1] !== "<") {
-                        warns.push({line: ln+1, text: 'unbalanced "<"'});
-                    }
-                }
-                if("*" === m[2]) {
-                    if(prevLang !== "*" && prevLang !== lastLang) {
-                        warns.push({line: ln+1, text: 'lang:* must be after other lang:* or after last lang section (%)',
-                                    params: [lastLang] });
-                    }
-                    if(">" !== m[3]) {
-                        warns.push({line: ln+1, text: 'lang:* must end with ">"'});
-                    }
-                }
-                if("*" !== curLang && -1 === obtainedLangsKeys.indexOf(curLang)) {
-                    warns.push({line: ln+1, text: 'lang:% not included in the header', params: [curLang]});
-                }
-                multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, curLang, warns, ln+1, isFirstSection);
-                isFirstSection=false;
-                prevClosing = m[3];
-                prevLang = curLang;
-            } else { // in language body
-                // check for lang clause
-                if(line.match(/--lang:(.*)--/)) {
-                    warns.push({line: ln+1, text: 'lang clause must not be included in text line'});
+    var obtainedLangs=this.obtainLangs(doc);
+    if(!obtainedLangs.main) {
+        warns.push({line: 0, text: 'missing section <!--multilang ...->'});
+    } else {
+        var obtainedLangsKeys = Object.keys(obtainedLangs.langs);
+        var docLines = doc.split("\n");
+        var prevLang=null, curLang=null;
+        var lastLang = obtainedLangsKeys[obtainedLangsKeys.length-1];
+        var inCode = false;
+        var ln=0;
+        var prevClosing=false;
+        var lastLangLine=false;
+        var isFirstSection=true;
+        for(  ; ln<docLines.length; ++ln) {
+            var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
+            if(line.match(/^(```)/)) { inCode = !inCode; }
+            if(!inCode) {
+                var m=line.match(reLangSec);
+                if(m) {
+                    curLang = m[2];
                     lastLangLine = ln+1;
+                    if(!prevClosing || prevClosing==">" || curLang==obtainedLangs.main) {
+                        if((!prevClosing && '<'!== m[1]) || (prevClosing !==']' && '['=== m[1])) {
+                            warns.push({line: ln+1, text: 'unbalanced start "'+m[1]+'"' });
+                        }
+                        if(obtainedLangs.main === curLang && ">" !== m[3]) {
+                            warns.push({line: ln+1, text: 'main lang must end with ">" (lang:%)', params: [obtainedLangs.main]});
+                        }
+                    }
+                    if(prevClosing !== '') {
+                        if(prevClosing === "]" && m[1] !== "[") {
+                            warns.push({line: ln+1, text: 'unbalanced "["'});
+                        } else if(prevClosing===">" && m[1] !== "<") {
+                            warns.push({line: ln+1, text: 'unbalanced "<"'});
+                        }
+                    }
+                    if("*" === m[2]) {
+                        if(prevLang !== "*" && prevLang !== lastLang) {
+                            warns.push({line: ln+1, text: 'lang:* must be after other lang:* or after last lang section (%)',
+                                        params: [lastLang] });
+                        }
+                        if(">" !== m[3]) {
+                            warns.push({line: ln+1, text: 'lang:* must end with ">"'});
+                        }
+                    }
+                    if("*" !== curLang && -1 === obtainedLangsKeys.indexOf(curLang)) {
+                        warns.push({line: ln+1, text: 'lang:% not included in the header', params: [curLang]});
+                    }
+                    multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, curLang, warns, ln+1, isFirstSection);
+                    isFirstSection=false;
+                    prevClosing = m[3];
+                    prevLang = curLang;
+                } else { // in language body
+                    // check for lang clause
+                    if(line.match(/--lang:(.*)--/)) {
+                        warns.push({line: ln+1, text: 'lang clause must not be included in text line'});
+                        lastLangLine = ln+1;
+                    }
                 }
             }
         }
-    }
-    multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, '*', warns, ln);
-    if(prevLang != "*" && prevLang != lastLang) {
-        warns.push({line: lastLangLine, text: 'last lang must be \"*\" or \"%"\"', params: [lastLang]});
-    }
-    if(prevLang && prevClosing && prevClosing != ">") {
-        warns.push({line: lastLangLine, text: 'last lang directive could\'n finish in "'+prevClosing+'"'});
+        multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, '*', warns, ln);
+        if(prevLang != "*" && prevLang != lastLang) {
+            warns.push({line: lastLangLine, text: 'last lang must be \"*\" or \"%"\"', params: [lastLang]});
+        }
+        if(prevLang && prevClosing && prevClosing != ">") {
+            warns.push({line: lastLangLine, text: 'last lang directive could\'n finish in "'+prevClosing+'"'});
+        }
     }
     return warns;
 };
@@ -269,6 +273,7 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
     var warns=[];
     var inButtonsSection=false;
     var inLang = false;
+    var haveMultilangButtons=false;
     for(var ln=0; ln<docLines.length; ++ln) {
         var docLine = docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
         if(!inLang) {
@@ -278,6 +283,7 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
             inLang = false;
         }
         if(docLine.match(/^(<!--multilang buttons)/)) {
+            haveMultilangButtons=true;
             if(inLang && inLang !== this.defLang) {
                warns.push({line:ln+1, text:'button section must be in main language or in all languages'});
             } else {
@@ -295,6 +301,9 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
                 ++bl;
             }
         }
+    }
+    if(!haveMultilangButtons) {
+        warns.push({line:0, text:'missing section <!--multilang buttons-->'});
     }
     return warns;
 };
