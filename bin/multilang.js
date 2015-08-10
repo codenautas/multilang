@@ -2,7 +2,7 @@
 
 var _ = require("lodash");
 var yaml = require('js-yaml');
-var Promise = require('best-promise');
+var Promises = require('best-promise');
 var fs = require('fs-promise');
 var stripBom = require('strip-bom');
 var path = require('path');
@@ -342,7 +342,7 @@ multilang.main=function main(parameters){
         if(!parameters.silent){
             (parameters.chanerr || process.stderr).write(multilang.stringizeWarnings(multilang.getWarnings(readContent)));
         }
-        return Promise.all(langs.map(function(lang){
+        return Promises.all(langs.map(function(lang){
             var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
             oFile = path.normalize(parameters.directory + "/" + oFile);
             chanout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n"); 
@@ -352,7 +352,7 @@ multilang.main=function main(parameters){
             });
         }));
     }).then(function(){
-        return Promise.resolve(0);
+        return Promises.Promise.resolve(0);
     });
 };
 

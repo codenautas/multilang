@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var expect = require('expect.js');
-var Promise = require('best-promise');
+var Promises = require('best-promise');
 var fs = require('fs-promise');
 var multilang = require('..');
 var stripBom = require('strip-bom');
@@ -25,9 +25,9 @@ describe('multilang.main', function(){
         var obtainLangsControl=expectCalled.control(multilang,'obtainLangs',{returns:[
             {main:'mm', langs:{xx:{fileName:'xx.md'}}},
         ]});
-        var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve(contentOfDoc)]});
+        var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promises.Promise.resolve(contentOfDoc)]});
         var changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
-        var writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.resolve()]});
+        var writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promises.Promise.resolve()]});
         multilang.main({
             input:'INPUT.md',
             langs:['xx'],
@@ -79,9 +79,9 @@ describe('multilang.main', function(){
         }, {silent:false, chanout:chanout, chanerr:chanerr});
     });
     it('fail on simple task',function(done){
-        var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve('content of INPUT')]});
+        var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promises.Promise.resolve('content of INPUT')]});
         var changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
-        var writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.reject(new Error("invalid name"))]});
+        var writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promises.reject(new Error("invalid name"))]});
         multilang.main({
             input:'INPUT.md',
             langs:['xx'],

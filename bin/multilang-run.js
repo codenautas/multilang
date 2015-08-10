@@ -4,19 +4,19 @@
 
 var program = require('commander');
 var multilang = require('./multilang');
-var Promise = require('best-promise');
+var Promises = require('best-promise');
 var fs = require('fs-promise');
 var path = require('path');
 
 function realPath(inFile) {
-    return Promise.resolve(inFile).then(function(inFile) {
+    return Promises.start(function() {
         if(!inFile) { throw new Error("null file"); }
         return fs.exists(inFile);
     }).then(function(exists) {
         if(! exists) { throw new Error("'"+inFile+"' does not exists"); }
         return inFile;
     }).then(function(inFile) {
-        return Promise.resolve(path.dirname(path.resolve(inFile)));
+        return path.dirname(path.resolve(inFile));
     }).catch(function(err) {
         return Promise.reject(err);
     });

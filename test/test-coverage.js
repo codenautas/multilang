@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var expect = require('expect.js');
-var Promise = require('best-promise');
+var Promises = require('best-promise');
 var fs = require('fs-promise');
 var multilang = require('..');
 var stripBom = require('strip-bom');
@@ -20,9 +20,9 @@ describe('multilang coverage', function(){
         var olcReturn={main:'mm', langs:{xx:{fileName:'xx.md'}}};
         obtainLangsControl=expectCalled.control(multilang,'obtainLangs',
                                                     {returns:[olcReturn, olcReturn]});
-        readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve('content of INPUT')]});
+        readFileControl =expectCalled.control(fs,'readFile',{returns:[Promises.Promise.resolve('content of INPUT')]});
         changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
-        writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.resolve()]});
+        writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promises.Promise.resolve()]});
         var old_stdout = process.stdout.write;
         var old_stderr = process.stderr.write;
         if(opts.turnOffOutput){
