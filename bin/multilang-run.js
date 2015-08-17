@@ -55,7 +55,7 @@ if(!params.directory) {
         params.directory = dir;
         //console.log("Using directory: ", params.directory);
         multilang.main(params).then(function(){
-            process.stderr.write("Done!");
+            if(! params.silent) { process.stderr.write("Done!"); }
         }).catch(function(err){
             process.stderr.write("ERROR\n"+err);
         });
@@ -67,7 +67,7 @@ if(!params.directory) {
 }
 else {
     multilang.main(params).then(function(){
-        process.stderr.write("Done!");
+        if(! params.silent) { process.stderr.write("Done!"); }
     }).catch(function(err){
     	//console.log("ELSE", err);
         process.stderr.write("ERROR: "+err.message);
