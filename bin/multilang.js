@@ -240,7 +240,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                         }
                     }
                     if("*" !== curLang && -1 === obtainedLangsKeys.indexOf(curLang)) {
-                        warns.push({line: ln+1, text: 'lang:% not included in the header', params: [curLang]});
+                        warns.push({line: ln+1, text: '"lang:%" not included in the header', params: [curLang]});
                     }
                     multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, curLang, warns, ln+1, isFirstSection);
                     isFirstSection=false;

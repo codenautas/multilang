@@ -306,7 +306,7 @@ describe('multilang', function(){
                 {line: 10, text:'unbalanced "["'},
                 {line:11, text:'unbalanced "["'},
                 {line:12, text:'lang clause must not be included in text line'},
-                {line:19, text:'lang:% not included in the header', params:['ru']},
+                {line:19, text:'"lang:%" not included in the header', params:['ru']},
                 {line:21, text:'missing section for lang %', params:['es']},
                 {line:21, text:'missing section for lang %', params:['en']}, // at the end of the file
                 {line:20, text:'last lang must be \"*\" or \"%"\"', params:['en']}
