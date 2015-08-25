@@ -24,6 +24,7 @@ describe('multilang.main', function(){
     function doSimpleSuccessTask(done,opts){
         var obtainLangsControl=expectCalled.control(multilang,'obtainLangs',{returns:[
             {main:'mm', langs:{xx:{fileName:'xx.md'}}},
+            {main:'mm', langs:{xx:{fileName:'xx.md'}}},
         ]});
         var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promises.Promise.resolve(contentOfDoc)]});
         var changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
@@ -34,6 +35,7 @@ describe('multilang.main', function(){
             output:'OUTPUT.md',
             directory:'aDirectory',
             silent:opts.silent,
+            verbose:opts.verbose,
             chanout:opts.chanout,
             chanerr:opts.chanerr
         }).then(function(exitCode){
@@ -52,7 +54,7 @@ describe('multilang.main', function(){
         });
     }
     it('do simple task silently',function(done){
-        doSimpleSuccessTask(done, {silent:true });
+        doSimpleSuccessTask(done, {silent:true});
     });
     it('do simple task with warnings',function(done){
         var getWarningsControl=expectCalled.control(multilang,'getWarnings',{returns:[[{line: 1, text:'this is the warning\n with 2 lines'}]]});
@@ -76,7 +78,7 @@ describe('multilang.main', function(){
                 }
             }
             getWarningsControl.stopControl();
-        }, {silent:false, chanout:chanout, chanerr:chanerr});
+        }, {silent:false, verbose:true, chanout:chanout, chanerr:chanerr});
     });
     it('fail on simple task',function(done){
         var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promises.Promise.resolve('content of INPUT')]});

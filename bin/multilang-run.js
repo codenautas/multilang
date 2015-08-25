@@ -35,6 +35,7 @@ program
     .option('-d, --directory [name]', 'Name of the output directory.')
     .option('-v, --verify', 'Run multilang generating no files')
     .option('-s, --silent', 'Don\'t output anything')
+    .option('--verbose', 'Output all progress informations')
     .parse(process.argv);
 
 if( (""==program.args && !program.input) )
@@ -49,6 +50,7 @@ params.verify = program.verify;
 params.silent = program.silent;
 params.langs = program.lang;
 params.directory = program.directory;
+params.verbose = program.verbose;
 
 if(!params.directory) {
     realPath(params.input).then(function(dir) {
