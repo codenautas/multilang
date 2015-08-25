@@ -33,9 +33,9 @@ program
     .option('-l, --lang [lang1]', 'Language to generate', langs)
     .option('-o, --output [name]', 'Name of the output file. Requires --langs!')
     .option('-d, --directory [name]', 'Name of the output directory.')
-    .option('-v, --verify', 'Run multilang generating no files')
+    .option('-c, --check', 'Run multilang generating no files')
     .option('-s, --silent', 'Don\'t output anything')
-    .option('--verbose', 'Output all progress informations')
+    .option('-v, --verbose', 'Output all progress informations')
     .parse(process.argv);
 
 if( (""==program.args && !program.input) )
@@ -46,32 +46,31 @@ if( (""==program.args && !program.input) )
 var params = {};
 params.input = program.input ? program.input : program.args[0];
 params.output = program.output;
-params.verify = program.verify;
+params.check = program.check;
 params.silent = program.silent;
 params.langs = program.lang;
 params.directory = program.directory;
 params.verbose = program.verbose;
 
+var doneMsg = params.check ? 'Done checking!' : 'Done!';
+
 if(!params.directory) {
     realPath(params.input).then(function(dir) {
         params.directory = dir;
-        //console.log("Using directory: ", params.directory);
         multilang.main(params).then(function(){
-            if(! params.silent) { process.stderr.write("Done!"); }
+            if(! params.silent) { process.stderr.write(doneMsg); }
         }).catch(function(err){
             process.stderr.write("ERROR\n"+err);
         });
     }).catch(function(err) {
-    	//console.log("DIR", err);
         process.stderr.write("ERROR: "+err.message);
         program.help();
     });
 }
 else {
     multilang.main(params).then(function(){
-        if(! params.silent) { process.stderr.write("Done!"); }
+        if(! params.silent) { process.stderr.write(doneMsg); }
     }).catch(function(err){
-    	//console.log("ELSE", err);
         process.stderr.write("ERROR: "+err.message);
     });
 }

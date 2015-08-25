@@ -340,24 +340,26 @@ multilang.main=function main(parameters){
         if(!parameters.directory) {
             throw new Error('no output directory specified');
         }
-        if(!parameters.langs && parameters.verbose) { chanout.write("Generating all languages...\n"); }
-        /* Según #17, los warnings deberian mostrarse siempre, comentar el if para ello. */
         if(!parameters.silent){
             (parameters.chanerr || process.stderr).write(multilang.stringizeWarnings(multilang.getWarnings(readContent)));
         }
-        return Promises.all(langs.map(function(lang){
-            var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
-            oFile = path.normalize(parameters.directory + "/" + oFile);
-            if(parameters.verbose) {
-                chanout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n");
-            }                
-            var changedContent=multilang.changeDoc(readContent, lang);
-            return fs.writeFile(oFile, changedContent).then(function(){
+        if(! parameters.check) {
+            if(!parameters.langs && parameters.verbose) { chanout.write("Generating all languages...\n"); }
+            return Promises.all(langs.map(function(lang){
+                var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
+                oFile = path.normalize(parameters.directory + "/" + oFile);
                 if(parameters.verbose) {
-                    chanout.write("Generated '"+lang+"', file '"+oFile+"'.\n");
-                }
-            });
-        }));
+                    chanout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n");
+                }                
+                var changedContent=multilang.changeDoc(readContent, lang);
+                return fs.writeFile(oFile, changedContent).then(function(){
+                    if(parameters.verbose) {
+                        chanout.write("Generated '"+lang+"', file '"+oFile+"'.\n");
+                    }
+                });
+            }));
+        }
+
     }).then(function(){
         return Promises.Promise.resolve(0);
     });
