@@ -223,7 +223,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                             warns.push({line: ln+1, text: 'main lang must end with ">" (lang:%)', params: [obtainedLangs.main]});
                         }
                     }
-                    if(prevClosing !== '') {
+                    else if(prevClosing !== '') {
                         if(prevClosing === "]" && m[1] !== "[") {
                             warns.push({line: ln+1, text: 'unbalanced "["'});
                         } else if(prevClosing===">" && m[1] !== "<") {
@@ -239,7 +239,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                             warns.push({line: ln+1, text: 'lang:* must end with ">"'});
                         }
                     }
-                    if("*" !== curLang && -1 === obtainedLangsKeys.indexOf(curLang)) {
+                    else if("*" !== curLang && -1 === obtainedLangsKeys.indexOf(curLang)) {
                         warns.push({line: ln+1, text: '"lang:%" not included in the header', params: [curLang]});
                     }
                     multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, curLang, warns, ln+1, isFirstSection);
@@ -345,10 +345,10 @@ multilang.main=function main(parameters){
         return Promises.all(langs.map(function(lang){
             var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
             oFile = path.normalize(parameters.directory + "/" + oFile);
-            chanout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n"); 
+            chanout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n");
             var changedContent=multilang.changeDoc(readContent, lang);
             return fs.writeFile(oFile, changedContent).then(function(){
-                chanout.write("Generated '"+lang+"', file '"+oFile+"'.\n"); 
+                chanout.write("Generated '"+lang+"', file '"+oFile+"'.\n");
             });
         }));
     }).then(function(){
