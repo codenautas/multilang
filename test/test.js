@@ -219,6 +219,17 @@ describe('multilang', function(){
                 done(err);
             })
         });
+        it('generate the english file from a spanish multilang file (bug #20)', function(done){
+            fs.readFile('./examples/desde-es.md',{encoding: 'utf8'}).then(function(englishDoc){
+                return fs.readFile('./examples/from-es.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
+                    var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'en');
+                    expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
+                    done();
+                });
+            }).catch(function(err){
+                done(err);
+            })
+        });
     });
     describe('controls', function(){
         it('generate the french text of the fake', function(done){
