@@ -9,6 +9,7 @@ var stripBom = require('strip-bom');
 var expectCalled = require('expect-called');
 var path = require('path');
 
+
 describe('multilang coverage', function(){
 
     describe('multilang.main', function(){
@@ -19,7 +20,7 @@ describe('multilang coverage', function(){
     function tipicalTest(done, opts){
         var olcReturn={main:'mm', langs:{xx:{fileName:'xx.md'}}};
         obtainLangsControl=expectCalled.control(multilang,'obtainLangs',
-                                                    {returns:[olcReturn, olcReturn]});
+                                                    {returns:[olcReturn, olcReturn, olcReturn]});
         readFileControl =expectCalled.control(fs,'readFile',{returns:[Promises.Promise.resolve('content of INPUT')]});
         changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
         writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promises.Promise.resolve()]});

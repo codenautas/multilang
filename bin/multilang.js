@@ -267,6 +267,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
 };
 
 multilang.getWarningsButtons=function getWarningsButtons(doc){
+    var mainLang = multilang.obtainLangs(doc).main;
     var docLines = doc.split("\n");
     var btnLines = [];
     var bl = 0;
@@ -287,7 +288,7 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
             if(inLang && inLang !== this.defLang) {
                warns.push({line:ln+1, text:'button section must be in main language or in all languages'});
             } else {
-                var buttons = this.generateButtons(doc, this.defLang);
+                var buttons = this.generateButtons(doc, mainLang);
                 btnLines = buttons.split("\n");
                 inButtonsSection=true;
                 bl = 0; 

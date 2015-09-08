@@ -9,6 +9,7 @@ var stripBom = require('strip-bom');
 var expectCalled = require('expect-called');
 var path = require('path');
 
+
 function MiniStreamCapture(){
     var internalContent = [];
     this.write = function write(message){
@@ -105,3 +106,4 @@ describe('multilang.main', function(){
         });
     });
 });
+
