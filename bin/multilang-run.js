@@ -34,9 +34,26 @@ program
     .option('-o, --output [name]', 'Name of the output file. Requires --langs!')
     .option('-d, --directory [name]', 'Name of the output directory.')
     .option('-c, --check', 'Run multilang generating no files')
-    .option('-s, --silent', 'Don\'t output anything')
+    .option('-s, --silent', 'Do not output anything')
+    .option('--strip-comments', 'Remove HTML comments from output')
+    .option('--no-strip-comments', 'Do not remove HTML comments from output')
     .option('-v, --verbose', 'Output all progress informations')
     .parse(process.argv);
+
+
+function isLongOptionSet(ame) {
+    var a=program.rawArgs;
+    for(var e=0; e<a.length; ++e) {
+        if(a[e]===ame) { return true; }
+    }
+    return false;
+}
+
+function isReadmeFile(filename) {
+    return filename.match(/^(readme|leeme|lisezmoi|meleggere|Прочтименя)\.md$/i)==true;
+}
+
+//process.exit(0);
 
 if( (""==program.args && !program.input) )
 {
@@ -52,7 +69,14 @@ params.langs = program.lang;
 params.directory = program.directory;
 params.verbose = program.verbose;
 
+params.stripComments = ! isLongOptionSet('--no-strip-comments') ||
+                       isReadmeFile(params.input) ||
+                       isLongOptionSet('--strip-comments');
+
 var doneMsg = params.check ? 'Done checking!' : 'Done!';
+
+//console.log("STRIP COMENTARIOS", params.stripComments);
+//process.exit(0);
 
 if(!params.directory) {
     realPath(params.input).then(function(dir) {
@@ -60,7 +84,7 @@ if(!params.directory) {
         multilang.main(params).then(function(){
             if(! params.silent) { process.stderr.write(doneMsg); }
         }).catch(function(err){
-            process.stderr.write("ERROR\n"+err);
+            process.stderr.write("ERROR\n"+err.stack);
         });
     }).catch(function(err) {
         process.stderr.write("ERROR: "+err.message);

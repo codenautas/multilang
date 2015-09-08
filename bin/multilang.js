@@ -10,6 +10,7 @@ var path = require('path');
 // locals
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
 var reLangSec=/([<\[])!--lang:(.*)--([>\]])/;
+var reTrimWS = /([\t\r ]*)$/g;
 var imgUrl = 'https://raw.githubusercontent.com/codenautas/multilang/master/img/';
 
 var multilang={};
@@ -103,7 +104,7 @@ multilang.splitDoc=function splitDoc(documentText){
     var inAll=false;
     var haveButtonsContent=false;
     for(var ln=0; ln<docLines.length; ++ln) {
-        var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
+        var line=docLines[ln].replace(reTrimWS,''); // right trim ws
         if(line.match("```")) { inTextual = !inTextual; }
         if(!inTextual && !inButtons) {
             var m=line.match(/^(<!--multilang (.*\S+)((\s)*-->)+)/);
@@ -208,7 +209,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
         var lastLangLine=false;
         var isFirstSection=true;
         for(  ; ln<docLines.length; ++ln) {
-            var line=docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
+            var line=docLines[ln].replace(reTrimWS,''); // right trim ws
             if(line.match(/^(```)/)) { inCode = !inCode; }
             if(!inCode) {
                 var m=line.match(reLangSec);
@@ -276,7 +277,7 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
     var inLang = false;
     var haveMultilangButtons=false;
     for(var ln=0; ln<docLines.length; ++ln) {
-        var docLine = docLines[ln].replace(/([\t\r ]*)$/g,''); // right trim ws
+        var docLine = docLines[ln].replace(reTrimWS,''); // right trim ws
         if(!inLang) {
             var m = docLine.match(reLangSec);
             if(m) { inLang = m[2]; }
@@ -321,7 +322,35 @@ multilang.stringizeWarnings=function stringizeWarnings(warns) {
         r += 'line ' + warns[w].line + ': ' + text + '\n';
     }
     return r;
-}
+};
+
+multilang.stripComments = function stripComments(doc) {
+    var docLines = doc.split('\n');
+    var o='';
+    var reS = /<!--/;
+    var reE = /-->/;
+    var inComment = false;
+    for(var ln=0; ln<docLines.length; ++ln) {
+        var line = docLines[ln].replace(reTrimWS,''); // right trim ws
+        var start = reS.exec(line);
+        var end = reE.exec(line);
+        if(start && end) {
+            o += line.substring(0, start.index);
+            o += line.substring(end.index+end[0].length);
+        } else {
+            inComment = inComment ? ! end : start;
+            if(start) {
+                o += line.substring(0, start.index-1);
+            }
+            else if(end) {
+                o += line.substring(0, end.index-1);
+            } else if(! inComment){
+                o += line+'\n';
+            }
+        }
+    }
+    return o;
+};
 
 multilang.main=function main(parameters){
     var chanout = parameters.silent ? { write: function write(){} } : parameters.chanout || process.stdout;
@@ -353,6 +382,9 @@ multilang.main=function main(parameters){
                     chanout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n");
                 }                
                 var changedContent=multilang.changeDoc(readContent, lang);
+                if(parameters.stripComments) {
+                    changedContent = multilang.stripComments(changedContent);
+                }
                 return fs.writeFile(oFile, changedContent).then(function(){
                     if(parameters.verbose) {
                         chanout.write("Generated '"+lang+"', file '"+oFile+"'.\n");
