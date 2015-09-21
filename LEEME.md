@@ -1,5 +1,3 @@
--->
--->
 # multilang
 
 Tools for multilanguage &amp; Markdown multilang
@@ -16,8 +14,6 @@ Herramientas multilenguaje (primeramente para Markdown)
 [![dependencies](https://img.shields.io/david/codenautas/multilang.svg)](https://david-dm.org/codenautas/multilang)
 
 
-s-->
-<!--multilang buttons-->
 
 idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)
 también disponible en:
@@ -25,7 +21,6 @@ también disponible en:
 
 
 En un archivo tipo Markdown o html se escribe documentación en varios idiomas.
-
 
 Uno de esos lenguajes es el principal, los otros están comentados con [!-- y --]
 
@@ -56,28 +51,15 @@ Genera los archivos especificados en la cabecera del archivo para los idiomas se
 Un documento multilenguaje es un documento HTML o Markdown escrito en un idioma principal,
 que contiene dentro del mismo documento la traducción a uno o varios idiomas secundarios.
 
-
 ### Ejemplo
 
 
 ```
-d-->
-<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->
-s-->
-<!--multilanguage buttons-->
 language: English see also: [Spanish](README.md) [French](LISEZMOI.md)
 
-n-->
-<!--lang:en-->
 This is a little example
 
-*-->
-[!--lang:*-->
-All you need is multilang!
+[!--lang:All you need is multilang!
 
-n-->
-<!--lang:en-->
 "*" means all languages
 
-d-->
-s-->
