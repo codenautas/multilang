@@ -326,7 +326,7 @@ multilang.stringizeWarnings=function stringizeWarnings(warns) {
 };
 
 multilang.stripComments = function stripComments(doc) {
-    var docLines = doc.split(/[\r\n]+/);
+    var docLines = doc.split('\n');
     var o='';
     var reS = /<!--/;
     var reE = /-->/;
@@ -353,12 +353,12 @@ multilang.stripComments = function stripComments(doc) {
                 inComment = false;
             } else if(! inComment) {
                 o += line;
-            }   
+            }
         } else {
             o += line;
         }
-        if(ln+1<docLines.length && ! inComment) {
-            o += '\n'; 
+        if(ln+1<docLines.length && !inComment) {
+            o += '\n';
         }
     }
     return o;
@@ -370,8 +370,7 @@ multilang.changeNamedDoc=function changeNamedDoc(documentName, documentText, lan
     if(documentName === 'README.md' && multilang.stripCommentsFlag !== false) {
         strip = true;
     }
-    // console.log("changeNamedDoc", documentName, documentText, lang);
-    // console.log(" STRIP", strip);
+    //console.log("changeNamedDoc", documentName, lang, " STRIP", strip);
     if(strip) { content = multilang.stripComments(content); }
     return content;
 };

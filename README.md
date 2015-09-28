@@ -1,3 +1,4 @@
+
 # multilang
 Tools for multilanguage &amp; Markdown multilang
 
@@ -50,11 +51,85 @@ Any HTML or Markdown document is a multilenguage document if it has a main *mult
 
 
 ```
-language: English see also: [Spanish](README.md) [French](LISEZMOI.md)
+<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md--><!--multilanguage buttons-->language: English see also: [Spanish](README.md) [French](LISEZMOI.md)
 
-Este es un pequeño ejemplo
+<!--lang:es-->Este es un pequeño ejemplo
 
-[!--lang:All you need is multilang!
+<!--lang:en--]This is a little example
 
-"*" means all languages
+[!--lang:fr--]
+Ce est un petit exemple
 
+[!--lang:*-->
+All you need is multilang!
+
+<!--lang:es-->"*" means all languages
+
+<!--lang:en--]"*" es para indicar todos los idiomas
+
+[!--lang:fr--]
+"*" est d'indiquer toutes les langues
+```
+
+
+In this example:
+
+
+```
+<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->```
+
+
+is the directive for declare the languages
+
+
+```
+<!--multilanguage buttons-->```
+
+
+is the directive for declaring the place for the button section
+
+
+```
+[!--lang:fr--]
+```
+
+
+xx2 is the directive for declaring the language of the next section (use * from all languages)
+
+
+## API
+
+```js
+
+var fs = require('fs');
+var multilang = require('multilang');
+
+var englishText = fs.readFileSync('README.md', {encoding:'utf8'});
+
+var warnings = multilang.getWarnings(englishText);
+if(warnings.lengt){
+    console.log('WARN', warnings);
+}
+
+var spanishText = multilang.changeDoc(englishText,'es');
+
+console.log('spanish.md',spanishText);
+```
+
+
+(note about the example: do not use ***Sync*** functions in production,
+use async
+or [promise](http://npmjs.com/package/fs-promise) version
+as you can see in [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
+
+function             | use
+---------------------|------------------------------
+changeDoc(text,lang) | get a multilang text and a language code and returns de text of specified lang
+warnings(text)       | get a list of warnings for a multilang text
+
+
+## License
+
+[MIT](LICENSE)
+
+...................................
