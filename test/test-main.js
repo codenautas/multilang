@@ -141,10 +141,10 @@ describe('multilang.main', function(){
         });
     }
     it('strip-comments default with README.md',function(done){
-        testStripComments(done, {silent:true, stripComments:undefined}, 'README.md', strippedContent);
+        testStripComments(done, {silent:true}, 'README.md', strippedContent);
     });
     it('strip-comments default with other.md',function(done){
-        testStripComments(done, {silent:true, stripComments:undefined}, 'normal.md', originalContent);
+        testStripComments(done, {silent:true}, 'normal.md', originalContent);
     });
     it('strip-comments false with README.md',function(done){
         testStripComments(done, {silent:true, stripComments:false}, 'README.md', originalContent);

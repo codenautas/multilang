@@ -16,7 +16,7 @@ var imgUrl = 'https://raw.githubusercontent.com/codenautas/multilang/master/img/
 var multilang={};
 
 multilang.defLang='en';
-multilang.stripCommentsFlag = undefined;
+multilang.stripCommentsFlag = null;
 
 multilang.langs={
     en:{

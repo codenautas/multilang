@@ -49,14 +49,7 @@ function isLongOptionSet(ame) {
     return false;
 }
 
-function isReadmeFile(filename) {
-    return filename.match(/^(readme|leeme|lisezmoi|meleggere|Прочтименя)\.md$/i)==true;
-}
-
-//process.exit(0);
-
-if( (""==program.args && !program.input) )
-{
+if( (""==program.args && !program.input) ){
     program.help();
 }
 
@@ -73,12 +66,9 @@ if(isLongOptionSet('--no-strip-comments')) {
     params.stripComments = false;
 } else if(isLongOptionSet('--strip-comments')) {
     params.stripComments = true;
-} // else { params.stripComments = undefined; }
+}
 
 var doneMsg = params.check ? 'Done checking!' : 'Done!';
-
-//console.log("STRIP COMENTARIOS", params.stripComments);
-//process.exit(0);
 
 if(!params.directory) {
     realPath(params.input).then(function(dir) {
@@ -92,8 +82,7 @@ if(!params.directory) {
         process.stderr.write("ERROR: "+err.message);
         program.help();
     });
-}
-else {
+} else {
     multilang.main(params).then(function(){
         if(! params.silent) { process.stderr.write(doneMsg); }
     }).catch(function(err){
