@@ -69,9 +69,11 @@ params.langs = program.lang;
 params.directory = program.directory;
 params.verbose = program.verbose;
 
-params.stripComments = ! isLongOptionSet('--no-strip-comments') ||
-                       //isReadmeFile(params.input) ||
-                       isLongOptionSet('--strip-comments');
+if(isLongOptionSet('--no-strip-comments')) {
+    params.stripComments = false;
+} else if(isLongOptionSet('--strip-comments')) {
+    params.stripComments = true;
+} // else { params.stripComments = undefined; }
 
 var doneMsg = params.check ? 'Done checking!' : 'Done!';
 

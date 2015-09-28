@@ -5,7 +5,7 @@ var yaml = require('js-yaml');
 var Promises = require('best-promise');
 var fs = require('fs-promise');
 var stripBom = require('strip-bom');
-var path = require('path');
+var Path = require('path');
 
 // locals
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
@@ -16,6 +16,7 @@ var imgUrl = 'https://raw.githubusercontent.com/codenautas/multilang/master/img/
 var multilang={};
 
 multilang.defLang='en';
+multilang.stripCommentsFlag = undefined;
 
 multilang.langs={
     en:{
@@ -159,9 +160,9 @@ multilang.parseLang=function parseLang(lang){
     if(this.langs[lang]){
         theLang=this.langs[lang];
     }else {
-        var langDir = path.dirname(path.resolve(module.filename));
+        var langDir = Path.dirname(Path.resolve(module.filename));
         langDir = langDir.substr(0, langDir.length-4); // erase '/bin'
-        var langFile = path.normalize(langDir+'/langs/lang-'+lang+'.yaml');
+        var langFile = Path.normalize(langDir+'/langs/lang-'+lang+'.yaml');
         theLang=yaml.safeLoad(stripBom(fs.readFileSync(langFile, 'utf8')));
     }
     return _.merge({}, this.langs[this.defLang], theLang);
@@ -337,25 +338,20 @@ multilang.stripComments = function stripComments(doc) {
         var start = reS.exec(line);
         var end = reE.exec(line);
         inTicks = inTicks ? !reT.exec(line) : reT.exec(line);
-        //console.log("T("+(inTicks?"T":"f")+") S("+(start?"T":"f")+") E("+(start?"T":"f")+") C("+(inComment?"T":"f")+") line["+line+"]")
         if(! inTicks) {
             if(start && end) {
-                // console.log("BOTH")
                 o += line.substring(0, start.index);
                 o += line.substring(end.index+end[0].length);
                 inComment = false;
             } else if(start) {
-                // console.log("START")
                 if(! inComment) {
                     o += line.substring(0, start.index)
                     inComment = true;
                 }
             } else if(end) {
-                // console.log("END")
                 o += line.substring(end.index+end[0].length);
                 inComment = false;
             } else if(! inComment) {
-                // console.log("NONE")
                 o += line;
             }   
         } else {
@@ -368,7 +364,18 @@ multilang.stripComments = function stripComments(doc) {
     return o;
 };
 
+multilang.changeNamedDoc=function changeNamedDoc(documentName, documentText, lang){
+    var content = multilang.changeDoc(documentText, lang);
+    var strip = multilang.stripCommentsFlag === true;
+    if(documentName === 'README.md' && multilang.stripCommentsFlag !== false) {
+        strip = true;
+    }
+    if(strip) { content = multilang.stripComments(content); }
+    return content;
+};
+
 multilang.main=function main(parameters){
+    multilang.stripCommentsFlag = parameters.stripComments;
     var chanout = parameters.silent ? { write: function write(){} } : parameters.chanout || process.stdout;
     if(parameters.verbose) {
         chanout.write("Processing '"+parameters.input+"'...\n"); 
@@ -393,14 +400,15 @@ multilang.main=function main(parameters){
             if(!parameters.langs && parameters.verbose) { chanout.write("Generating all languages...\n"); }
             return Promises.all(langs.map(function(lang){
                 var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
-                oFile = path.normalize(parameters.directory + "/" + oFile);
+                oFile = Path.normalize(parameters.directory + "/" + oFile);
                 if(parameters.verbose) {
                     chanout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n");
                 }                
-                var changedContent=multilang.changeDoc(readContent, lang);
-                if(parameters.stripComments) {
-                    changedContent = multilang.stripComments(changedContent);
-                }
+                var changedContent=multilang.changeNamedDoc(Path.basename(oFile), readContent, lang);
+                //var changedContent=multilang.changeDoc(readContent, lang);
+                // if(parameters.stripComments) {
+                    // changedContent = multilang.stripComments(changedContent);
+                // }
                 return fs.writeFile(oFile, changedContent).then(function(){
                     if(parameters.verbose) {
                         chanout.write("Generated '"+lang+"', file '"+oFile+"'.\n");
