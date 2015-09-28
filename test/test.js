@@ -478,12 +478,18 @@ describe('multilang', function(){
             var stripped = multilang.stripComments(input);
             expect(stripped).to.eql(output);
         }
-        it.only('stripComments with minimal input', function(done){
+        it('stripComments with identical input and output', function(done){
             compareSCio('','');
             compareSCio('\n','\n');
             compareSCio('algo\n','algo\n');
             compareSCio('\nalgo','\nalgo');
             compareSCio('algo\nmas','algo\nmas');
+            done();
+        });
+        it('stripComments input with comments', function(done){
+            compareSCio('linea con<!-- esto es un comentario --> una sola linea','linea con una sola linea');
+            compareSCio('hola <!-- esto es un comentario -->\nlinea comun','hola \nlinea comun');
+            compareSCio('hola <!-- esto es un comentario\nmultilinea -->\nlinea comun','hola \nlinea comun');
             done();
         });
     });
