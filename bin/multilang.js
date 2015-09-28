@@ -329,29 +329,36 @@ multilang.stripComments = function stripComments(doc) {
     var o='';
     var reS = /<!--/;
     var reE = /-->/;
+    var reT = /```/;
     var inComment = false;
+    var inTicks = false;
     for(var ln=0; ln<docLines.length; ++ln) {
         var line = docLines[ln].replace(reTrimWS,''); // right trim ws
         var start = reS.exec(line);
         var end = reE.exec(line);
-        // console.log("S("+(start?"T":"f")+") E("+(start?"T":"f")+") C("+(inComment?"T":"f")+") line["+line+"]")
-        if(start && end) {
-            // console.log("BOTH")
-            o += line.substring(0, start.index);
-            o += line.substring(end.index+end[0].length);
-            inComment = false;
-        } else if(start) {
-            // console.log("START")
-            if(! inComment) {
-                o += line.substring(0, start.index)
-                inComment = true;
-            }
-        } else if(end) {
-            // console.log("END")
-            o += line.substring(end.index+end[0].length);
-            inComment = false;
-        } else if(! inComment) {
-            // console.log("NONE")
+        inTicks = inTicks ? !reT.exec(line) : reT.exec(line);
+        //console.log("T("+(inTicks?"T":"f")+") S("+(start?"T":"f")+") E("+(start?"T":"f")+") C("+(inComment?"T":"f")+") line["+line+"]")
+        if(! inTicks) {
+            if(start && end) {
+                // console.log("BOTH")
+                o += line.substring(0, start.index);
+                o += line.substring(end.index+end[0].length);
+                inComment = false;
+            } else if(start) {
+                // console.log("START")
+                if(! inComment) {
+                    o += line.substring(0, start.index)
+                    inComment = true;
+                }
+            } else if(end) {
+                // console.log("END")
+                o += line.substring(end.index+end[0].length);
+                inComment = false;
+            } else if(! inComment) {
+                // console.log("NONE")
+                o += line;
+            }   
+        } else {
             o += line;
         }
         if(ln+1<docLines.length && ! inComment) {

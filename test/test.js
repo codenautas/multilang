@@ -492,5 +492,10 @@ describe('multilang', function(){
             compareSCio('hola <!-- esto es un comentario\nmultilinea -->\nlinea comun','hola \nlinea comun');
             done();
         });
+        it('stripComments input with backticks', function(done){
+            compareSCio('linea con ticks ``` dentro ``` y una linea','linea con ticks ``` dentro ``` y una linea');
+            compareSCio('hola ```\nIgnorar este <!-- comentario -->\n```\nlinea comun','hola ```\nIgnorar este <!-- comentario -->\n```\nlinea comun');
+            done();
+        });
     });
 });
