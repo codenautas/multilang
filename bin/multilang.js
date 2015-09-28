@@ -345,7 +345,10 @@ multilang.stripComments = function stripComments(doc) {
             else if(end) {
                 o += line.substring(0, end.index-1);
             } else if(! inComment){
-                o += line+'\n';
+                o += line;
+                if(ln+1<docLines.length) {
+                   o += '\n'; 
+                }
             }
         }
     }

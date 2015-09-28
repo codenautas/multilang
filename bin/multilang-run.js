@@ -70,7 +70,7 @@ params.directory = program.directory;
 params.verbose = program.verbose;
 
 params.stripComments = ! isLongOptionSet('--no-strip-comments') ||
-                       isReadmeFile(params.input) ||
+                       //isReadmeFile(params.input) ||
                        isLongOptionSet('--strip-comments');
 
 var doneMsg = params.check ? 'Done checking!' : 'Done!';

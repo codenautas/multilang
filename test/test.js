@@ -474,5 +474,17 @@ describe('multilang', function(){
             expect(stringizedWarn).to.eql('');
             done();
         });
+        function compareSCio(input, output) {
+            var stripped = multilang.stripComments(input);
+            expect(stripped).to.eql(output);
+        }
+        it.only('stripComments with minimal input', function(done){
+            compareSCio('','');
+            compareSCio('\n','\n');
+            compareSCio('algo\n','algo\n');
+            compareSCio('\nalgo','\nalgo');
+            compareSCio('algo\nmas','algo\nmas');
+            done();
+        });
     });
 });
