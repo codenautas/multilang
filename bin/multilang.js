@@ -326,7 +326,7 @@ multilang.stringizeWarnings=function stringizeWarnings(warns) {
 };
 
 multilang.stripComments = function stripComments(doc) {
-    var docLines = doc.split('\n');
+    var docLines = doc.split(/[\r\n]+/);
     var o='';
     var reS = /<!--/;
     var reE = /-->/;
