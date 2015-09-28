@@ -478,24 +478,31 @@ describe('multilang', function(){
             var stripped = multilang.stripComments(input);
             expect(stripped).to.eql(output);
         }
-        it('stripComments with identical input and output', function(done){
+        it('stripComments with identical input and output', function(){
             compareSCio('','');
             compareSCio('\n','\n');
             compareSCio('algo\n','algo\n');
             compareSCio('\nalgo','\nalgo');
             compareSCio('algo\nmas','algo\nmas');
-            done();
         });
-        it('stripComments input with comments', function(done){
+        it.skip('stripComments input with comments', function(){
             compareSCio('linea con<!-- esto es un comentario --> una sola linea','linea con una sola linea');
             compareSCio('hola <!-- esto es un comentario -->\nlinea comun','hola \nlinea comun');
             compareSCio('hola <!-- esto es un comentario\nmultilinea -->\nlinea comun','hola \nlinea comun');
-            done();
+            compareSCio('primera\n<!-- esto es un comentario línea completa -->\nsegunda línea','primera\nsegunda línea');
+            compareSCio('primera\n<!-- comentario dos líneas -->\nsegunda línea','primera\nsegunda línea');
+            compareSCio('<!-- comentario al principio \n varias líneas -->\nprimera línea\n2\n3','primera línea\n2\n3');
+            compareSCio('<!-- dos comentarios -->\nprimera línea\n2<!-- más -->+<!-- más -->3=5','primera línea\n2+3=5');
         });
-        it('stripComments input with backticks', function(done){
-            compareSCio('linea con ticks ``` dentro ``` y una linea','linea con ticks ``` dentro ``` y una linea');
-            compareSCio('hola ```\nIgnorar este <!-- comentario -->\n```\nlinea comun','hola ```\nIgnorar este <!-- comentario -->\n```\nlinea comun');
-            done();
+        it('stripComments input with backticks', function(){
+            compareSCio('linea con ticks `dentro` y una linea','linea con ticks `dentro` y una linea');
+            compareSCio('linea con ticks\n```js\nvar js=true;\n```sigue','linea con ticks\n```js\nvar js=true;\n```sigue');
+            compareSCio('linea con ticks\n```html<html><!-- comment --></html>```sigue',
+                        'linea con ticks\n```html<html><!-- comment --></html>```sigue');
+        });
+        it.skip/*coming soon*/('stripComments input with backticks in one line', function(){
+            compareSCio('abre `<!--` y cierra `-->`',
+                        'abre `<!--` y cierra `-->`');
         });
     });
 });
