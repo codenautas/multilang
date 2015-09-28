@@ -370,6 +370,8 @@ multilang.changeNamedDoc=function changeNamedDoc(documentName, documentText, lan
     if(documentName === 'README.md' && multilang.stripCommentsFlag !== false) {
         strip = true;
     }
+    // console.log("changeNamedDoc", documentName, documentText, lang);
+    // console.log(" STRIP", strip);
     if(strip) { content = multilang.stripComments(content); }
     return content;
 };

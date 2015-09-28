@@ -105,5 +105,58 @@ describe('multilang.main', function(){
             done(err);
         });
     });
+    var originalContent='The content of the doc\nwith <!-- the comment -->\n comment';
+    var strippedContent='The content of the doc\nwith\n comment';
+    function testStripComments(done, opts, obtainedFile, expectedContent){
+        var obtainLangsControl=expectCalled.control(multilang,'obtainLangs',{returns:[
+            {main:'mm', langs:{xx:{fileName:obtainedFile}}},
+            {main:'mm', langs:{xx:{fileName:obtainedFile}}},
+        ]});
+        var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promises.Promise.resolve(originalContent)]});
+        var changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:[expectedContent]});
+        var writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promises.Promise.resolve()]});
+        multilang.main({
+            input:'INPUT.md',
+            langs:['xx'],
+            output:obtainedFile,
+            directory:'aDirectory',
+            silent:opts.silent,
+            verbose:opts.verbose,
+            chanout:opts.chanout,
+            chanerr:opts.chanerr,
+            stripComments:opts.stripComments
+        }).then(function(exitCode){
+            expect(readFileControl .calls).to.eql([['INPUT.md',{encoding: 'utf8'}]]);
+            expect(changeDocControl.calls).to.eql([[originalContent,'xx']]);
+            expect(writeFileControl.calls).to.eql([['aDirectory'+path.sep+obtainedFile,expectedContent]]);
+            expect(exitCode).to.eql(0);
+            done();
+        }).catch(function(err){
+            done(err);
+        }).then(function(){
+            readFileControl .stopControl();
+            changeDocControl.stopControl();
+            writeFileControl.stopControl();
+            obtainLangsControl.stopControl();
+        });
+    }
+    it('strip-comments default with README.md',function(done){
+        testStripComments(done, {silent:true, stripComments:undefined}, 'README.md', strippedContent);
+    });
+    it('strip-comments default with other.md',function(done){
+        testStripComments(done, {silent:true, stripComments:undefined}, 'normal.md', originalContent);
+    });
+    it('strip-comments false with README.md',function(done){
+        testStripComments(done, {silent:true, stripComments:false}, 'README.md', originalContent);
+    });
+    it('strip-comments false with other.md',function(done){
+        testStripComments(done, {silent:true, stripComments:false}, 'other.md', originalContent);
+    });
+    it('strip-comments true with README.md',function(done){
+        testStripComments(done, {silent:true, stripComments:true}, 'README.md', strippedContent);
+    });
+    it('strip-comments true with other.md',function(done){
+        testStripComments(done, {silent:true, stripComments:true}, 'other.md', strippedContent);
+    });
 });
 
