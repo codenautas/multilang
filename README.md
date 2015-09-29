@@ -1,4 +1,3 @@
-
 # multilang
 Tools for multilanguage &amp; Markdown multilang
 
@@ -51,11 +50,15 @@ Any HTML or Markdown document is a multilenguage document if it has a main *mult
 
 
 ```
-<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md--><!--multilanguage buttons-->language: English see also: [Spanish](README.md) [French](LISEZMOI.md)
+<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->
+<!--multilanguage buttons-->
+language: English see also: [Spanish](README.md) [French](LISEZMOI.md)
 
-<!--lang:es-->Este es un pequeño ejemplo
+<!--lang:es-->
+Este es un pequeño ejemplo
 
-<!--lang:en--]This is a little example
+<!--lang:en--]
+This is a little example
 
 [!--lang:fr--]
 Ce est un petit exemple
@@ -63,9 +66,11 @@ Ce est un petit exemple
 [!--lang:*-->
 All you need is multilang!
 
-<!--lang:es-->"*" means all languages
+<!--lang:es-->
+"*" means all languages
 
-<!--lang:en--]"*" es para indicar todos los idiomas
+<!--lang:en--]
+"*" es para indicar todos los idiomas
 
 [!--lang:fr--]
 "*" est d'indiquer toutes les langues
@@ -76,14 +81,16 @@ In this example:
 
 
 ```
-<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->```
+<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->
+```
 
 
 is the directive for declare the languages
 
 
 ```
-<!--multilanguage buttons-->```
+<!--multilanguage buttons-->
+```
 
 
 is the directive for declaring the place for the button section
