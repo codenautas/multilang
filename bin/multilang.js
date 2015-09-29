@@ -340,19 +340,33 @@ multilang.stripComments = function stripComments(doc) {
         inTicks = inTicks ? !reT.exec(line) : reT.exec(line);
         if(! inTicks) {
             if(start && end) {
+                var el=line.substring(end.index+end[0].length);
                 o += line.substring(0, start.index);
-                o += line.substring(end.index+end[0].length);
-                inComment = false;
+                o += el;
+                if(start.index === 0 && el==="") { continue; }
             } else if(start) {
                 if(! inComment) {
+                    // console.log("start", line, start.index)
                     o += line.substring(0, start.index)
-                    inComment = true;
+                    inComment=true;
+                    if(start.index === 0) {
+                        continue;
+                    } else {
+                        o += '\n';
+                    }
                 }
             } else if(end) {
-                o += line.substring(end.index+end[0].length);
+                var el=line.substring(end.index+end[0].length);
+                // console.log("fin comment["+el+"]")
+                o += el;
                 inComment = false;
-            } else if(! inComment) {
-                o += line;
+                if(el==="") { continue; }
+            } else {
+                if(! inComment) {
+                    o += line;
+                } else {
+                    continue;
+                }
             }
         } else {
             o += line;
