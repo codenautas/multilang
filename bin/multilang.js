@@ -328,6 +328,8 @@ multilang.stringizeWarnings=function stringizeWarnings(warns) {
 multilang.stripComments = function stripComments(doc) {
     var docLines = doc.split('\n');
     var o='';
+    // All In One Line
+    var reAIOL=/(<!--(\s*[^-]{2}[^>]\s*)+-->)/g;
     var reS = /<!--/;
     var reE = /-->/;
     var reT = /```/;
@@ -340,13 +342,24 @@ multilang.stripComments = function stripComments(doc) {
         inTicks = inTicks ? !reT.exec(line) : reT.exec(line);
         if(! inTicks) {
             if(start && end) {
-                var el=line.substring(end.index+end[0].length);
-                o += line.substring(0, start.index);
+                var m=reAIOL.exec(line);
+                o += line.substring(0, m.index);
+                var first=null;
+                var lastLen=null;
+                while(m) {
+                    if(! first) {
+                        first = m.index;
+                    } else {
+                        o += line.substr(lastLen, m.index-lastLen);
+                    }
+                    lastLen=reAIOL.lastIndex;
+                    m=reAIOL.exec(line);
+                }
+                var el = line.substr(lastLen, line.length-1);
                 o += el;
-                if(start.index === 0 && el==="") { continue; }
+                if(first === 0 && el==="") { continue; }
             } else if(start) {
                 if(! inComment) {
-                    // console.log("start", line, start.index)
                     o += line.substring(0, start.index)
                     inComment=true;
                     if(start.index === 0) {
@@ -357,7 +370,6 @@ multilang.stripComments = function stripComments(doc) {
                 }
             } else if(end) {
                 var el=line.substring(end.index+end[0].length);
-                // console.log("fin comment["+el+"]")
                 o += el;
                 inComment = false;
                 if(el==="") { continue; }
