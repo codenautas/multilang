@@ -329,7 +329,8 @@ multilang.stripComments = function stripComments(doc) {
     var docLines = doc.split('\n');
     var o='';
     // All In One Line
-    var reAIOL=/(<!--(\s*[^-]{2}[^>]\s*)+-->)/g;
+    //var reAIOL=/(<!--(\s*[^-]{2}[^>]\s*)+-->)/g;
+    var reAIOL=/(<!--(\s*((--[^>])|([^-]+[^>]))+\s*)+-->)/g
     var reS = /<!--/;
     var reE = /-->/;
     var reT = /```/;

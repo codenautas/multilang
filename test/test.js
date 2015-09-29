@@ -493,6 +493,8 @@ describe('multilang', function(){
             compareSCio('primera\n<!-- comentario dos líneas -->\nsegunda línea','primera\nsegunda línea');
             compareSCio('<!-- comentario al principio \n varias líneas -->\nprimera línea\n2\n3','primera línea\n2\n3');
             compareSCio('<!-- dos comentarios -->\nprimera línea\n2<!-- más -->+<!-- mucho más -->3=5','primera línea\n2+3=5');
+            compareSCio('<!--multilang buttons-->', '');
+            compareSCio('Comentario con <!--varias palabras buttons-->varias', 'Comentario con varias');
         });
         it('stripComments input with backticks', function(){
             compareSCio('linea con ticks `dentro` y una linea','linea con ticks `dentro` y una linea');
