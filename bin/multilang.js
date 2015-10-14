@@ -169,30 +169,30 @@ multilang.parseLang=function parseLang(lang){
 };
 
 multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang, actualLang, warns, line, isFirstSection) {
-    if("*" != actualLang && !olangs[actualLang]) { return; }
+    if("*" !== actualLang && !olangs[actualLang]) { return; }
     var prev=null;
     var testing=false;
     var secondLang = false;
     for(var actual in olangs) {
         if(!secondLang && prev) { secondLang = actual; }
-        if(!testing && prev==prevLang) { testing = true; }
-        if(testing && prev && actual != actualLang) {
-            if((!isFirstSection || actual != secondLang) && prevLang != prev) {
+        if(!testing && prev===prevLang) { testing = true; }
+        if(testing && prev && actual !== actualLang) {
+            if((!isFirstSection || actual !== secondLang) && prevLang !== prev) {
                 warns.push({line: line, text: 'missing section for lang %', params: [prev]});
             }
         }
-        if(actual == actualLang) { break; }
+        if(actual === actualLang) { break; }
         prev = actual;
     }
-    if(actualLang=="*") {
-        if(prevLang != actualLang && prev !==prevLang) {
+    if(actualLang==="*") {
+        if(prevLang !== actualLang && prev !== prevLang) {
             warns.push({line: line, text: 'missing section for lang %', params: [prev]});
         }
     }
-    else if(!isFirstSection && prevLang == actualLang) {
+    else if(!isFirstSection && prevLang === actualLang) {
         warns.push({line: line, text: 'missing section for lang %', params: [prev]});
     }
-}
+};
 
 multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     var warns=[];
@@ -217,7 +217,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
                 if(m) {
                     curLang = m[2];
                     lastLangLine = ln+1;
-                    if(!prevClosing || prevClosing==">" || curLang==obtainedLangs.main) {
+                    if(!prevClosing || prevClosing===">" || curLang===obtainedLangs.main) {
                         if((!prevClosing && '<'!== m[1]) || (prevClosing !==']' && '['=== m[1])) {
                             warns.push({line: ln+1, text: 'unbalanced start "'+m[1]+'"' });
                         }
@@ -258,10 +258,10 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
             }
         }
         multilang.checkForMissingLangs(obtainedLangs.langs, prevLang, '*', warns, ln);
-        if(prevLang != "*" && prevLang != lastLang) {
+        if(prevLang !== "*" && prevLang !== lastLang) {
             warns.push({line: lastLangLine, text: 'last lang must be \"*\" or \"%"\"', params: [lastLang]});
         }
-        if(prevLang && prevClosing && prevClosing != ">") {
+        if(prevLang && prevClosing && prevClosing !== ">") {
             warns.push({line: lastLangLine, text: 'last lang directive could\'n finish in "'+prevClosing+'"'});
         }
     }
@@ -330,7 +330,7 @@ multilang.stripComments = function stripComments(doc) {
     var o='';
     // All In One Line
     //var reAIOL=/(<!--(\s*[^-]{2}[^>]\s*)+-->)/g;
-    var reAIOL=/(<!--(\s*((--[^>])|([^-]+[^>]))+\s*)+-->)/g
+    var reAIOL=/(<!--(\s*((--[^>])|([^-]+[^>]))+\s*)+-->)/g;
     var reS = /<!--/;
     var reE = /-->/;
     var reT = /```/;
@@ -361,7 +361,7 @@ multilang.stripComments = function stripComments(doc) {
                 if(first === 0 && el==="") { continue; }
             } else if(start) {
                 if(! inComment) {
-                    o += line.substring(0, start.index)
+                    o += line.substring(0, start.index);
                     inComment=true;
                     if(start.index === 0) {
                         continue;
@@ -370,10 +370,10 @@ multilang.stripComments = function stripComments(doc) {
                     }
                 }
             } else if(end) {
-                var el=line.substring(end.index+end[0].length);
-                o += el;
+                var el2=line.substring(end.index+end[0].length);
+                o += el2;
                 inComment = false;
-                if(el==="") { continue; }
+                if(el2==="") { continue; }
             } else {
                 if(! inComment) {
                     o += line;
