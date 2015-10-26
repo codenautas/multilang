@@ -158,5 +158,29 @@ describe('multilang.main', function(){
     it('strip-comments true with other.md',function(done){
         testStripComments(done, {silent:true, stripComments:true}, 'other.md', strippedContent);
     });
+    it('fail on overlapped input/output',function(done){
+        var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promises.Promise.resolve('content of INPUT')]});
+        var changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['valid content']});
+        var writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promises.Promise.resolve()]});
+        multilang.main({
+            input:'aDirectory/INPUT.md',
+            langs:['xx'],
+            output:'INPUT.md',
+            directory:'aDirectory',
+            silent:true
+        }).then(function(exitCode){
+            done("Must fail because input and output are the same");
+        }).catch(function(err){
+            expect(err).to.be.a(Error);
+            expect(err.message).to.match(/input and output should be different/);
+            done();
+        }).then(function(){
+            readFileControl .stopControl();
+            changeDocControl.stopControl();
+            writeFileControl.stopControl();
+        }).catch(function(err){
+            done(err);
+        });
+    });
 });
 

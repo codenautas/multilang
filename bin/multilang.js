@@ -432,8 +432,10 @@ multilang.main=function main(parameters){
                 outFiles.push({file:Path.normalize(parameters.directory + "/" + obtainedLangs.langs[lang].fileName), lang:lang});
             });
         }
+        var inputDir = Path.dirname(parameters.input);
+        var inputFile = Path.normalize((inputDir !== '' ? inputDir : process.cwd())+"/"+Path.basename(parameters.input));
         for(var f=0; f<outFiles.length; ++f) {
-            if(outFiles[f].file === parameters.input) {
+            if(outFiles[f].file === inputFile) {
                 throw new Error('input and output should be different');
             }
         }
