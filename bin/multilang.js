@@ -329,7 +329,6 @@ multilang.stripComments = function stripComments(doc) {
     var docLines = doc.split('\n');
     var o='';
     // All In One Line
-    //var reAIOL=/(<!--(\s*[^-]{2}[^>]\s*)+-->)/g;
     var reAIOL=/(<!--(\s*((--[^>])|([^-]+[^>]))+\s*)+-->)/g;
     var reS = /<!--/;
     var reE = /-->/;
@@ -424,27 +423,34 @@ multilang.main=function main(parameters){
         if(!parameters.silent){
             (parameters.chanerr || process.stderr).write(multilang.stringizeWarnings(multilang.getWarnings(readContent)));
         }
+        // verificar que la salida no contenga a la entrada
+        var outFiles = [];
+        if(parameters.output) {
+            outFiles.push({file:Path.normalize(parameters.directory + "/" + parameters.output),lang:langs[0]});
+        } else {
+            langs.map(function(lang) {
+                outFiles.push({file:Path.normalize(parameters.directory + "/" + obtainedLangs.langs[lang].fileName), lang:lang});
+            });
+        }
+        for(var f=0; f<outFiles.length; ++f) {
+            if(outFiles[f].file === parameters.input) {
+                throw new Error('input and output should be different');
+            }
+        }
         if(! parameters.check) {
             if(!parameters.langs && parameters.verbose) { chanout.write("Generating all languages...\n"); }
-            return Promises.all(langs.map(function(lang){
-                var oFile = parameters.output || obtainedLangs.langs[lang].fileName;
-                oFile = Path.normalize(parameters.directory + "/" + oFile);
+            return Promises.all(outFiles.map(function(oFile){
                 if(parameters.verbose) {
-                    chanout.write("Generating '"+lang+"', writing to '"+oFile+"'...\n");
+                    chanout.write("Generating '"+oFile.lang+"', writing to '"+oFile.file+"'...\n");
                 }                
-                var changedContent=multilang.changeNamedDoc(Path.basename(oFile), readContent, lang);
-                //var changedContent=multilang.changeDoc(readContent, lang);
-                // if(parameters.stripComments) {
-                    // changedContent = multilang.stripComments(changedContent);
-                // }
-                return fs.writeFile(oFile, changedContent).then(function(){
+                var changedContent=multilang.changeNamedDoc(Path.basename(oFile.file), readContent, oFile.lang);
+                return fs.writeFile(oFile.file, changedContent).then(function(){
                     if(parameters.verbose) {
-                        chanout.write("Generated '"+lang+"', file '"+oFile+"'.\n");
+                        chanout.write("Generated '"+oFile.lang+"', file '"+oFile.file+"'.\n");
                     }
                 });
             }));
         }
-
     }).then(function(){
         return Promises.Promise.resolve(0);
     });
