@@ -433,9 +433,9 @@ multilang.main=function main(parameters){
             });
         }
         var inputDir = Path.dirname(parameters.input);
-        var inputFile = Path.normalize((inputDir !== '' ? inputDir : process.cwd())+"/"+Path.basename(parameters.input));
+        var inputFile = Path.resolve((inputDir !== '' ? inputDir : process.cwd())+"/"+Path.basename(parameters.input));
         for(var f=0; f<outFiles.length; ++f) {
-            if(outFiles[f].file === inputFile) {
+            if(Path.resolve(outFiles[f].file) === inputFile) {
                 throw new Error('input and output should be different');
             }
         }
