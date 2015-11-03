@@ -180,7 +180,7 @@ is the directive for declaring the place for the button section
 
 <!--lang:es-->
 
- * *fr* en este ejemplo indica que los renglones siguientes están escritos en francés
+ * *fr* en este ejemplo se indica que los renglones siguientes están escritos en francés
  * las secciones pueden empezar o terminar con [ o < y > o ]
 
 Cuando una parte del texto sea para todos los idiomas se puede poner un asterisco "*" en vez del código de idioma.
