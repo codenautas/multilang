@@ -25,7 +25,7 @@ también disponible en:
 
 <!--lang:es-->
 
-En un archivo tipo Markdown o html se escribe documentación en varios idiomas. 
+En un archivo tipo Markdown o html se escribe la documentación en varios idiomas. 
 
 Uno de esos lenguajes es el principal, los otros están comentados con [!-- y --]
 
@@ -139,7 +139,7 @@ In this example:
 
  * *v0* es la versión del formato multilenguaje, 
  * *en* es el lenguaje principal [ISO 639-1](http://es.wikipedia.org/wiki/ISO_639-1), en este caso inglés
- * *README.md* es el nombre del archvio principal, el que contiene el documento que se está procesando
+ * *README.md* es el nombre del archivo principal, el que contiene el documento que se está procesando
  * *es* y *fr* son los lenguajes secundarios (español y francés)
  * *LEEME.md* es el nombre del documento en español 
  * *LISEZMOID.md* es el nombre del documento en francés
@@ -159,7 +159,7 @@ is the directive for declare the languages
 
 <!--lang:es-->
 
-Lo siguientes renlgones son los botones y links a los otros lenguajes. 
+Lo siguientes renglones son los botones y links a los otros lenguajes. 
 
 Las directivas terminan con un renglón en blanco. 
 
@@ -180,7 +180,7 @@ is the directive for declaring the place for the button section
 
 <!--lang:es-->
 
- * *fr* en este ejemplo es indica que los renglones siguientes están escritos en francés
+ * *fr* en este ejemplo indica que los renglones siguientes están escritos en francés
  * las secciones pueden empezar o terminar con [ o < y > o ]
 
 Cuando una parte del texto sea para todos los idiomas se puede poner un asterisco "*" en vez del código de idioma.
