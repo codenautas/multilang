@@ -236,8 +236,8 @@ as you can see in [codenautas](https://github.com/codenautas/codenautas/blob/mas
 
 function             | use
 ---------------------|------------------------------
-changeDoc(text,lang) | get a multilang text and a language code and returns de text of specified lang
-warnings(text)       | get a list of warnings for a multilang text
+changeDoc(text,lang) | receives a multilang text and a language code and returns de text of specified lang
+warnings(text)       | receives a list of warnings and returns a multilang text
 
 [!--lang:*-->
 
