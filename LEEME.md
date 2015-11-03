@@ -192,7 +192,7 @@ y no se visualice el texto en los idiomas secundarios.
 
 <!--lang:en--]
 
-xx2 is the directive for declaring the language of the next section (use * from all languages)
+is the directive for declaring the language of the next section (use * from all languages)
 
 [!--lang:*-->
 

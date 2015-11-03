@@ -101,7 +101,7 @@ is the directive for declaring the place for the button section
 ```
 
 
-xx2 is the directive for declaring the language of the next section (use * from all languages)
+is the directive for declaring the language of the next section (use * from all languages)
 
 
 ## API
