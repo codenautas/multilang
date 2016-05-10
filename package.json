@@ -1,7 +1,7 @@
 {
   "name": "multilang",
   "description": "Tools for multilanguage and Markdown multilang",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "https://github.com/codenautas/multilang",
