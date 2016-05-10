@@ -1,1 +1,1 @@
-module.exports = require('./bin/multilang.js')
+module.exports = require('./bin/multilang.js');

@@ -1,4 +1,10 @@
 "use strict";
+/*jshint eqnull:true */
+/*jshint node:true */
+/*eslint-disable no-console */
+
+// CMD-TOOL
+var multilang={};
 
 var _ = require("lodash");
 var yaml = require('js-yaml');
@@ -12,8 +18,6 @@ var Path = require('path');
 var reLangSec=/([<\[])!--lang:(.*)--([>\]])/;
 var reTrimWS = /([\t\r ]*)$/g;
 var imgUrl = 'https://raw.githubusercontent.com/codenautas/multilang/master/img/';
-
-var multilang={};
 
 multilang.defLang='en';
 multilang.stripCommentsFlag = null;
@@ -85,11 +89,13 @@ multilang.generateButtons=function generateButtons(docHeader,lang) {
     var r='<!--multilang buttons-->\n\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
     r += ln.phrases['also available in']+':';
+    /*jshint forin: false */
     for(var lother in docHeader.langs) {
         if(lother === lang) { continue; } 
         var lname = ln.languages[lother];
         r += '\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+docHeader.langs[lother].fileName+') -';
     }
+    /*jshint forin: true */
     if(r[r.length-1]!== ':') { r = r.substring(0, r.length-2); }
     return r;
 };
@@ -173,6 +179,7 @@ multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang,
     var prev=null;
     var testing=false;
     var secondLang = false;
+    /*jshint forin: false */
     for(var actual in olangs) {
         if(!secondLang && prev) { secondLang = actual; }
         if(!testing && prev===prevLang) { testing = true; }
@@ -184,6 +191,7 @@ multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang,
         if(actual === actualLang) { break; }
         prev = actual;
     }
+    /*jshint forin: true */
     if(actualLang==="*") {
         if(prevLang !== actualLang && prev !== prevLang) {
             warns.push({line: line, text: 'missing section for lang %', params: [prev]});

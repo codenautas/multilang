@@ -18,6 +18,7 @@
   "bin": {
     "multilang": "./bin/multilang-run.js"
   },
+  "main": "./bin/multilang.js",
   "dependencies": {
     "fs-promise": "0.3.1",
     "js-yaml": "3.3.1",
@@ -44,16 +45,34 @@
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
     "start": "node example/server.js"
   },
+  "files": [
+    "bin"
+  ],
   "jshintConfig": {
     "asi": false,
     "forin": true,
-    "curly": true
+    "curly": true,
+    "esversion": 6
+  },
+  "eslintConfig":{
+    "env": {
+      "node": false
+    },
+    "rules": {
+      "strict": 0,
+      "no-console": 1,
+      "no-unused-vars": 1
+    },
+    "parserOptions": {
+      "ecmaVersion": 6
+    }
   },
   "qa-control": {
-    "package-version": "0.0.1",
+    "package-version": "0.2.0",
     "coverage": 99,
     "run-in": "server",
     "stability": "extending",
-    "type": "cmd-tool"
+    "type": "cmd-tool",
+    "ecmaVersion": 6
   }
 }
