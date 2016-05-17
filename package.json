@@ -21,7 +21,7 @@
   "main": "./bin/multilang.js",
   "dependencies": {
     "commander": "2.8.1",
-    "fs-promise": "~0.5.0",
+    "fs-promise": "0.3.1",
     "js-yaml": "3.3.1",
     "lodash": "3.10.1",
     "parameters": "0.1.5",
