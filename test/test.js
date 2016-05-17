@@ -4,7 +4,7 @@ var _ = require('lodash');
 var expect = require('expect.js');
 var fs = require('fs-promise');
 var multilang = require('..');
-var stripBom = require('strip-bom');
+var stripBom = require('strip-bom-string');
 var expectCalled = require('expect-called');
  
 describe('multilang', function(){

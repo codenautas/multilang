@@ -10,7 +10,7 @@ var _ = require("lodash");
 var yaml = require('js-yaml');
 var Promises = require('best-promise');
 var fs = require('fs-promise');
-var stripBom = require('strip-bom');
+var stripBom = require('strip-bom-string');
 var Path = require('path');
 
 // locals
