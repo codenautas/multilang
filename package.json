@@ -25,7 +25,7 @@
     "js-yaml": "3.3.1",
     "lodash": "3.10.1",
     "parameters": "0.1.5",
-    "strip-bom-string": "~0.1.0",
+    "strip-bom-string": "~0.1.2",
     
     "best-promise": "~0.2.4"
   },
