@@ -27,14 +27,14 @@
     "parameters": "0.1.5",
     "strip-bom-string": "~0.1.0",
     
-    "best-promise": "0.2.3"
+    "best-promise": "~0.2.4"
   },
   "devDependencies": {
-    "istanbul": "~0.3.17",
-    "mocha": "~2.2.5",
-    "expect.js": ">=0.3.1",
+    "expect.js": "~0.3.1",
+    "istanbul": "~0.4.3",
+    "mocha": "~2.4.5",
 
-    "expect-called": ">=0.4.0"
+    "expect-called": "~0.4.0"
   },
   "engines": {
     "node": ">= 0.8.0"
