@@ -46,7 +46,8 @@
     "start": "node example/server.js"
   },
   "files": [
-    "bin"
+    "bin",
+    "langs"
   ],
   "jshintConfig": {
     "asi": false,
