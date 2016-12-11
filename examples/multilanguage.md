@@ -6,7 +6,7 @@ also available in:
 [![Spanish](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](multilenguaje.md) -
 [![Italian](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-it.png)](multilingua.md) -
 [![Russian](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md)
-[![Deutsch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](mehrsprachig.md)
+[![German](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](mehrsprachig.md)
 
 <!--lang:en-->
 # Multilanguage

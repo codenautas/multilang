@@ -31,7 +31,7 @@ multilang.langs={
             es: 'Spanish',
             it: 'Italian',
             ru: 'Russian',
-            de: 'Deutsch'
+            de: 'German'
         },
         phrases:{
             language: 'language',
