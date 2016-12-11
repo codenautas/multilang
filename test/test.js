@@ -71,7 +71,7 @@ describe('multilang', function(){
                 '[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](multilanguage.md) -\n'+
                 '[![italiano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-it.png)](multilingua.md) -\n'+
                 '[![ruso](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md) -\n'+
-                '[![alemana](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](mehrsprachig.md)'
+                '[![alemán](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](mehrsprachig.md)'
             );
         });
         it('separate the content of original doc', function(){
@@ -157,7 +157,7 @@ describe('multilang', function(){
                     es: 'español' ,
                     it: 'italiano',
                     ru: 'ruso',
-                    de: 'alemana'
+                    de: 'alemán'
                 },
                 phrases: {
                     language: 'idioma', 
