@@ -30,7 +30,8 @@ multilang.langs={
             en: 'English',
             es: 'Spanish',
             it: 'Italian',
-            ru: 'Russian'
+            ru: 'Russian',
+            de: 'German'
         },
         phrases:{
             language: 'language',
@@ -70,7 +71,7 @@ multilang.changeDoc=function changeDoc(documentText,lang){
 
 multilang.obtainLangs=function obtainLangs(docHeader){
     var all_langs = {};
-    var def_lang = null; 
+    var def_lang = null;
     var langs = /<!--multilang v[0-9]+\s+(.+)(-->)/.exec(docHeader);
     if(langs) {
         var lang_re = /([a-z]{2}):([^.]+\.(md|html))/g;
@@ -85,13 +86,13 @@ multilang.obtainLangs=function obtainLangs(docHeader){
 
 multilang.generateButtons=function generateButtons(docHeader,lang) {
     if(! this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
-    var ln = _.merge({}, this.langs[this.defLang], this.langs[lang]); 
+    var ln = _.merge({}, this.langs[this.defLang], this.langs[lang]);
     var r='<!--multilang buttons-->\n\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
     r += ln.phrases['also available in']+':';
     /*jshint forin: false */
     for(var lother in docHeader.langs) {
-        if(lother === lang) { continue; } 
+        if(lother === lang) { continue; }
         var lname = ln.languages[lother];
         r += '\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+docHeader.langs[lother].fileName+') -';
     }
@@ -134,7 +135,7 @@ multilang.splitDoc=function splitDoc(documentText){
                         for(var l=0; l<langs.length; ++l) {
                             okLangs[langs[l]] = true;
                         }
-                        r.push({'langs': okLangs});                        
+                        r.push({'langs': okLangs});
                     } else {
                         r.push({'all': true});
                     }
@@ -301,7 +302,7 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
                 var buttons = this.generateButtons(doc, mainLang);
                 btnLines = buttons.split("\n");
                 inButtonsSection=true;
-                bl = 0; 
+                bl = 0;
             }
         }
         if(inButtonsSection) {
@@ -413,7 +414,7 @@ multilang.main=function main(parameters){
     multilang.stripCommentsFlag = parameters.stripComments;
     var chanout = parameters.silent ? { write: function write(){} } : parameters.chanout || process.stdout;
     if(parameters.verbose) {
-        chanout.write("Processing '"+parameters.input+"'...\n"); 
+        chanout.write("Processing '"+parameters.input+"'...\n");
     }
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
         var obtainedLangs=multilang.obtainLangs(readContent);
@@ -452,7 +453,7 @@ multilang.main=function main(parameters){
             return Promises.all(outFiles.map(function(oFile){
                 if(parameters.verbose) {
                     chanout.write("Generating '"+oFile.lang+"', writing to '"+oFile.file+"'...\n");
-                }                
+                }
                 var changedContent=multilang.changeNamedDoc(Path.basename(oFile.file), readContent, oFile.lang);
                 return fs.writeFile(oFile.file, changedContent).then(function(){
                     if(parameters.verbose) {

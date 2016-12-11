@@ -39,7 +39,7 @@ describe('multilang', function(){
                 main:'en',
                 langs:{
                     en:{fileName:'readme.md'},
-                    fr:{fileName:'lisezmoi.md'},
+                    fr:{fileName:'lisezmoi.md'}
                 }
             }
             var buttonSection = multilang.generateButtons(docLangs,'fr');
@@ -58,7 +58,8 @@ describe('multilang', function(){
                     en:{fileName:'multilanguage.md'},
                     es:{fileName:'multilenguaje.md'},
                     it:{fileName:'multilingua.md'  },
-                    ru:{fileName:'мультиязычный.md'}
+                    ru:{fileName:'мультиязычный.md'},
+                    de:{fileName:'mehrsprachig.md'}
                 }
             };
             var buttonSection = multilang.generateButtons(docLangs,'es');
@@ -69,7 +70,8 @@ describe('multilang', function(){
                 'también disponible en:\n'+
                 '[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](multilanguage.md) -\n'+
                 '[![italiano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-it.png)](multilingua.md) -\n'+
-                '[![ruso](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md)'
+                '[![ruso](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md) -\n'+
+                '[![alemana](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](mehrsprachig.md)'
             );
         });
         it('separate the content of original doc', function(){
@@ -154,7 +156,8 @@ describe('multilang', function(){
                     en: 'inglés'  , 
                     es: 'español' ,
                     it: 'italiano',
-                    ru: 'ruso'
+                    ru: 'ruso',
+                    de: 'alemana'
                 },
                 phrases: {
                     language: 'idioma', 
@@ -170,7 +173,8 @@ describe('multilang', function(){
                     en: 'inlgese', 
                     es: 'spagnolo',
                     it: 'italiano',
-                    ru: 'russo'
+                    ru: 'russo',
+                    de: 'tedesco'
                 },
                 phrases: {
                     language: 'lingua', 
@@ -186,7 +190,8 @@ describe('multilang', function(){
                     en: 'английский', 
                     es: 'испанский',
                     it: 'итальянский',
-                    ru: 'русский'
+                    ru: 'русский',
+                    de: 'по-неме́цки'
                 },
                 phrases: {
                     language: 'язык', 
@@ -260,7 +265,7 @@ describe('multilang', function(){
                 expect(obtainedDoc).to.eql(fakeDoc);
                 expect(obtainLangsControl.calls.length).to.eql(1);
                 expect(obtainLangsControl.calls[0][0]).to.contain(
-                    '<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md -->'
+                    '<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md de:mehrsprachig.md -->'
                 );
                 expect(generateButtonsControl.calls).to.eql([
                     [{
@@ -269,7 +274,8 @@ describe('multilang', function(){
                             en:{fileName:'multilanguage.md'},
                             es:{fileName:'multilenguaje.md'},
                             it:{fileName:'multilingua.md'  },
-                            ru:{fileName:'мультиязычный.md'}
+                            ru:{fileName:'мультиязычный.md'},
+                            de:{fileName:'mehrsprachig.md'}
                         }
                     },'fr']
                 ]);

@@ -5,6 +5,7 @@ languages:
   es: espagnol
   it: italiano
   ru: russe
+  de: allemand
 phrases:
   language: langue
   also available in: également disponible en

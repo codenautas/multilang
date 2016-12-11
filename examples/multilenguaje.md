@@ -15,7 +15,8 @@ idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/mas
 también disponible en:
 [![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](multilanguage.md) -
 [![italiano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-it.png)](multilingua.md) -
-[![ruso](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md)
+[![ruso](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md) -
+[![alemana](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](mehrsprachig.md)
 
 # Multilenguaje (Multilanguage)
 
