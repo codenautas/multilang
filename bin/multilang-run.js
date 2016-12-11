@@ -68,7 +68,7 @@ if(isLongOptionSet('--no-strip-comments')) {
     params.stripComments = true;
 }
 
-var doneMsg = params.check ? 'Done checking!' : 'Done!';
+var doneMsg = params.check ? 'Done checking!\n' : 'Done!\n';
 
 if(!params.directory) {
     realPath(params.input).then(function(dir) {

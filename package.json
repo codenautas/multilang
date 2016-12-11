@@ -1,7 +1,7 @@
 {
   "name": "multilang",
   "description": "Tools for multilanguage and Markdown multilang",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "https://github.com/codenautas/multilang",
@@ -26,7 +26,7 @@
     "lodash": "3.10.1",
     "parameters": "0.1.5",
     "strip-bom-string": "~0.1.2",
-    
+
     "best-promise": "~0.2.4"
   },
   "devDependencies": {

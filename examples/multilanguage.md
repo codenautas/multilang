@@ -1,11 +1,12 @@
-﻿<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md -->
+﻿<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md de:mehrsprachig.md -->
 <!--multilang buttons-->
 
 language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
 also available in:
-[![Spanish](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](multilenguaje.md) - 
+[![Spanish](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](multilenguaje.md) -
 [![Italian](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-it.png)](multilingua.md) -
 [![Russian](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md)
+[![Deutsch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](mehrsprachig.md)
 
 <!--lang:en-->
 # Multilanguage
@@ -35,6 +36,13 @@ L'obiettivo principale è scrivere la documentazione multilingue in una fonte un
 
 Основная цель написать мультиязычный документации в единой источника.
 
+[!--lang:de--]
+# Mehrsprachigkeit
+
+Dies ist ein Beispiel für eine mehrsprachige Markdown-Datei.
+
+Das Hauptziel ist es, mehrsprachige Dokumentation einheitlich zu schreiben.
+
 [!--lang:en-->
 # License
 
@@ -47,6 +55,9 @@ L'obiettivo principale è scrivere la documentazione multilingue in una fonte un
 [!--lang:ru--]
 # лицензия
 
+[!--lang:de--]
+# Lizenz
+
 [!--lang:*-->
 MIT
-<!--lang:.-->
+<!--lang:*-->
