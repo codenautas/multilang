@@ -4,7 +4,6 @@
 var multilang={};
 
 var yaml = require('js-yaml');
-var Promises = require('best-promise');
 var fs = require('fs-promise');
 var stripBom = require('strip-bom-string');
 var Path = require('path');
@@ -447,7 +446,7 @@ multilang.main=function main(parameters){
         }
         if(! parameters.check) {
             if(!parameters.langs && parameters.verbose) { chanout.write("Generating all languages...\n"); }
-            return Promises.all(outFiles.map(function(oFile){
+            return Promise.all(outFiles.map(function(oFile){
                 if(parameters.verbose) {
                     chanout.write("Generating '"+oFile.lang+"', writing to '"+oFile.file+"'...\n");
                 }
@@ -460,7 +459,7 @@ multilang.main=function main(parameters){
             }));
         }
     }).then(function(){
-        return Promises.Promise.resolve(0);
+        return Promise.resolve(0);
     });
 };
 
