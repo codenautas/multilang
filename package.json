@@ -1,7 +1,7 @@
 {
   "name": "multilang",
   "description": "Tools for multilanguage and Markdown multilang",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "license": "MIT",
   "repository": "https://github.com/codenautas/multilang",
@@ -20,24 +20,23 @@
   },
   "main": "./bin/multilang.js",
   "dependencies": {
-    "commander": "2.8.1",
-    "fs-promise": "~0.5.0",
-    "js-yaml": "3.3.1",
-    "lodash": "3.10.1",
-    "parameters": "0.1.5",
+    "commander": "2.9.0",
+    "fs-promise": "~1.0.0",
+    "js-yaml": "3.7.0",
+    "parameters": "0.1.6",
     "strip-bom-string": "~0.1.2",
 
-    "best-promise": "~0.2.4"
+    "best-globals": "~0.7.1"
   },
   "devDependencies": {
     "expect.js": "~0.3.1",
-    "istanbul": "~0.4.3",
-    "mocha": "~2.4.5",
+    "istanbul": "~0.4.5",
+    "mocha": "~3.2.0",
 
     "expect-called": "~0.4.0"
   },
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.12.7"
   },
   "scripts": {
     "test": "mocha --reporter spec --bail --check-leaks test/",
@@ -49,31 +48,11 @@
     "bin",
     "langs"
   ],
-  "jshintConfig": {
-    "asi": false,
-    "forin": true,
-    "curly": true,
-    "esversion": 6
-  },
-  "eslintConfig":{
-    "env": {
-      "node": false
-    },
-    "rules": {
-      "strict": 0,
-      "no-console": 1,
-      "no-unused-vars": 1
-    },
-    "parserOptions": {
-      "ecmaVersion": 6
-    }
-  },
   "qa-control": {
-    "package-version": "0.2.0",
+    "package-version": "0.3.0",
     "coverage": 99,
     "run-in": "server",
     "stability": "extending",
-    "type": "cmd-tool",
-    "ecmaVersion": 6
+    "type": "cmd-tool"
   }
 }

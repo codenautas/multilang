@@ -1,17 +1,14 @@
 "use strict";
-/*jshint eqnull:true */
-/*jshint node:true */
-/*eslint-disable no-console */
 
 // CMD-TOOL
 var multilang={};
 
-var _ = require("lodash");
 var yaml = require('js-yaml');
 var Promises = require('best-promise');
 var fs = require('fs-promise');
 var stripBom = require('strip-bom-string');
 var Path = require('path');
+var changing = require('best-globals').changing;
 
 // locals
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
@@ -86,7 +83,7 @@ multilang.obtainLangs=function obtainLangs(docHeader){
 
 multilang.generateButtons=function generateButtons(docHeader,lang) {
     if(! this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
-    var ln = _.merge({}, this.langs[this.defLang], this.langs[lang]);
+    var ln = changing(this.langs[this.defLang], this.langs[lang]);
     var r='<!--multilang buttons-->\n\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
     r += ln.phrases['also available in']+':';
@@ -172,7 +169,7 @@ multilang.parseLang=function parseLang(lang){
         var langFile = Path.normalize(langDir+'/langs/lang-'+lang+'.yaml');
         theLang=yaml.safeLoad(stripBom(fs.readFileSync(langFile, 'utf8')));
     }
-    return _.merge({}, this.langs[this.defLang], theLang);
+    return changing(this.langs[this.defLang], theLang);
 };
 
 multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang, actualLang, warns, line, isFirstSection) {
@@ -418,7 +415,7 @@ multilang.main=function main(parameters){
     }
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
         var obtainedLangs=multilang.obtainLangs(readContent);
-        var langs=parameters.langs || _.keys(obtainedLangs.langs); // warning the main lang is in the list
+        var langs=parameters.langs || Object.keys(obtainedLangs.langs); // warning the main lang is in the list
         langs=langs.filter(function(lang){ return lang !== obtainedLangs.main; });
         if(langs.length>1 && parameters.output){
             throw new Error('parameter output with more than one lang');

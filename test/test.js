@@ -1,11 +1,12 @@
 "use strict";
 
-var _ = require('lodash');
 var expect = require('expect.js');
 var fs = require('fs-promise');
 var multilang = require('..');
 var stripBom = require('strip-bom-string');
 var expectCalled = require('expect-called');
+
+var bestGlobals = require('best-globals');
  
 describe('multilang', function(){
     var frenchIncompleteExample={
@@ -311,8 +312,6 @@ describe('multilang', function(){
                 '[!--lang:fr-->\n'+
                 '';
             var warnings=multilang.getWarningsLangDirective(doc);
-            //warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
-            //console.log("warnings", warnings);
             expect(warnings).to.eql([
                 {line: 3, text:'unbalanced start "["'},
                 {line: 7, text:'lang:* must be after other lang:* or after last lang section (%)', params:['en']},
@@ -389,7 +388,8 @@ describe('multilang', function(){
                 {line:1, text:'two'}
             ]]});
             var warnings=multilang.getWarnings(doc);
-            warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
+            warnings.sort(bestGlobals.compareForOrder([{column:'line'},{column:'text'}]));
+            // warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
             expect(warnings).to.eql([
                 {line:1, text:'two'},
                 {line:3, text:'this', params:[1,2,3]},
