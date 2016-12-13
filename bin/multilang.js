@@ -273,8 +273,16 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     return warns;
 };
 
+function getButtonSection(doc) {
+    //var reBS = /<!--multilang buttons-->[\r]?[\n][\r]?[\n](.*)[\r]?[\n][\r]?[\n]/g;
+    var reBS = /<!--multilang buttons-->\r?\n\r?\n(([\s]|.)+)\)(\s\s)/;
+    var mcs = reBS.exec(doc);
+    if(mcs) { mcs.forEach(function(m, i) { console.log(i, m); }); } else { console.log("no match"); }
+}
 multilang.getWarningsButtons=function getWarningsButtons(doc){
-    var mainLang = multilang.obtainLangs(doc).main;
+    // getButtonSection(doc);
+    var langs = multilang.obtainLangs(doc);
+    var mainLang = langs.main;
     var docLines = doc.split("\n");
     var btnLines = [];
     var bl = 0;
