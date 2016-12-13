@@ -1,17 +1,13 @@
 "use strict";
-/*jshint eqnull:true */
-/*jshint node:true */
-/*eslint-disable no-console */
 
 // CMD-TOOL
 var multilang={};
 
-var _ = require("lodash");
 var yaml = require('js-yaml');
-var Promises = require('best-promise');
 var fs = require('fs-promise');
 var stripBom = require('strip-bom-string');
 var Path = require('path');
+var changing = require('best-globals').changing;
 
 // locals
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
@@ -86,7 +82,7 @@ multilang.obtainLangs=function obtainLangs(docHeader){
 
 multilang.generateButtons=function generateButtons(docHeader,lang) {
     if(! this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
-    var ln = _.merge({}, this.langs[this.defLang], this.langs[lang]);
+    var ln = changing(this.langs[this.defLang], this.langs[lang]);
     var r='<!--multilang buttons-->\n\n';
     r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
     r += ln.phrases['also available in']+':';
@@ -172,7 +168,7 @@ multilang.parseLang=function parseLang(lang){
         var langFile = Path.normalize(langDir+'/langs/lang-'+lang+'.yaml');
         theLang=yaml.safeLoad(stripBom(fs.readFileSync(langFile, 'utf8')));
     }
-    return _.merge({}, this.langs[this.defLang], theLang);
+    return changing(this.langs[this.defLang], theLang);
 };
 
 multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang, actualLang, warns, line, isFirstSection) {
@@ -277,8 +273,16 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     return warns;
 };
 
+function getButtonSection(doc) {
+    //var reBS = /<!--multilang buttons-->[\r]?[\n][\r]?[\n](.*)[\r]?[\n][\r]?[\n]/g;
+    var reBS = /<!--multilang buttons-->\r?\n\r?\n(([\s]|.)+)\)(\s\s)/;
+    var mcs = reBS.exec(doc);
+    if(mcs) { mcs.forEach(function(m, i) { console.log(i, m); }); } else { console.log("no match"); }
+}
 multilang.getWarningsButtons=function getWarningsButtons(doc){
-    var mainLang = multilang.obtainLangs(doc).main;
+    // getButtonSection(doc);
+    var langs = multilang.obtainLangs(doc);
+    var mainLang = langs.main;
     var docLines = doc.split("\n");
     var btnLines = [];
     var bl = 0;
@@ -418,7 +422,7 @@ multilang.main=function main(parameters){
     }
     return fs.readFile(parameters.input,{encoding: 'utf8'}).then(function(readContent){
         var obtainedLangs=multilang.obtainLangs(readContent);
-        var langs=parameters.langs || _.keys(obtainedLangs.langs); // warning the main lang is in the list
+        var langs=parameters.langs || Object.keys(obtainedLangs.langs); // warning the main lang is in the list
         langs=langs.filter(function(lang){ return lang !== obtainedLangs.main; });
         if(langs.length>1 && parameters.output){
             throw new Error('parameter output with more than one lang');
@@ -450,7 +454,7 @@ multilang.main=function main(parameters){
         }
         if(! parameters.check) {
             if(!parameters.langs && parameters.verbose) { chanout.write("Generating all languages...\n"); }
-            return Promises.all(outFiles.map(function(oFile){
+            return Promise.all(outFiles.map(function(oFile){
                 if(parameters.verbose) {
                     chanout.write("Generating '"+oFile.lang+"', writing to '"+oFile.file+"'...\n");
                 }
@@ -463,7 +467,7 @@ multilang.main=function main(parameters){
             }));
         }
     }).then(function(){
-        return Promises.Promise.resolve(0);
+        return Promise.resolve(0);
     });
 };
 

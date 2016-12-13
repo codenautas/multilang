@@ -1,11 +1,12 @@
 "use strict";
 
-var _ = require('lodash');
 var expect = require('expect.js');
 var fs = require('fs-promise');
 var multilang = require('..');
 var stripBom = require('strip-bom-string');
 var expectCalled = require('expect-called');
+
+var bestGlobals = require('best-globals');
  
 describe('multilang', function(){
     var frenchIncompleteExample={
@@ -71,7 +72,7 @@ describe('multilang', function(){
                 '[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](multilanguage.md) -\n'+
                 '[![italiano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-it.png)](multilingua.md) -\n'+
                 '[![ruso](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-ru.png)](мультиязычный.md) -\n'+
-                '[![alemana](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](mehrsprachig.md)'
+                '[![alemán](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](mehrsprachig.md)'
             );
         });
         it('separate the content of original doc', function(){
@@ -157,7 +158,7 @@ describe('multilang', function(){
                     es: 'español' ,
                     it: 'italiano',
                     ru: 'ruso',
-                    de: 'alemana'
+                    de: 'alemán'
                 },
                 phrases: {
                     language: 'idioma', 
@@ -311,8 +312,6 @@ describe('multilang', function(){
                 '[!--lang:fr-->\n'+
                 '';
             var warnings=multilang.getWarningsLangDirective(doc);
-            //warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
-            //console.log("warnings", warnings);
             expect(warnings).to.eql([
                 {line: 3, text:'unbalanced start "["'},
                 {line: 7, text:'lang:* must be after other lang:* or after last lang section (%)', params:['en']},
@@ -389,7 +388,8 @@ describe('multilang', function(){
                 {line:1, text:'two'}
             ]]});
             var warnings=multilang.getWarnings(doc);
-            warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
+            warnings.sort(bestGlobals.compareForOrder([{column:'line'},{column:'text'}]));
+            // warnings=_.sortByAll(warnings,_.keys(warnings[0]||{}));
             expect(warnings).to.eql([
                 {line:1, text:'two'},
                 {line:3, text:'this', params:[1,2,3]},
@@ -460,6 +460,62 @@ describe('multilang', function(){
                 {line:0, text:'missing section <!--multilang ...->'}
                 
             ]);
+        });
+        describe('generate warnings incorrect button(s) definitions (#24)', function() {
+            var docTemp = "<!--multilang v0 es:LEEME.md en:README.md -->\n"+
+                          "# pru\n"+
+                          "<!--lang:es-->\n"+
+                          "pru module\n"+
+                          "<!--lang:en--]\n"+
+                          "pru module\n"+
+                          "\n"+
+                          "[!--lang:*-->\n"+
+                          "\n"+
+                          "<!-- cucardas -->\n"+
+                          "![designing](https://img.shields.io/badge/stability-designing-red.svg)\n"+
+                          "[![npm-version](https://img.shields.io/npm/v/pru.svg)](https://npmjs.org/package/pru)\n"+
+                          "[![downloads](https://img.shields.io/npm/dm/pru.svg)](https://npmjs.org/package/pru)\n"+
+                          "[![build](https://img.shields.io/travis/codenautas/pru/master.svg)](https://travis-ci.org/codenautas/pru)\n"+
+                          "[![coverage](https://img.shields.io/coveralls/codenautas/pru/master.svg)](https://coveralls.io/r/codenautas/pru)\n"+
+                          "[![climate](https://img.shields.io/codeclimate/github/codenautas/pru.svg)](https://codeclimate.com/github/codenautas/pru)\n"+
+                          "[![dependencies](https://img.shields.io/david/codenautas/pru.svg)](https://david-dm.org/codenautas/pru)\n"+
+                          "[![qa-control](http://codenautas.com/github/codenautas/pru.svg)](http://codenautas.com/github/codenautas/pru)\n"+
+                          "\n"+
+                          "\n"+
+                          "<!--multilang buttons-->\n"+
+                          "\n"+
+                          "idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)\n"+
+                          "también disponible en:\n"+
+                          "[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)]({{esDOC}})\n"+
+                          "\n"+
+                          "<!--lang:es-->\n"+
+                          "# Instalación\n"+
+                          "<!--lang:en--]\n"+
+                          "# Install\n"+
+                          "[!--lang:*-->\n"+
+                          "```sh\n"+
+                          "$ npm install pru\n"+
+                          "```\n"+
+                          "\n"+
+                          "<!--lang:es-->\n"+
+                          "## Licencia\n"+
+                          "<!--lang:en--]\n"+
+                          "## License\n"+
+                          "[!--lang:*-->\n"+
+                          "\n"+
+                          "[MIT](LICENSE)\n"+
+                          "\n";
+            it('no warnings',function(){
+                var doc = docTemp.replace('{{esDOC}}', 'README.md');
+                var warnings=multilang.getWarningsButtons(doc);
+                expect(warnings).to.eql([]);
+            });
+            it('bad english .md',function(){
+                var doc = docTemp.replace('{{esDOC}}', 'WRONG.md');
+                var warnings=multilang.getWarningsButtons(doc);
+                expect(warnings).to.eql([
+                ]);
+            });
         });
     });
     describe('auxiliary functions', function(){
