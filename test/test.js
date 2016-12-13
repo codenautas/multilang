@@ -158,7 +158,8 @@ describe('multilang', function(){
                     es: 'español' ,
                     it: 'italiano',
                     ru: 'ruso',
-                    de: 'alemán'
+                    de: 'alemán',
+                    fr: 'francés'
                 },
                 phrases: {
                     language: 'idioma', 
@@ -175,7 +176,8 @@ describe('multilang', function(){
                     es: 'spagnolo',
                     it: 'italiano',
                     ru: 'russo',
-                    de: 'tedesco'
+                    de: 'tedesco',
+                    fr: 'francese'
                 },
                 phrases: {
                     language: 'lingua', 
@@ -192,7 +194,8 @@ describe('multilang', function(){
                     es: 'испанский',
                     it: 'итальянский',
                     ru: 'русский',
-                    de: 'по-неме́цки'
+                    de: 'по-неме́цки',
+                    fr: 'францу́зский'
                 },
                 phrases: {
                     language: 'язык', 
