@@ -1,9 +1,21 @@
+<!--multilang v0  es:LEEME.md en:README.md de:LIESMICH.md-->
+<!--multilang buttons-->
+
+idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)
+también disponible en:
+[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md)
+[![alemana](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](LIESMICH.md)
+
 # multilang
+
 <!--lang:es-->
 Herramientas multilenguaje (primeramente para Markdown)
 
 <!--lang:en--]
 Tools for multilanguage &amp; Markdown multilang
+
+[!--lang:de--]
+Werkzeug für Mehrsprachigkeit &amp; Markdown multilang
 
 [!--lang:*-->
 
@@ -15,14 +27,6 @@ Tools for multilanguage &amp; Markdown multilang
 [![climate](https://img.shields.io/codeclimate/github/codenautas/multilang.svg)](https://codeclimate.com/github/codenautas/multilang)
 [![dependencies](https://img.shields.io/david/codenautas/multilang.svg)](https://david-dm.org/codenautas/multilang)
 [![qa-control](http://codenautas.com/github/codenautas/multilang.svg)](http://codenautas.com/github/codenautas/multilang)
-
-<!--multilang v0  es:LEEME.mden:README.md -->
-
-<!--multilang buttons-->
-
-idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)
-también disponible en:
-[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md)
 
 <!--lang:es-->
 
@@ -48,6 +52,10 @@ Then with ` multilang` the other languages ​​are extracted to generate one f
 
 ## Install
 
+[!--lang:de--]
+
+## Installation
+
 [!--lang:*-->
 
 ```sh
@@ -60,7 +68,11 @@ $ npm install multilang -g
 
 <!--lang:en--]
 
-## Use
+## How to use
+
+[!--lang:de--]
+
+## Nutzung
 
 [!--lang:*-->
 
@@ -75,6 +87,10 @@ Genera los archivos especificados en la cabecera del archivo para los idiomas se
 <!--lang:en--]
 
 A .md file is generated for the other languages written in `doc-en.md` file
+
+[!--lang:de--]
+
+Es wird jeweils eine .md Datei pro Sprache aus `doc-en.md` erzeugt.
 
 [!--lang:es-->
 
@@ -93,33 +109,45 @@ Any HTML or Markdown document is a multilenguage document if it has a main *mult
 
 ### Example
 
+[!--lang:de--]
+
+## Mehrsprachiges Dokumentenformat
+
+Jedes HTML oder Markdown Dokument ist ein mehrsprachiges Dokument,
+ wenn es eine *multilanguage* Direktive beinhaltet.
+
+### Beispiel
+
 [!--lang:*-->
 
 ```
-<!--multilanguage v0 en:README.md es:LEEME.md fr:LISEZMOI.md-->
-<!--multilanguage buttons-->
-language: English see also: [Spanish](README.md) [French](LISEZMOI.md)
+<!--multilang v0 en:README.md es:LEEME.md fr:LISEZMOI.md de:LIESMICH.md -->
+<!--multilang buttons-->
 
-<!--lang:es-->
-Este es un pequeño ejemplo
+language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
+also available in:
+[Spanish](LEEME.md)  [French](LISEZMOI.md)  [German](LIESMICH.md)
 
-<!--lang:en--]
+<!--lang:en-->
 This is a little example
-
+<!--lang:es--]
+Este es un pequeño ejemplo
 [!--lang:fr--]
 Ce est un petit exemple
-
+[!--lang:de--]
+Das ist ein Beispiel
 [!--lang:*-->
-All you need is multilang!
 
-<!--lang:es-->
+<!--lang:en-->
 "*" means all languages
-
-<!--lang:en--]
+<!--lang:es--]
 "*" es para indicar todos los idiomas
-
 [!--lang:fr--]
 "*" est d'indiquer toutes les langues
+[!--lang:de--]
+"*" steht für alle Sprachen
+[!--lang:*-->
+All you need is multilang!
 ```
 
 <!--lang:es-->
@@ -129,6 +157,10 @@ El documento tiene en algún lugar un renglón con la directiva multilenguaje. E
 <!--lang:en--]
 
 In this example:
+
+[!--lang:de--]
+
+In diesem Beispiel:
 
 [!--lang:*-->
 
@@ -152,6 +184,10 @@ la presencia de los links a los otros documentos. Tiene el siguiente formato
 
 is the directive for declare the languages
 
+[!--lang:de--]
+
+ist die Direktive zur Deklaration der Sprache
+
 [!--lang:*-->
 
 ```
@@ -173,6 +209,10 @@ Las secciones o subsecciones donde se cambia de idioma están señaladas con la 
 
 is the directive for declaring the place for the button section
 
+[!--lang:de--]
+
+ist die Direktive zur Deklaration der Platzierung für die Button-Section
+
 [!--lang:*-->
 
 ```
@@ -193,7 +233,11 @@ y no se visualice el texto en los idiomas secundarios.
 
 <!--lang:en--]
 
-is the directive for declaring the language of the next section (use * from all languages)
+is the directive for declaring the language of the next section (use * for all languages)
+
+[!--lang:de--]
+
+ist die Direktive zur Deklaration der Sprache für die nächste Section (der * gilt für alle Sprachen)
 
 [!--lang:*-->
 
@@ -239,6 +283,18 @@ function             | use
 ---------------------|------------------------------
 changeDoc(text,lang) | receives a multilang text and a language code and returns de text of specified lang
 warnings(text)       | receives a list of warnings and returns a multilang text
+
+[!--lang:de--]
+
+(Hinweis zum Beispiel: nutzen Sie die ***Sync*** Funktionen nicht produktiv,
+sondern nutzen Sie async
+oder [promise](http://npmjs.com/package/fs-promise) version
+siehe [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
+
+Funktion             | Nutzung
+---------------------|------------------------------
+changeDoc(text,lang) | nutzt einen zu übersetzenden Text und die Zielsprache als Code und gibt den übersetzten Text zurück
+warnings(text)       | nutzt eine Liste von Warnungen und gibt einen übersetzten Text zurück
 
 [!--lang:*-->
 

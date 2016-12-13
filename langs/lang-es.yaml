@@ -1,11 +1,12 @@
 ﻿name: castellano
 abr: es
 languages:
+  de: alemana
   en: inglés
   es: español
+  fr: francés
   it: italiano
   ru: ruso
-  de: alemana
 phrases:
   language: idioma
   also available in: también disponible en

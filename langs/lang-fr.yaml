@@ -1,11 +1,12 @@
 ﻿name: français
 abr: fr
 languages:
+  de: allemand
   en: anglais
   es: espagnol
+  fr: français
   it: italiano
   ru: russe
-  de: allemand
 phrases:
   language: langue
   also available in: également disponible en
