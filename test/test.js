@@ -461,6 +461,53 @@ describe('multilang', function(){
                 
             ]);
         });
+        it('generate warnings incorrect button(s) definitions (#24)',function(){
+            var doc = "<!--multilang v0 es:LEEME.md en:README.md -->\n"+
+                      "# pru\n"+
+                      "<!--lang:es-->\n"+
+                      "pru module\n"+
+                      "<!--lang:en--]\n"+
+                      "pru module\n"+
+                      "\n"+
+                      "[!--lang:*-->\n"+
+                      "\n"+
+                      "<!-- cucardas -->\n"+
+                      "![designing](https://img.shields.io/badge/stability-designing-red.svg)\n"+
+                      "[![npm-version](https://img.shields.io/npm/v/pru.svg)](https://npmjs.org/package/pru)\n"+
+                      "[![downloads](https://img.shields.io/npm/dm/pru.svg)](https://npmjs.org/package/pru)\n"+
+                      "[![build](https://img.shields.io/travis/codenautas/pru/master.svg)](https://travis-ci.org/codenautas/pru)\n"+
+                      "[![coverage](https://img.shields.io/coveralls/codenautas/pru/master.svg)](https://coveralls.io/r/codenautas/pru)\n"+
+                      "[![climate](https://img.shields.io/codeclimate/github/codenautas/pru.svg)](https://codeclimate.com/github/codenautas/pru)\n"+
+                      "[![dependencies](https://img.shields.io/david/codenautas/pru.svg)](https://david-dm.org/codenautas/pru)\n"+
+                      "[![qa-control](http://codenautas.com/github/codenautas/pru.svg)](http://codenautas.com/github/codenautas/pru)\n"+
+                      "\n"+
+                      "\n"+
+                      "<!--multilang buttons-->\n"+
+                      "\n"+
+                      "idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)\n"+
+                      "también disponible en:\n"+
+                      "[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md)\n"+
+                      "\n"+
+                      "<!--lang:es-->\n"+
+                      "# Instalación\n"+
+                      "<!--lang:en--]\n"+
+                      "# Install\n"+
+                      "[!--lang:*-->\n"+
+                      "```sh\n"+
+                      "$ npm install pru\n"+
+                      "```\n"+
+                      "\n"+
+                      "<!--lang:es-->\n"+
+                      "## Licencia\n"+
+                      "<!--lang:en--]\n"+
+                      "## License\n"+
+                      "[!--lang:*-->\n"+
+                      "\n"+
+                      "[MIT](LICENSE)\n"+
+                      "\n";
+            var warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([]);
+        });
     });
     describe('auxiliary functions', function(){
         it('stringizeWarnings correct input', function(done){
