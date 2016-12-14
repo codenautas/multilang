@@ -1,9 +1,3 @@
-
-language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
-also available in:
-[![Spanish](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](LEEME.md) -
-[![German](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](LIESMICH.md)
-
 # multilang
 
 Tools for multilanguage &amp; Markdown multilang
@@ -18,9 +12,15 @@ Tools for multilanguage &amp; Markdown multilang
 [![qa-control](http://codenautas.com/github/codenautas/multilang.svg)](http://codenautas.com/github/codenautas/multilang)
 
 
+language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
+also available in:
+[![Spanish](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](LEEME.md) -
+[![German](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](LIESMICH.md)
+
+
 In a Markdown or HTML-like file is written the documentation in multiple languages.
 
-One of these languages ​​is the main, the others are commented with &lt;!-- and --&gt;
+One of these languages ​​is the main, the others are commented with ![open](https://raw.githubusercontent.com/codenautas/multilang/master/img/comment-open.png) and ![close](https://raw.githubusercontent.com/codenautas/multilang/master/img/comment-close.png)
 
 Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
 

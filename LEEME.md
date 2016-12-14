@@ -1,11 +1,4 @@
 <!--multilang v0  es:LEEME.md en:README.md de:LIESMICH.md-->
-<!--multilang buttons-->
-
-idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)
-también disponible en:
-[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md)
-[![alemán](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](LIESMICH.md)
-
 # multilang
 
 <!--lang:es-->
@@ -28,11 +21,18 @@ Werkzeug für Mehrsprachigkeit &amp; Markdown multilang
 [![dependencies](https://img.shields.io/david/codenautas/multilang.svg)](https://david-dm.org/codenautas/multilang)
 [![qa-control](http://codenautas.com/github/codenautas/multilang.svg)](http://codenautas.com/github/codenautas/multilang)
 
+<!--multilang buttons-->
+
+idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)
+también disponible en:
+[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md) -
+[![alemán](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](LIESMICH.md)
+
 <!--lang:es-->
 
 En un archivo tipo Markdown o html se escribe la documentación en varios idiomas. 
 
-Uno de esos lenguajes es el principal, los otros están comentados con [!-- y --]
+Uno de esos lenguajes es el principal, los otros están comentados con ![open](https://raw.githubusercontent.com/codenautas/multilang/master/img/comment-open.png) y ![close](https://raw.githubusercontent.com/codenautas/multilang/master/img/comment-close.png)
 
 Luego con `multilang` se extraen los otros lenguajes generando un archivo para cada uno de los otros lenguajes definidos
 
@@ -40,7 +40,7 @@ Luego con `multilang` se extraen los otros lenguajes generando un archivo para c
 
 In a Markdown or HTML-like file is written the documentation in multiple languages.
 
-One of these languages ​​is the main, the others are commented with &lt;!-- and --&gt;
+One of these languages ​​is the main, the others are commented with ![open](https://raw.githubusercontent.com/codenautas/multilang/master/img/comment-open.png) and ![close](https://raw.githubusercontent.com/codenautas/multilang/master/img/comment-close.png)
 
 Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
 

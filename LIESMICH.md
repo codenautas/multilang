@@ -9,13 +9,6 @@ Bitte nicht direkt ändern, das es sich um generierte Inhalte multilang.js hande
 
 
 -->
-<!--multilang buttons-->
-
-Sprache: ![Deutsch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)
-ebenfalls verfügbar in:
-[![Spanisch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](LEEME.md) -
-[![Englisch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md)
-
 # multilang
 
 Werkzeug für Mehrsprachigkeit &amp; Markdown multilang
@@ -29,6 +22,13 @@ Werkzeug für Mehrsprachigkeit &amp; Markdown multilang
 [![climate](https://img.shields.io/codeclimate/github/codenautas/multilang.svg)](https://codeclimate.com/github/codenautas/multilang)
 [![dependencies](https://img.shields.io/david/codenautas/multilang.svg)](https://david-dm.org/codenautas/multilang)
 [![qa-control](http://codenautas.com/github/codenautas/multilang.svg)](http://codenautas.com/github/codenautas/multilang)
+
+<!--multilang buttons-->
+
+Sprache: ![Deutsch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)
+ebenfalls verfügbar in:
+[![Spanisch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](LEEME.md) -
+[![Englisch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md)
 
 
 ## Installation
