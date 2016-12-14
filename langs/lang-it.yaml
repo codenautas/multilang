@@ -1,11 +1,12 @@
 ﻿name: italiano
 abr: it
 languages:
+  de: tedesco
   en: inlgese
   es: spagnolo
+  fr: francese
   it: italiano
   ru: russo
-  de: tedesco
 phrases:
   language: lingua
   also available in: disponibile anche in

@@ -1,14 +1,27 @@
+<!-- multilang from LEEME.md
 
-language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
-also available in:
-[![Spanish](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](LEEME.md) -
-[![German](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)](LIESMICH.md)
+
+
+
+Bitte nicht direkt ändern, das es sich um generierte Inhalte multilang.js handelt!
+
+
+
+
+-->
+<!--multilang buttons-->
+
+Sprache: ![Deutsch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)
+ebenfalls verfügbar in:
+[![Spanisch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)](LEEME.md) -
+[![Englisch](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md)
 
 # multilang
 
-Tools for multilanguage &amp; Markdown multilang
+Werkzeug für Mehrsprachigkeit &amp; Markdown multilang
 
 
+<!-- cucardas -->
 [![npm-version](https://img.shields.io/npm/v/multilang.svg)](https://npmjs.org/package/multilang)
 [![downloads](https://img.shields.io/npm/dm/multilang.svg)](https://npmjs.org/package/multilang)
 [![build](https://img.shields.io/travis/codenautas/multilang/master.svg)](https://travis-ci.org/codenautas/multilang)
@@ -18,14 +31,7 @@ Tools for multilanguage &amp; Markdown multilang
 [![qa-control](http://codenautas.com/github/codenautas/multilang.svg)](http://codenautas.com/github/codenautas/multilang)
 
 
-In a Markdown or HTML-like file is written the documentation in multiple languages.
-
-One of these languages ​​is the main, the others are commented with &lt;!-- and --&gt;
-
-Then with ` multilang` the other languages ​​are extracted to generate one file for each of the other languages ​​defined
-
-
-## Install
+## Installation
 
 
 ```sh
@@ -33,7 +39,7 @@ $ npm install multilang -g
 ```
 
 
-## How to use
+## Nutzung
 
 
 ```
@@ -41,14 +47,15 @@ $ multilang doc-en.md
 ```
 
 
-A .md file is generated for the other languages written in `doc-en.md` file
+Es wird jeweils eine .md Datei pro Sprache aus `doc-en.md` erzeugt.
 
 
-## Multilanguage document format
+## Mehrsprachiges Dokumentenformat
 
-Any HTML or Markdown document is a multilenguage document if it has a main *multilanguage* directive.
+Jedes HTML oder Markdown Dokument ist ein mehrsprachiges Dokument,
+ wenn es eine *multilanguage* Direktive beinhaltet.
 
-### Example
+### Beispiel
 
 
 ```
@@ -82,7 +89,7 @@ All you need is multilang!
 ```
 
 
-In this example:
+In diesem Beispiel:
 
 
 ```
@@ -90,7 +97,7 @@ In this example:
 ```
 
 
-is the directive for declare the languages
+ist die Direktive zur Deklaration der Sprache
 
 
 ```
@@ -98,7 +105,7 @@ is the directive for declare the languages
 ```
 
 
-is the directive for declaring the place for the button section
+ist die Direktive zur Deklaration der Platzierung für die Button-Section
 
 
 ```
@@ -106,7 +113,7 @@ is the directive for declaring the place for the button section
 ```
 
 
-is the directive for declaring the language of the next section (use * for all languages)
+ist die Direktive zur Deklaration der Sprache für die nächste Section (der * gilt für alle Sprachen)
 
 
 ## API
@@ -129,15 +136,15 @@ console.log('spanish.md',spanishText);
 ```
 
 
-(note about the example: do not use ***Sync*** functions in production,
-use async
-or [promise](http://npmjs.com/package/fs-promise) version
-as you can see in [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
+(Hinweis zum Beispiel: nutzen Sie die ***Sync*** Funktionen nicht produktiv,
+sondern nutzen Sie async
+oder [promise](http://npmjs.com/package/fs-promise) version
+siehe [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
 
-function             | use
+Funktion             | Nutzung
 ---------------------|------------------------------
-changeDoc(text,lang) | receives a multilang text and a language code and returns de text of specified lang
-warnings(text)       | receives a list of warnings and returns a multilang text
+changeDoc(text,lang) | nutzt einen zu übersetzenden Text und die Zielsprache als Code und gibt den übersetzten Text zurück
+warnings(text)       | nutzt eine Liste von Warnungen und gibt einen übersetzten Text zurück
 
 
 ## License
