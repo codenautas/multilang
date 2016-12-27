@@ -325,7 +325,7 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
             }
         }
     }
-    if(!haveMultilangButtons) {
+    if(! haveMultilangButtons) {
         warns.push({line:0, text:'missing section <!--multilang buttons-->'});
     }
     return warns;
@@ -412,11 +412,9 @@ multilang.stripComments = function stripComments(doc) {
 
 multilang.changeNamedDoc=function changeNamedDoc(documentName, documentText, lang){
     var content = multilang.changeDoc(documentText, lang);
-    var strip = multilang.stripCommentsFlag === true;
-    if(documentName === 'README.md' && multilang.stripCommentsFlag !== false) {
-        strip = true;
+    if(multilang.stripCommentsFlag || (documentName === 'README.md' && multilang.stripCommentsFlag !== false)) {
+        content = multilang.stripComments(content);
     }
-    if(strip) { content = multilang.stripComments(content); }
     return content;
 };
 
