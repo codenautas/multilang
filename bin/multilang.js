@@ -354,7 +354,7 @@ multilang.stringizeWarnings=function stringizeWarnings(warns) {
 
 multilang.stripComments = function stripComments(doc) {
     var docLines = doc.split('\n');
-    var o='';
+    var o=[];
     // All In One Line
     var reAIOL=/(<!--(\s*((--[^>])|([^-]+[^>]))+\s*)+-->)/g;
     var reS = /<!--/;
@@ -370,51 +370,51 @@ multilang.stripComments = function stripComments(doc) {
         if(! inTicks) {
             if(start && end) {
                 var m=reAIOL.exec(line);
-                o += line.substring(0, m.index);
+                o.push(line.substring(0, m.index));
                 var first=null;
                 var lastLen=null;
                 while(m) {
                     if(! first) {
                         first = m.index;
                     } else {
-                        o += line.substr(lastLen, m.index-lastLen);
+                        o.push(line.substr(lastLen, m.index-lastLen));
                     }
                     lastLen=reAIOL.lastIndex;
                     m=reAIOL.exec(line);
                 }
                 var el = line.substr(lastLen, line.length-1);
-                o += el;
+                o.push(el);
                 if(first === 0 && el==="") { continue; }
             } else if(start) {
                 if(! inComment) {
-                    o += line.substring(0, start.index);
+                    o.push(line.substring(0, start.index));
                     inComment=true;
                     if(start.index === 0) {
                         continue;
                     } else {
-                        o += '\n';
+                        o.push('\n');
                     }
                 }
             } else if(end) {
                 var el2=line.substring(end.index+end[0].length);
-                o += el2;
+                o.push(el2);
                 inComment = false;
                 if(el2==="") { continue; }
             } else {
                 if(! inComment) {
-                    o += line;
+                    o.push(line);
                 } else {
                     continue;
                 }
             }
         } else {
-            o += line;
+            o.push(line);
         }
         if(ln+1<docLines.length && !inComment) {
-            o += '\n';
+            o.push('\n');
         }
     }
-    return o;
+    return o.join('');
 };
 
 multilang.changeNamedDoc=function changeNamedDoc(documentName, documentText, lang){
