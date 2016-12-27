@@ -42,6 +42,8 @@
     "test": "mocha --reporter spec --bail --check-leaks test/",
     "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
+    "qac": "qa-control . -v",
+    "all": "npm test && npm run test-cov && npm run qac",
     "start": "node example/server.js"
   },
   "files": [
