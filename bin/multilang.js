@@ -315,7 +315,7 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
                         var expectedFileName = langFiles[++currentLangFile];
                         var ref=/\(([^):]+)\)/.exec(docLine);
                         if(ref) {
-                            warns.push({line:ln+1, text:"referenced document '"+ref[1]+"' does not exists in multilang header, expected '"+expectedFileName+"'"});
+                            warns.push({line:ln+1, text:"referenced document '"+ref[1]+"' does not exists in multilang header, expecting '"+expectedFileName+"'"});
                         } else {
                             warns.push(warningBadLine);
                         }

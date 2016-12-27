@@ -466,7 +466,7 @@ describe('multilang', function(){
             ]);
         });
         describe('generate warnings incorrect button(s) definitions (#24)', function() {
-            var docTemp = "<!--multilang v0 es:LEEME.md en:README.md -->\n"+
+            var docTemplate = "<!--multilang v0 es:LEEME.md en:README.md -->\n"+
                           "# pru\n"+
                           "<!--lang:es-->\n"+
                           "pru module\n"+
@@ -510,16 +510,16 @@ describe('multilang', function(){
                           "[MIT](LICENSE)\n"+
                           "\n";
             it('no warnings',function(){
-                var doc = docTemp.replace('{{esDOC}}', 'README.md');
+                var doc = docTemplate.replace('{{esDOC}}', 'README.md');
                 var warnings=multilang.getWarningsButtons(doc);
                 expect(warnings).to.eql([]);
             });
             it('bad english .md',function(){
-                var doc = docTemp.replace('{{esDOC}}', 'WRONG.md');
+                var doc = docTemplate.replace('{{esDOC}}', 'WRONG.md');
                 //fs.writeFileSync("bad_en.md", doc);
                 var warnings=multilang.getWarningsButtons(doc);
                 expect(warnings).to.eql([
-                    {line:25, text:"referenced document 'WRONG.md' does not exists in multilang header, expected 'README.md'"}
+                    {line:25, text:"referenced document 'WRONG.md' does not exists in multilang header, expecting 'README.md'"}
                 ]);
             });
         });
