@@ -276,13 +276,8 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
 
 multilang.getWarningsButtons=function getWarningsButtons(doc){
     var langs = multilang.obtainLangs(doc);
-    //console.log("langs", langs)
-    var langFiles = Object.keys(langs.langs).map(function(lang) {
-        return langs.langs[lang].fileName;
-    });
+    var langFiles = Object.keys(langs.langs).map(function(lang) { return langs.langs[lang].fileName; });
     var currentLangFile = 0;
-    //console.log("langFiles", langFiles)
-    var numberOfLangs = langFiles.length;
     var mainLang = langs.main;
     var docLines = doc.split("\n");
     var btnLines = [];
@@ -293,7 +288,6 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
     var haveMultilangButtons=false;
     for(var ln=0; ln<docLines.length; ++ln) {
         var docLine = docLines[ln].replace(reTrimWS,''); // right trim ws
-        //console.log(ln, docLine)
         if(!inLang) {
             var m = docLine.match(reLangSec);
             if(m) { inLang = m[2]; }
@@ -305,7 +299,6 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
             if(inLang && inLang !== this.defLang) {
                warns.push({line:ln+1, text:'button section must be in main language or in all languages'});
             } else {
-                //var buttons = this.generateButtons(doc, mainLang);
                 var buttons = this.generateButtons(langs, mainLang);
                 btnLines = buttons.split("\n");
                 inButtonsSection=true;
@@ -423,7 +416,6 @@ multilang.changeNamedDoc=function changeNamedDoc(documentName, documentText, lan
     if(documentName === 'README.md' && multilang.stripCommentsFlag !== false) {
         strip = true;
     }
-    //console.log("changeNamedDoc", documentName, lang, " STRIP", strip);
     if(strip) { content = multilang.stripComments(content); }
     return content;
 };
