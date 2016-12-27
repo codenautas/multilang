@@ -83,18 +83,19 @@ multilang.obtainLangs=function obtainLangs(docHeader){
 multilang.generateButtons=function generateButtons(docHeader,lang) {
     if(! this.langs[lang]) { this.langs[lang] = this.parseLang(lang); }
     var ln = changing(this.langs[this.defLang], this.langs[lang]);
-    var r='<!--multilang buttons-->\n\n';
-    r += ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n';
-    r += ln.phrases['also available in']+':';
+    var r=['<!--multilang buttons-->\n\n'];
+    r.push(ln.phrases.language+': !['+ln.name+']('+imgUrl+'lang-'+ln.abr+'.png)\n');
+    r.push(ln.phrases['also available in']+':');
+    var others=[];
     /*jshint forin: false */
     for(var lother in docHeader.langs) {
         if(lother === lang) { continue; }
         var lname = ln.languages[lother];
-        r += '\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+docHeader.langs[lother].fileName+') -';
+        others.push('\n[!['+lname+']('+imgUrl+'lang-'+lother+'.png)]('+docHeader.langs[lother].fileName+')');
     }
     /*jshint forin: true */
-    if(r[r.length-1]!== ':') { r = r.substring(0, r.length-2); }
-    return r;
+    r.push(others.join(' -'));
+    return r.join('');
 };
 
 multilang.splitDoc=function splitDoc(documentText){
