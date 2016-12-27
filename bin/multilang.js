@@ -273,25 +273,27 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     return warns;
 };
 
-function getButtonSection(doc) {
-    //var reBS = /<!--multilang buttons-->[\r]?[\n][\r]?[\n](.*)[\r]?[\n][\r]?[\n]/g;
-    var reBS = /<!--multilang buttons-->\r?\n\r?\n(([\s]|.)+)\)(\s\s)/;
-    var mcs = reBS.exec(doc);
-    if(mcs) { mcs.forEach(function(m, i) { console.log(i, m); }); } else { console.log("no match"); }
-}
 multilang.getWarningsButtons=function getWarningsButtons(doc){
-    // getButtonSection(doc);
     var langs = multilang.obtainLangs(doc);
+    //console.log("langs", langs)
+    var langFiles = Object.keys(langs.langs).map(function(lang) {
+        return langs.langs[lang].fileName;
+    });
+    var currentLangFile = 0;
+    //console.log("langFiles", langFiles)
+    var numberOfLangs = langFiles.length;
     var mainLang = langs.main;
     var docLines = doc.split("\n");
     var btnLines = [];
     var bl = 0;
+    var bl_max = 0;
     var warns=[];
     var inButtonsSection=false;
     var inLang = false;
     var haveMultilangButtons=false;
     for(var ln=0; ln<docLines.length; ++ln) {
         var docLine = docLines[ln].replace(reTrimWS,''); // right trim ws
+        //console.log(ln, docLine)
         if(!inLang) {
             var m = docLine.match(reLangSec);
             if(m) { inLang = m[2]; }
@@ -303,18 +305,35 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
             if(inLang && inLang !== this.defLang) {
                warns.push({line:ln+1, text:'button section must be in main language or in all languages'});
             } else {
-                var buttons = this.generateButtons(doc, mainLang);
+                //var buttons = this.generateButtons(doc, mainLang);
+                var buttons = this.generateButtons(langs, mainLang);
                 btnLines = buttons.split("\n");
                 inButtonsSection=true;
                 bl = 0;
+                bl_max = numberOfLangs-1+btnLines.length-1;
             }
         }
         if(inButtonsSection) {
             if(btnLines.length>bl) {
                 if(btnLines[bl] !== "" && docLine !== btnLines[bl]) {
-                    warns.push({line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'});
+                    if(! docLine.match(/^(\[!\[)/)) {
+                        warns.push({line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'});
+                    } else {
+                        ++currentLangFile;
+                        var expectedFileName = langFiles[currentLangFile];
+                        var ref=/\(([^):]+)\)/.exec(docLine);
+                        if(ref) {
+                            warns.push({line:ln+1, text:"referenced document '"+ref[1]+"' does not exists in multilang header, expected '"+expectedFileName+"'"});
+                        } else {
+                            warns.push({line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'});
+                        }
+                    }
+                    
                 }
                 ++bl;
+            }
+            if(bl>=bl_max) {
+                inButtonsSection=false;
             }
         }
     }

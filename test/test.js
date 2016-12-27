@@ -340,7 +340,8 @@ describe('multilang', function(){
                 '\n'+
                 'the buttons section\n'+ 
                 'ends here\n'+ 
-                '\n'+
+                '(nombre.md)\n'+
+                '(name.md)\n'+
                 'Text for all languages';
             var control=expectCalled.control(multilang,'generateButtons',{returns:[
                 '<!--multilang buttons-->\n'+
@@ -515,8 +516,10 @@ describe('multilang', function(){
             });
             it('bad english .md',function(){
                 var doc = docTemp.replace('{{esDOC}}', 'WRONG.md');
+                //fs.writeFileSync("bad_en.md", doc);
                 var warnings=multilang.getWarningsButtons(doc);
                 expect(warnings).to.eql([
+                    {line:25, text:"referenced document 'WRONG.md' does not exists in multilang header, expected 'README.md'"}
                 ]);
             });
         });
