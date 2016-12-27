@@ -466,7 +466,7 @@ describe('multilang', function(){
             ]);
         });
         describe('generate warnings incorrect button(s) definitions (#24)', function() {
-            var docTemplate = "<!--multilang v0 es:LEEME.md en:README.md -->\n"+
+            var docTemplate = "<!--multilang v0 es:LEEME.md en:README.md de:LESEN.md -->\n"+
                           "# pru\n"+
                           "<!--lang:es-->\n"+
                           "pru module\n"+
@@ -490,7 +490,8 @@ describe('multilang', function(){
                           "\n"+
                           "idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)\n"+
                           "también disponible en:\n"+
-                          "[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)]({{esDOC}})\n"+
+                          "[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)]({{DOC1}}) -\n"+
+                          "[![alemán](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-de.png)]({{DOC2}})\n"+
                           "\n"+
                           "<!--lang:es-->\n"+
                           "# Instalación\n"+
@@ -510,16 +511,25 @@ describe('multilang', function(){
                           "[MIT](LICENSE)\n"+
                           "\n";
             it('no warnings',function(){
-                var doc = docTemplate.replace('{{esDOC}}', 'README.md');
+                var doc = docTemplate.replace('{{DOC1}}', 'README.md').replace('{{DOC2}}', 'LESEN.md');
                 var warnings=multilang.getWarningsButtons(doc);
                 expect(warnings).to.eql([]);
             });
-            it('bad english .md',function(){
-                var doc = docTemplate.replace('{{esDOC}}', 'WRONG.md');
+            it('bad english',function(){
+                var doc = docTemplate.replace('{{DOC1}}', 'WRONG.md').replace('{{DOC2}}', 'LESEN.md');
                 //fs.writeFileSync("bad_en.md", doc);
                 var warnings=multilang.getWarningsButtons(doc);
                 expect(warnings).to.eql([
                     {line:25, text:"referenced document 'WRONG.md' does not exists in multilang header, expecting 'README.md'"}
+                ]);
+            });
+            it('bad english and german',function(){
+                var doc = docTemplate.replace('{{DOC1}}', 'WRONG.md').replace('{{DOC2}}', 'WORST.md');
+                //fs.writeFileSync("bad_en.md", doc);
+                var warnings=multilang.getWarningsButtons(doc);
+                expect(warnings).to.eql([
+                    {line:25, text:"referenced document 'WRONG.md' does not exists in multilang header, expecting 'README.md'"},
+                    {line:26, text:"referenced document 'WORST.md' does not exists in multilang header, expecting 'LESEN.md'"}
                 ]);
             });
         });
