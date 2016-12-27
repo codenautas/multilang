@@ -343,13 +343,13 @@ multilang.getWarnings=function getWarnings(doc){
 };
 
 multilang.stringizeWarnings=function stringizeWarnings(warns) {
-    var r='';
+    var r=[];
     for(var w=0; w<warns.length; ++w) {
         var text = warns[w].text;
         if(warns[w].params) { text = text.replace('%', warns[w].params); }
-        r += 'line ' + warns[w].line + ': ' + text + '\n';
+        r.push('line ' + warns[w].line + ': ' + text + '\n');
     }
-    return r;
+    return r.join('');
 };
 
 multilang.stripComments = function stripComments(doc) {
