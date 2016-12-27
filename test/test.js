@@ -340,6 +340,35 @@ describe('multilang', function(){
                 '\n'+
                 'the buttons section\n'+ 
                 'ends here\n'+ 
+                '\n'+
+                'Text for all languages';
+            var control=expectCalled.control(multilang,'generateButtons',{returns:[
+                '<!--multilang buttons-->\n'+
+                '\n'+
+                'the buttons section\n' +
+                'ends here\n', // call #1
+                '<!--multilang buttons-->\n'+
+                '\n'+
+                'other button section for wrong answer\n', // call #2
+                'the buttons section\n' // call #3: for incomplete 
+            ]});
+            var warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([]); // ok, no warnings
+            var warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([{line:6, text:'button section does not match. Expected:\n'+'other button section for wrong answer\n'}]); 
+            var warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([{line:4, text:'button section does not match. Expected:\n'+'the buttons section\n'}]); 
+            control.stopControl();
+        });
+        it('generate warnings controling buttons (original)',function(){
+            var doc='\ufeff'+
+                '<!--multilang v0 fr:nome.md es:nombre.md it:name.md-->\r\n'+ // line 1
+                'any text does not mind\n'+
+                '\n'+
+                '<!--multilang buttons-->\n'+ // line 4
+                '\n'+
+                'the buttons section\n'+ 
+                'ends here\n'+ 
                 '(nombre.md)\n'+
                 '(name.md)\n'+
                 'Text for all languages';
@@ -464,6 +493,64 @@ describe('multilang', function(){
                 {line:0, text:'missing section <!--multilang ...->'}
                 
             ]);
+        });
+        describe('generate warnings incorrect button(s) definitions (#24) original version', function() {
+            var docTemp = "<!--multilang v0 es:LEEME.md en:README.md -->\n"+
+                          "# pru\n"+
+                          "<!--lang:es-->\n"+
+                          "pru module\n"+
+                          "<!--lang:en--]\n"+
+                          "pru module\n"+
+                          "\n"+
+                          "[!--lang:*-->\n"+
+                          "\n"+
+                          "<!-- cucardas -->\n"+
+                          "![designing](https://img.shields.io/badge/stability-designing-red.svg)\n"+
+                          "[![npm-version](https://img.shields.io/npm/v/pru.svg)](https://npmjs.org/package/pru)\n"+
+                          "[![downloads](https://img.shields.io/npm/dm/pru.svg)](https://npmjs.org/package/pru)\n"+
+                          "[![build](https://img.shields.io/travis/codenautas/pru/master.svg)](https://travis-ci.org/codenautas/pru)\n"+
+                          "[![coverage](https://img.shields.io/coveralls/codenautas/pru/master.svg)](https://coveralls.io/r/codenautas/pru)\n"+
+                          "[![climate](https://img.shields.io/codeclimate/github/codenautas/pru.svg)](https://codeclimate.com/github/codenautas/pru)\n"+
+                          "[![dependencies](https://img.shields.io/david/codenautas/pru.svg)](https://david-dm.org/codenautas/pru)\n"+
+                          "[![qa-control](http://codenautas.com/github/codenautas/pru.svg)](http://codenautas.com/github/codenautas/pru)\n"+
+                          "\n"+
+                          "\n"+
+                          "<!--multilang buttons-->\n"+
+                          "\n"+
+                          "idioma: ![castellano](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-es.png)\n"+
+                          "también disponible en:\n"+
+                          "[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)]({{esDOC}})\n"+
+                          "\n"+
+                          "<!--lang:es-->\n"+
+                          "# Instalación\n"+
+                          "<!--lang:en--]\n"+
+                          "# Install\n"+
+                          "[!--lang:*-->\n"+
+                          "```sh\n"+
+                          "$ npm install pru\n"+
+                          "```\n"+
+                          "\n"+
+                          "<!--lang:es-->\n"+
+                          "## Licencia\n"+
+                          "<!--lang:en--]\n"+
+                          "## License\n"+
+                          "[!--lang:*-->\n"+
+                          "\n"+
+                          "[MIT](LICENSE)\n"+
+                          "\n";
+            it('no warnings',function(){
+                var doc = docTemp.replace('{{esDOC}}', 'README.md');
+                var warnings=multilang.getWarningsButtons(doc);
+                expect(warnings).to.eql([]);
+            });
+            it('bad english .md',function(){
+                var doc = docTemp.replace('{{esDOC}}', 'WRONG.md');
+                var warnings=multilang.getWarningsButtons(doc);
+                expect(warnings).to.eql([{
+                    line: 25,
+                    text: "referenced document 'WRONG.md' does not exists in multilang header, expecting 'README.md'"
+                }]);
+            });
         });
         describe('generate warnings incorrect button(s) definitions (#24)', function() {
             var docTemplate = "<!--multilang v0 es:LEEME.md en:README.md de:LESEN.md -->\n"+
