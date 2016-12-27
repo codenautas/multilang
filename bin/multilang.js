@@ -286,7 +286,6 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
     var docLines = doc.split("\n");
     var btnLines = [];
     var bl = 0;
-    var bl_max = 0;
     var warns=[];
     var inButtonsSection=false;
     var inLang = false;
@@ -310,30 +309,25 @@ multilang.getWarningsButtons=function getWarningsButtons(doc){
                 btnLines = buttons.split("\n");
                 inButtonsSection=true;
                 bl = 0;
-                bl_max = numberOfLangs-1+btnLines.length-1;
             }
         }
         if(inButtonsSection) {
             if(btnLines.length>bl) {
                 if(btnLines[bl] !== "" && docLine !== btnLines[bl]) {
+                    var warningBadLine = {line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'};
                     if(! docLine.match(/^(\[!\[)/)) {
-                        warns.push({line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'});
+                        warns.push(warningBadLine);
                     } else {
-                        ++currentLangFile;
-                        var expectedFileName = langFiles[currentLangFile];
+                        var expectedFileName = langFiles[++currentLangFile];
                         var ref=/\(([^):]+)\)/.exec(docLine);
                         if(ref) {
                             warns.push({line:ln+1, text:"referenced document '"+ref[1]+"' does not exists in multilang header, expected '"+expectedFileName+"'"});
                         } else {
-                            warns.push({line:ln+1, text:'button section does not match. Expected:\n'+btnLines[bl]+'\n'});
+                            warns.push(warningBadLine);
                         }
                     }
-                    
                 }
                 ++bl;
-            }
-            if(bl>=bl_max) {
-                inButtonsSection=false;
             }
         }
     }
