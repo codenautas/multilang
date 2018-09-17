@@ -1,4 +1,4 @@
-﻿name: castellano
+name: castellano
 abr: es
 languages:
   de: alemán
@@ -7,6 +7,7 @@ languages:
   fr: francés
   it: italiano
   ru: ruso
+  ja: japonés
 phrases:
   language: idioma
   also available in: también disponible en

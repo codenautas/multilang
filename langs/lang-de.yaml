@@ -1,4 +1,4 @@
-﻿name: Deutsch
+name: Deutsch
 abr: de
 languages:
   de: Deutsch
@@ -7,6 +7,7 @@ languages:
   fr: Französisch
   it: Italienisch
   ru: Russisch
+  ja: japanisch
 phrases:
   language: Sprache
   also available in: ebenfalls verfügbar in
