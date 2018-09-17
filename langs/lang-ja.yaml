@@ -1,0 +1,14 @@
+name: 日本語
+abr: ja
+languages:
+  de: ドイツ語
+  en: 英語
+  es: スペイン語
+  fr: フランス語
+  it: イタリア語
+  ru: ロシア語
+  ja: 日本語
+phrases:
+  language: 言語
+  also available in: 次の言語で利用可能: 
+  DO NOT MODIFY DIRECTLY: multilang.jsを直接編集しないでください
