@@ -10,5 +10,5 @@ languages:
   ja: 日本語
 phrases:
   language: 言語
-  also available in: 次の言語で利用可能: 
-  DO NOT MODIFY DIRECTLY: multilang.jsを直接編集しないでください
+  also available in: "次の言語で利用可能: "
+  DO NOT MODIFY DIRECTLY: "multilang.jsを直接編集しないでください"
