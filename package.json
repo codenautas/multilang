@@ -34,7 +34,7 @@
     "expect-called": "~0.4.0"
   },
   "engines": {
-    "node": ">= 4"
+    "node": ">= 6"
   },
   "scripts": {
     "test": "mocha --reporter spec --bail --check-leaks test/",
