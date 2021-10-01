@@ -513,9 +513,7 @@ describe('multilang', function(){
                           "[![downloads](https://img.shields.io/npm/dm/pru.svg)](https://npmjs.org/package/pru)\n"+
                           "[![build](https://img.shields.io/travis/codenautas/pru/master.svg)](https://travis-ci.org/codenautas/pru)\n"+
                           "[![coverage](https://img.shields.io/coveralls/codenautas/pru/master.svg)](https://coveralls.io/r/codenautas/pru)\n"+
-                          "[![climate](https://img.shields.io/codeclimate/github/codenautas/pru.svg)](https://codeclimate.com/github/codenautas/pru)\n"+
                           "[![dependencies](https://img.shields.io/david/codenautas/pru.svg)](https://david-dm.org/codenautas/pru)\n"+
-                          "[![qa-control](http://codenautas.com/github/codenautas/pru.svg)](http://codenautas.com/github/codenautas/pru)\n"+
                           "\n"+
                           "\n"+
                           "<!--multilang buttons-->\n"+
@@ -550,7 +548,7 @@ describe('multilang', function(){
                 var doc = docTemp.replace('{{esDOC}}', 'WRONG.md');
                 var warnings=multilang.getWarningsButtons(doc);
                 expect(warnings).to.eql([{
-                    line: 25,
+                    line: 23,
                     text: "referenced document 'WRONG.md' does not exists in multilang header, expecting 'README.md'"
                 }]);
             });
@@ -571,9 +569,7 @@ describe('multilang', function(){
                           "[![downloads](https://img.shields.io/npm/dm/pru.svg)](https://npmjs.org/package/pru)\n"+
                           "[![build](https://img.shields.io/travis/codenautas/pru/master.svg)](https://travis-ci.org/codenautas/pru)\n"+
                           "[![coverage](https://img.shields.io/coveralls/codenautas/pru/master.svg)](https://coveralls.io/r/codenautas/pru)\n"+
-                          "[![climate](https://img.shields.io/codeclimate/github/codenautas/pru.svg)](https://codeclimate.com/github/codenautas/pru)\n"+
                           "[![dependencies](https://img.shields.io/david/codenautas/pru.svg)](https://david-dm.org/codenautas/pru)\n"+
-                          "[![qa-control](http://codenautas.com/github/codenautas/pru.svg)](http://codenautas.com/github/codenautas/pru)\n"+
                           "\n"+
                           "\n"+
                           "<!--multilang buttons-->\n"+
@@ -615,22 +611,22 @@ describe('multilang', function(){
                 //fs.writeFileSync("bad_en.md", doc);
                 var warnings=multilang.getWarningsButtons(doc);
                 expect(warnings).to.eql([
-                    {line:25, text:"referenced document 'WRONG.md' does not exists in multilang header, expecting 'README.md'"}
+                    {line:23, text:"referenced document 'WRONG.md' does not exists in multilang header, expecting 'README.md'"}
                 ]);
             });
             it('bad english and german',function(){
                 var doc = docTemplate.replace('{{LINE1}}', genLangLine('inglés','en', 'WRONG.md')).replace('{{LINE2}}', genLangLine('alemán','de', 'WORST.md'));
                 var warnings=multilang.getWarningsButtons(doc);
                 expect(warnings).to.eql([
-                    {line:25, text:"referenced document 'WRONG.md' does not exists in multilang header, expecting 'README.md'"},
-                    {line:26, text:"referenced document 'WORST.md' does not exists in multilang header, expecting 'LESEN.md'"}
+                    {line:23, text:"referenced document 'WRONG.md' does not exists in multilang header, expecting 'README.md'"},
+                    {line:24, text:"referenced document 'WORST.md' does not exists in multilang header, expecting 'LESEN.md'"}
                 ]);
             });
             it('bad language line',function(){
                 var doc = docTemplate.replace('{{LINE1}}', "[![inglés]https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png]README.md").replace('{{LINE2}}', lineDE());
                 var warnings=multilang.getWarningsButtons(doc);
                 expect(warnings).to.eql([
-                    {line:25, text:"button section does not match. Expected:\n[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md) -\n"}
+                    {line:23, text:"button section does not match. Expected:\n[![inglés](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)](README.md) -\n"}
                 ]);
             });
         });
