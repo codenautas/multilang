@@ -167,7 +167,7 @@ multilang.parseLang=function parseLang(lang){
         var langDir = Path.dirname(Path.resolve(module.filename));
         langDir = langDir.substr(0, langDir.length-4); // erase '/bin'
         var langFile = Path.normalize(langDir+'/langs/lang-'+lang+'.yaml');
-        theLang=yaml.safeLoad(stripBom(fs.readFileSync(langFile, 'utf8')));
+        theLang=yaml.load(stripBom(fs.readFileSync(langFile, 'utf8')));
     }
     return changing(this.langs[this.defLang], theLang);
 };
