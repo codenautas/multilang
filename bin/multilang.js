@@ -4,7 +4,8 @@
 var multilang={};
 
 var yaml = require('js-yaml');
-var fs = require('fs-promise');
+var fs = require('fs/promises');
+var fsSync = require('fs');
 var stripBom = require('strip-bom-string');
 var Path = require('path');
 var changing = require('best-globals').changing;
@@ -167,7 +168,7 @@ multilang.parseLang=function parseLang(lang){
         var langDir = Path.dirname(Path.resolve(module.filename));
         langDir = langDir.substr(0, langDir.length-4); // erase '/bin'
         var langFile = Path.normalize(langDir+'/langs/lang-'+lang+'.yaml');
-        theLang=yaml.load(stripBom(fs.readFileSync(langFile, 'utf8')));
+        theLang=yaml.load(stripBom(fsSync.readFileSync(langFile, 'utf8')));
     }
     return changing(this.langs[this.defLang], theLang);
 };

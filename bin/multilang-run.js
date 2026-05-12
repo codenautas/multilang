@@ -4,7 +4,7 @@
 
 var program = require('commander');
 var multilang = require('./multilang');
-var fs = require('fs-promise');
+var fs = require('fs/promises');
 var path = require('path');
 
 function realPath(inFile) {

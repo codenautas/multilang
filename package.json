@@ -19,26 +19,30 @@
     "multilang": "./bin/multilang-run.js"
   },
   "main": "./bin/multilang.js",
+  "overrides": {
+    "diff": ">=8.0.2",
+    "serialize-javascript": ">=7.0.0",
+    "uuid": ">=14.0.0"
+  },
   "dependencies": {
-    "commander": "9.4.0",
-    "fs-promise": "~2.0.3",
-    "js-yaml": "4.1.0",
-    "strip-bom-string": "~1.0.0",
-    "best-globals": "~1.0.3"
+    "commander": "^14.0.3",
+    "js-yaml": "^4.1.1",
+    "strip-bom-string": "^1.0.0",
+    "best-globals": "^2.1.4"
   },
   "devDependencies": {
-    "expect.js": "~0.3.1",
-    "istanbul": "~0.4.5",
-    "mocha": "~10.0.0",
-    "expect-called": "~0.4.0"
+    "expect.js": "^0.3.1",
+    "nyc": "^18.0.0",
+    "mocha": "^11.7.5",
+    "expect-called": "^0.4.0"
   },
   "engines": {
-    "node": ">= 6"
+    "node": ">= 22"
   },
   "scripts": {
     "test": "mocha --reporter spec --bail --check-leaks test/",
-    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/",
-    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
+    "test-ci": "nyc --reporter=lcov mocha --reporter spec --check-leaks test/",
+    "test-cov": "nyc mocha --reporter dot --check-leaks test/",
     "qac": "qa-control . -v",
     "all": "npm test && npm run test-cov && npm run qac",
     "start": "node example/server.js"
