@@ -25,15 +25,15 @@
     "uuid": ">=14.0.0"
   },
   "dependencies": {
-    "commander": "^14.0.3",
-    "js-yaml": "^4.1.1",
+    "commander": "^15.0.0",
+    "js-yaml": "^4.2.0",
     "strip-bom-string": "^1.0.0",
-    "best-globals": "^2.1.4"
+    "best-globals": "^2.2.0"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
     "nyc": "^18.0.0",
-    "mocha": "^11.7.5",
+    "mocha": "^11.7.6",
     "expect-called": "^0.4.0"
   },
   "engines": {
