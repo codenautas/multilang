@@ -411,6 +411,10 @@ multilang.stripComments = function stripComments(doc) {
     return o.join('');
 };
 
+multilang.adjustEol=function adjustEol(content, eol){
+    return content.replace(/\r?\n/g, eol);
+};
+
 multilang.changeNamedDoc=function changeNamedDoc(documentName, documentText, lang){
     var content = multilang.changeDoc(documentText, lang);
     if(multilang.stripCommentsFlag || (documentName === 'README.md' && multilang.stripCommentsFlag !== false)) {
@@ -464,6 +468,9 @@ multilang.main=function main(parameters){
                     chanout.write("Generating '"+oFile.lang+"', writing to '"+oFile.file+"'...\n");
                 }
                 var changedContent=multilang.changeNamedDoc(Path.basename(oFile.file), readContent, oFile.lang);
+                if(parameters.eol) {
+                    changedContent = multilang.adjustEol(changedContent, parameters.eol);
+                }
                 return fs.writeFile(oFile.file, changedContent).then(function(){
                     if(parameters.verbose) {
                         chanout.write("Generated '"+oFile.lang+"', file '"+oFile.file+"'.\n");

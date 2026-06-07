@@ -55,6 +55,34 @@ describe('multilang.main', function(){
     it('do simple task silently',function(done){
         doSimpleSuccessTask(done, {silent:true});
     });
+    it('convert eol when eol param is set',function(done){
+        var obtainLangsControl=expectCalled.control(multilang,'obtainLangs',{returns:[
+            {main:'mm', langs:{xx:{fileName:'xx.md'}}},
+            {main:'mm', langs:{xx:{fileName:'xx.md'}}},
+        ]});
+        var readFileControl =expectCalled.control(fs,'readFile',{returns:[Promise.resolve(contentOfDoc)]});
+        var changeDocControl=expectCalled.control(multilang,'changeDoc',{returns:['line1\r\nline2\nline3\n']});
+        var writeFileControl=expectCalled.control(fs,'writeFile',{returns:[Promise.resolve()]});
+        multilang.main({
+            input:'INPUT.md',
+            langs:['xx'],
+            output:'OUTPUT.md',
+            directory:'aDirectory',
+            silent:true,
+            eol:'\r\n'
+        }).then(function(exitCode){
+            expect(writeFileControl.calls).to.eql([['aDirectory'+path.sep+'OUTPUT.md','line1\r\nline2\r\nline3\r\n']]);
+            expect(exitCode).to.eql(0);
+            done();
+        }).catch(function(err){
+            done(err);
+        }).then(function(){
+            readFileControl .stopControl();
+            changeDocControl.stopControl();
+            writeFileControl.stopControl();
+            obtainLangsControl.stopControl();
+        });
+    });
     it('do simple task with warnings',function(done){
         var getWarningsControl=expectCalled.control(multilang,'getWarnings',{returns:[[{line: 1, text:'this is the warning\n with 2 lines'}]]});
         var chanout = new MiniStreamCapture();

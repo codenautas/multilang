@@ -2,10 +2,11 @@
 
 "use strict";
 
-var program = require('commander');
+var program = require('commander').program;
 var multilang = require('./multilang');
 var fs = require('fs/promises');
 var path = require('path');
+var os = require('os');
 
 function realPath(inFile) {
     return Promise.resolve().then(function() {
@@ -28,6 +29,7 @@ function langs(val) {
 program
     .version(require('../package').version)
     .usage('[options] input.md')
+    .argument('[input.md]', 'Name of the input file')
     .option('-i, --input [input.md]', 'Name of the input file')
     .option('-l, --lang [lang1]', 'Language to generate', langs)
     .option('-o, --output [name]', 'Name of the output file. Requires --langs!')
@@ -36,8 +38,11 @@ program
     .option('-s, --silent', 'Do not output anything')
     .option('--strip-comments', 'Remove HTML comments from output')
     .option('--no-strip-comments', 'Do not remove HTML comments from output')
+    .option('--eol <type>', 'End of line for the output files: LF or CRLF (default: the OS end of line)')
     .option('-v, --verbose', 'Output all progress informations')
     .parse(process.argv);
+
+var options = program.opts();
 
 
 function isLongOptionSet(ame) {
@@ -48,18 +53,30 @@ function isLongOptionSet(ame) {
     return false;
 }
 
-if( (""==program.args && !program.input) ){
+if( (""==program.args && !options.input) ){
     program.help();
 }
 
 var params = {};
-params.input = program.input ? program.input : program.args[0];
-params.output = program.output;
-params.check = program.check;
-params.silent = program.silent;
-params.langs = program.lang;
-params.directory = program.directory;
-params.verbose = program.verbose;
+params.input = options.input ? options.input : program.args[0];
+params.output = options.output;
+params.check = options.check;
+params.silent = options.silent;
+params.langs = options.lang;
+params.directory = options.directory;
+params.verbose = options.verbose;
+
+var eolByName = {LF:'\n', CRLF:'\r\n'};
+if(options.eol) {
+    var eolName = String(options.eol).toUpperCase();
+    if(! (eolName in eolByName)) {
+        process.stderr.write("ERROR: invalid --eol value '"+options.eol+"', expected LF or CRLF\n");
+        program.help();
+    }
+    params.eol = eolByName[eolName];
+} else {
+    params.eol = os.EOL;
+}
 
 if(isLongOptionSet('--no-strip-comments')) {
     params.stripComments = false;
