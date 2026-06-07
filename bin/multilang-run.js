@@ -11,9 +11,10 @@ var os = require('os');
 function realPath(inFile) {
     return Promise.resolve().then(function() {
         if(!inFile) { throw new Error("null file"); }
-        return fs.exists(inFile);
-    }).then(function(exists) {
-        if(! exists) { throw new Error("'"+inFile+"' does not exists"); }
+        return fs.stat(inFile);
+    }).then(function(stats) {
+        if(! stats) { throw new Error("'"+inFile+"' does not exists"); }
+        if(! stats.isFile()) { throw new Error("'"+inFile+"' is not a file"); }
         return inFile;
     }).then(function(inFile) {
         return path.dirname(path.resolve(inFile));
