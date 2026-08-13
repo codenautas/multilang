@@ -11,13 +11,16 @@ var os = require('os');
 function realPath(inFile) {
     return Promise.resolve().then(function() {
         if(!inFile) { throw new Error("null file"); }
-        return fs.stat(inFile);
-    }).then(function(stats) {
-        if(! stats) { throw new Error("'"+inFile+"' does not exists"); }
-        if(! stats.isFile()) { throw new Error("'"+inFile+"' is not a file"); }
-        return inFile;
-    }).then(function(inFile) {
-        return path.dirname(path.resolve(inFile));
+        return fs.realpath(inFile);
+    }).then(function(resolvedFile) {
+        var cwd = process.cwd();
+        if(resolvedFile !== cwd && !resolvedFile.startsWith(cwd + path.sep)) {
+            throw new Error("'"+inFile+"' is outside the allowed directory");
+        }
+        return fs.stat(resolvedFile).then(function(stats) {
+            if(!stats.isFile()) { throw new Error("'"+inFile+"' is not a file"); }
+            return path.dirname(resolvedFile);
+        });
     }).catch(function(err) {
         return Promise.reject(err);
     });
