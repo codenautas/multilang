@@ -1,3 +1,7 @@
 {
-    "window.title": "📣 ${dirty}${separator}${rootName}${separator}${activeEditorMedium}"
+    "window.title": "📣 ${dirty}${separator}${rootName}${separator}${activeEditorMedium}",
+    "editor.renderWhitespace": "selection",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.encoding": "utf8"
 }

@@ -27,7 +27,7 @@ también disponible en:
 
 <!--lang:es-->
 
-En un archivo tipo Markdown o html se escribe la documentación en varios idiomas. 
+En un archivo tipo Markdown o html se escribe la documentación en varios idiomas.
 
 Uno de esos lenguajes es el principal, los otros están comentados con ![open](https://raw.githubusercontent.com/codenautas/multilang/master/img/comment-open.png) y ![close](https://raw.githubusercontent.com/codenautas/multilang/master/img/comment-close.png)
 
@@ -94,7 +94,7 @@ Es wird jeweils eine .md Datei pro Sprache aus `doc-en.md` erzeugt.
 ## Formato del documento multilenguaje
 
 Un documento multilenguaje es un documento HTML o Markdown escrito en un idioma principal,
-que contiene dentro del mismo documento la traducción a uno o varios idiomas secundarios. 
+que contiene dentro del mismo documento la traducción a uno o varios idiomas secundarios.
 
 ### Ejemplo
 
@@ -102,7 +102,7 @@ que contiene dentro del mismo documento la traducción a uno o varios idiomas se
 
 ## Multilanguage document format
 
-Any HTML or Markdown document is a multilenguage document if it has a main *multilanguage* directive. 
+Any HTML or Markdown document is a multilenguage document if it has a main *multilanguage* directive.
 
 ### Example
 
@@ -167,14 +167,14 @@ In diesem Beispiel:
 
 <!--lang:es-->
 
- * *v0* es la versión del formato multilenguaje, 
+ * *v0* es la versión del formato multilenguaje,
  * *en* es el lenguaje principal [ISO 639-1](http://es.wikipedia.org/wiki/ISO_639-1), en este caso inglés
  * *README.md* es el nombre del archivo principal, el que contiene el documento que se está procesando
  * *es* y *fr* son los lenguajes secundarios (español y francés)
- * *LEEME.md* es el nombre del documento en español 
+ * *LEEME.md* es el nombre del documento en español
  * *LISEZMOID.md* es el nombre del documento en francés
- 
-El siguiente renglón después de la directiva multilenguaje es la directiva que indica 
+
+El siguiente renglón después de la directiva multilenguaje es la directiva que indica
 la presencia de los links a los otros documentos. Tiene el siguiente formato
 
 <!--lang:en--]
@@ -193,12 +193,12 @@ ist die Direktive zur Deklaration der Sprache
 
 <!--lang:es-->
 
-Lo siguientes renglones son los botones y links a los otros lenguajes. 
+Lo siguientes renglones son los botones y links a los otros lenguajes.
 
-Las directivas terminan con un renglón en blanco. 
+Las directivas terminan con un renglón en blanco.
 
-El resto del documento tiene el texto en los distintos idiomas, 
-intercalando los idiomas en el orden en que están definidos en la directiva multilenguaje. 
+El resto del documento tiene el texto en los distintos idiomas,
+intercalando los idiomas en el orden en que están definidos en la directiva multilenguaje.
 
 Las secciones o subsecciones donde se cambia de idioma están señaladas con la directiva
 
@@ -224,9 +224,9 @@ ist die Direktive zur Deklaration der Platzierung für die Button-Section
 Cuando una parte del texto sea para todos los idiomas se puede poner un asterisco "*" en vez del código de idioma.
 
 Cuando empiece la sección del idioma principal en vez de un corchete "]" la directiva cierra con un signo de mayor ">";
-así se cierra el comentario HTML. Cuando termina la sección del idioma principal el siguiente indicador de idioma comienza con 
-un signo de menor "<" en vez de un corchete "[" para que empiece un nuevo cometario HTML 
-y no se visualice el texto en los idiomas secundarios. 
+así se cierra el comentario HTML. Cuando termina la sección del idioma principal el siguiente indicador de idioma comienza con
+un signo de menor "<" en vez de un corchete "[" para que empiece un nuevo cometario HTML
+y no se visualice el texto en los idiomas secundarios.
 
 <!--lang:en--]
 
@@ -259,8 +259,8 @@ console.log('spanish.md',spanishText);
 
 <!--lang:es-->
 
-(nota acerca del ejemplo anterior: no use funciones ***Sync***rónicas en producción, 
-use las versiones asincrónicas 
+(nota acerca del ejemplo anterior: no use funciones ***Sync***rónicas en producción,
+use las versiones asincrónicas
 o basadas en [promesas](http://npmjs.com/package/fs-promise)
 como se ilustra en [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
 
@@ -271,9 +271,9 @@ getWarnings(text)    | obtiene una lista de advertencias a partir de un texto mu
 
 <!--lang:en--]
 
-(note about the example: do not use ***Sync*** functions in production, 
-use async 
-or [promise](http://npmjs.com/package/fs-promise) version 
+(note about the example: do not use ***Sync*** functions in production,
+use async
+or [promise](http://npmjs.com/package/fs-promise) version
 as you can see in [codenautas](https://github.com/codenautas/codenautas/blob/master/examples/promises.md)
 
 function             | use

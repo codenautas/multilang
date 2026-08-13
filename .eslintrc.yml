@@ -51,7 +51,7 @@ rules:
   dot-location: 0
   dot-notation: 0
   # OJO eqeqeq
-  eqeqeq: 0 
+  eqeqeq: 0
   guard-for-in: 2
   no-alert: 2
   no-caller: 2

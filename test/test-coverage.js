@@ -75,13 +75,13 @@ describe('multilang coverage', function(){
     });
     it('generating errors in parameters.langs',function(done){
         tipicalTest(done,{langs:['mm'],esperaError:/no lang specified \(or main lang specified\)/});
-    });    
+    });
     it('generating errors in parameters.langs & output',function(done){
         tipicalTest(done,{langs:['mm', 'yy', 'pp'],esperaError:/parameter output with more than one lang/});
     });
     it('generating errors in parameters.directory',function(done){
         tipicalTest(done,{langs:null, noInputDir:true, esperaError:/no output directory specified/});
     });
-});    
+});
 
 });

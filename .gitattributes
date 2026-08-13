@@ -1,0 +1,13 @@
+# Normalize to LF in the repo on commit; check out with the OS-native EOL.
+* text=auto
+
+examples/README.md text eol=lf
+examples/con-espacios.md text eol=lf
+examples/desde-es.md text eol=lf
+examples/from-es.md text eol=lf
+examples/mehrsprachig.md text eol=lf
+examples/multilanguage.md text eol=lf
+examples/multilenguaje.md text eol=lf
+examples/multilingua.md text eol=lf
+examples/with-spaces.md text eol=lf
+examples/мультиязычный.md text eol=lf

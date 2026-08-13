@@ -1,0 +1,32 @@
+root = true
+
+# Defaults for every file
+[*]
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+indent_style = space
+
+[examples/README.md]
+insert_final_newline = false
+
+[examples/desde-es.md]
+insert_final_newline = false
+
+[examples/from-es.md]
+insert_final_newline = false
+
+[examples/mehrsprachig.md]
+charset = unset
+
+[examples/multilanguage.md]
+charset = unset
+
+[examples/multilenguaje.md]
+charset = unset
+
+[examples/multilingua.md]
+charset = unset
+
+[examples/мультиязычный.md]
+charset = unset
