@@ -99,7 +99,7 @@ multilang.generateButtons=function generateButtons(docHeader,lang) {
     return r.join('');
 };
 
-multilang.splitDoc=function splitDoc(documentText){
+multilang.splitDoc = function splitDoc(documentText) { // eslint-disable-line max-statements, complexity
     var r = [];
     r.push({special:'header', withBom:'\uFEFF'===documentText.substring(0, 1)});
     var doc = r[0].withBom ? documentText.substring(1) : documentText;
@@ -173,7 +173,7 @@ multilang.parseLang=function parseLang(lang){
     return changing(this.langs[this.defLang], theLang);
 };
 
-multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang, actualLang, warns, line, isFirstSection) {
+multilang.checkForMissingLangs = function checkForMissingLangs (olangs, prevLang, actualLang, warns, line, isFirstSection) {  // eslint-disable-line complexity
     if("*" !== actualLang && !olangs[actualLang]) { return; }
     var prev=null;
     var testing=false;
@@ -201,7 +201,7 @@ multilang.checkForMissingLangs = function checkForMissingLangs(olangs, prevLang,
     }
 };
 
-multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
+multilang.getWarningsLangDirective = function getWarningsLangDirective(doc) {  // eslint-disable-line complexity, max-statements
     var warns=[];
     var obtainedLangs=this.obtainLangs(doc);
     if(!obtainedLangs.main) {
@@ -275,7 +275,7 @@ multilang.getWarningsLangDirective=function getWarningsLangDirective(doc){
     return warns;
 };
 
-multilang.getWarningsButtons=function getWarningsButtons(doc){
+multilang.getWarningsButtons = function getWarningsButtons(doc) {  // eslint-disable-line max-statements
     var langs = multilang.obtainLangs(doc);
     var langFiles = Object.keys(langs.langs).map(function(lang) { return langs.langs[lang].fileName; });
     var currentLangFile = 0;
@@ -346,7 +346,7 @@ multilang.stringizeWarnings=function stringizeWarnings(warns) {
     return r.join('');
 };
 
-multilang.stripComments = function stripComments(doc) {
+multilang.stripComments = function stripComments(doc) { // eslint-disable-line complexity, max-statements
     var docLines = doc.split('\n');
     var o=[];
     // All In One Line

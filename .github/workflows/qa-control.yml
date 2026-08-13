@@ -1,0 +1,11 @@
+name: QA control
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  qa:
+    uses: codenautas/.github/.github/workflows/qa-control.yaml@v1

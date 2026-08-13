@@ -357,10 +357,10 @@ describe('multilang', function(){
             ]});
             var warnings=multilang.getWarningsButtons(doc);
             expect(warnings).to.eql([]); // ok, no warnings
-            var warnings=multilang.getWarningsButtons(doc);
-            expect(warnings).to.eql([{line:6, text:'button section does not match. Expected:\n'+'other button section for wrong answer\n'}]);
-            var warnings=multilang.getWarningsButtons(doc);
-            expect(warnings).to.eql([{line:4, text:'button section does not match. Expected:\n'+'the buttons section\n'}]);
+            warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([{line:6, text:'button section does not match. Expected:\nother button section for wrong answer\n'}]);
+            warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([{line:4, text:'button section does not match. Expected:\nthe buttons section\n'}]);
             control.stopControl();
         });
         it('generate warnings controling buttons (original)',function(){
@@ -387,10 +387,10 @@ describe('multilang', function(){
             ]});
             var warnings=multilang.getWarningsButtons(doc);
             expect(warnings).to.eql([]); // ok, no warnings
-            var warnings=multilang.getWarningsButtons(doc);
-            expect(warnings).to.eql([{line:6, text:'button section does not match. Expected:\n'+'other button section for wrong answer\n'}]);
-            var warnings=multilang.getWarningsButtons(doc);
-            expect(warnings).to.eql([{line:4, text:'button section does not match. Expected:\n'+'the buttons section\n'}]);
+            warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([{line:6, text:'button section does not match. Expected:\nother button section for wrong answer\n'}]);
+            warnings=multilang.getWarningsButtons(doc);
+            expect(warnings).to.eql([{line:4, text:'button section does not match. Expected:\nthe buttons section\n'}]);
             control.stopControl();
         });
         it('generate warnings controling buttons position',function(){

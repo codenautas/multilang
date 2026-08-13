@@ -17,8 +17,10 @@ Werkzeug für Mehrsprachigkeit &amp; Markdown multilang
 <!-- cucardas -->
 [![npm-version](https://img.shields.io/npm/v/multilang.svg)](https://npmjs.org/package/multilang)
 [![downloads](https://img.shields.io/npm/dm/multilang.svg)](https://npmjs.org/package/multilang)
-[![build](https://img.shields.io/travis/codenautas/multilang/master.svg)](https://travis-ci.org/codenautas/multilang)
+[![build](https://github.com/codenautas/multilang/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/codenautas/multilang/actions/workflows/build-and-test.yml)
 [![coverage](https://img.shields.io/coveralls/codenautas/multilang/master.svg)](https://coveralls.io/r/codenautas/multilang)
+[![security](https://socket.dev/api/badge/npm/package/multilang)](https://socket.dev/npm/package/multilang)
+[![qa-control](https://github.com/codenautas/multilang/actions/workflows/qa-control.yml/badge.svg)](https://github.com/codenautas/multilang/actions/workflows/qa-control.yml)
 
 <!--multilang buttons-->
 

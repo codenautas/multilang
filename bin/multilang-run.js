@@ -21,7 +21,7 @@ function realPath(inFile) {
     }).catch(function(err) {
         return Promise.reject(err);
     });
-};
+}
 
 function langs(val) {
     return val.split(',')
@@ -54,7 +54,7 @@ function isLongOptionSet(ame) {
     return false;
 }
 
-if( (""==program.args && !options.input) ){
+if( (""==program.args && !options.input) ){ // eslint-disable-line eqeqeq
     program.help();
 }
 

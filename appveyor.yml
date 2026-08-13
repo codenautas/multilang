@@ -1,15 +1,25 @@
+image: Visual Studio 2026
+
 environment:
   matrix:
-    - nodejs_version: "14"
-    - nodejs_version: "16"
+    - nodejs_version: "24"
+    - nodejs_version: "26"
+
 matrix:
   fast_finish: true
+
+cache:
+  - '%LOCALAPPDATA%\npm-cache -> package-lock.json'
+
 install:
-  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  - npm install
+  - ps: Install-Product node $env:nodejs_version x64
+  - npm ci
+
 build: off
+
 test_script:
   - node --version
   - npm --version
   - npm run test-ci
+
 version: "{build}"

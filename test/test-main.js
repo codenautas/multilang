@@ -100,8 +100,8 @@ describe('multilang.main', function(){
                     expect(chanerr.getContent()).to.eql("line 1: this is the warning\n with 2 lines\n");
                     expect(getWarningsControl.calls).to.eql([[contentOfDoc]]);
                     done();
-                }catch(err){
-                    done(err);
+                }catch(err2){
+                    done(err2);
                 }
             }
             getWarningsControl.stopControl();
