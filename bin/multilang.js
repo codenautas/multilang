@@ -71,7 +71,7 @@ multilang.obtainLangs=function obtainLangs(docHeader){
     var def_lang = null;
     var langs = /<!--multilang v[0-9]+\s+(.+)(-->)/.exec(docHeader);
     if(langs) {
-        var lang_re = /([a-z]{2}):([^.]+\.(md|html))/g;
+        var lang_re = /([a-z]{2}):(.+?\.(md|html))/g;
         var lang;
         while(null !== (lang = lang_re.exec(langs[1]))) {
             if(null === def_lang) { def_lang = lang[1]; }
