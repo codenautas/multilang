@@ -1,0 +1,28 @@
+name: Create new version
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Tipo de versión'
+        type: choice
+        required: true
+        default: patch
+        options: [patch, minor, major, prerelease, premajor, preminor, prepatch]
+      preid:
+        description: 'Identificador para los pre* (beta, alpha, rc)'
+        type: string
+        required: false
+        default: beta
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-new-version:
+    uses: codenautas/.github/.github/workflows/create-new-version.yaml@v3
+    with:
+      bump: ${{ inputs.bump }}
+      preid: ${{ inputs.preid }}
+      node_version: '24.x'

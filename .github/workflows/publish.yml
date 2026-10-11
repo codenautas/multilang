@@ -1,16 +1,26 @@
-name: Publish from Tag
+name: Publish
 
 on:
   push:
     tags:
       - 'v[0-9]+.[0-9]*'
+  workflow_dispatch:
+    inputs:
+      publish_without_testing:
+        description: 'Publicar sin correr los tests'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
   publish:
-    uses: codenautas/.github/.github/workflows/npm-publish-from-tag.yaml@v1
+    uses: codenautas/.github/.github/workflows/npm-publish-new-version.yaml@v3
     with:
-      node_version: '24'
+      node_version: '24.x'
+      publish_without_testing: ${{ inputs.publish_without_testing == true }}
+      postgres: ''
+      create-tag: ${{ github.event_name == 'workflow_dispatch' }}

@@ -8,4 +8,9 @@ on:
 
 jobs:
   ci:
-    uses: codenautas/.github/.github/workflows/node-build-and-test.yaml@v1
+    uses: codenautas/.github/.github/workflows/node-build-and-test.yaml@v3
+    with:
+      node_versions: ''
+      skip_tests: false
+      postgres: ''
+      coverage_version: ''

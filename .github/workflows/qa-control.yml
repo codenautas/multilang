@@ -5,7 +5,14 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  schedule:
+    - cron: '20 20 * * 5'
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
 
 jobs:
   qa:
-    uses: codenautas/.github/.github/workflows/qa-control.yaml@v1
+    uses: codenautas/.github/.github/workflows/qa-control.yaml@v3
