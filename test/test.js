@@ -173,7 +173,7 @@ describe('multilang', function(){
                 name: 'italiano',
                 abr: 'it',
                 languages: {
-                    en: 'inlgese',
+                    en: 'inglese',
                     es: 'spagnolo',
                     it: 'italiano',
                     ru: 'russo',
