@@ -209,11 +209,19 @@ describe('multilang', function(){
         });
     });
     describe('integration', function(){
+        // the examples are appease compatible: they are checked out with the OS EOL, the content is compared with LF
+        function expectAppeaseCompatibleDoc(obtainedDoc, expectedDoc){
+            var obtainedLF = multilang.adjustEol(obtainedDoc, '\n');
+            expect(obtainedLF).to.eql(multilang.adjustEol(expectedDoc, '\n'));
+            expect(obtainedLF.charCodeAt(0)).not.to.eql(0xFEFF); // without BOM
+            expect(obtainedLF).not.to.match(/[ \t]\n/);
+            expect(obtainedLF).to.match(/[^\n]\n$/);
+        }
         it('generate the spanish file of the example (multilanguaje)', function(done){
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/multilenguaje.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
-                    expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
+                    expectAppeaseCompatibleDoc(obtainedSpanishDoc, expectedSpanishDoc);
                     done();
                 });
             }).catch(function(err){
@@ -224,7 +232,7 @@ describe('multilang', function(){
             fs.readFile('./examples/with-spaces.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/con-espacios.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
-                    expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
+                    expectAppeaseCompatibleDoc(obtainedSpanishDoc, expectedSpanishDoc);
                     done();
                 });
             }).catch(function(err){
@@ -235,7 +243,34 @@ describe('multilang', function(){
             fs.readFile('./examples/desde-es.md',{encoding: 'utf8'}).then(function(englishDoc){
                 return fs.readFile('./examples/from-es.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
                     var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'en');
+                    expectAppeaseCompatibleDoc(obtainedSpanishDoc, expectedSpanishDoc);
+                    done();
+                });
+            }).catch(function(err){
+                done(err);
+            })
+        });
+        it('generate only one EOL at the end when the last section is of other lang', function(done){
+            fs.readFile('./examples/ends-with-lang.md',{encoding: 'utf8'}).then(function(englishDoc){
+                return fs.readFile('./examples/termina-con-idioma.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
+                    var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
+                    expectAppeaseCompatibleDoc(obtainedSpanishDoc, expectedSpanishDoc);
+                    done();
+                });
+            }).catch(function(err){
+                done(err);
+            })
+        });
+        it('respect BOM, LF, trailing spaces and EOLs at the end of a not appease compatible example', function(done){
+            fs.readFile('./examples/exception-eol.md',{encoding: 'utf8'}).then(function(englishDoc){
+                return fs.readFile('./examples/excepcion-eol.md',{encoding: 'utf8'}).then(function(expectedSpanishDoc){
+                    expect(englishDoc.charCodeAt(0)).to.eql(0xFEFF); // with BOM
+                    expect(englishDoc).not.to.contain('\r');
+                    var obtainedSpanishDoc = multilang.changeDoc(englishDoc,'es');
                     expect(obtainedSpanishDoc).to.eql(expectedSpanishDoc);
+                    expect(obtainedSpanishDoc.charCodeAt(0)).to.eql(0xFEFF); // with BOM
+                    expect(obtainedSpanishDoc).to.contain('  \n');
+                    expect(obtainedSpanishDoc).to.match(/MIT\n\n$/);
                     done();
                 });
             }).catch(function(err){
@@ -247,7 +282,7 @@ describe('multilang', function(){
         it('generate the french text of the fake', function(done){
             multilang.langs.fr=frenchIncompleteExample;
             fs.readFile('./examples/multilanguage.md',{encoding: 'utf8'}).then(function(englishDoc){
-                englishDoc=stripBom(englishDoc);
+                englishDoc=multilang.adjustEol(stripBom(englishDoc), '\n');
                 var splitDocControl = expectCalled.control(multilang,'splitDoc',{returns:[[
                     {special: 'header', withBom:false},
                     {langs: {en: true}, text:"in other lang don't put"},
@@ -268,7 +303,7 @@ describe('multilang', function(){
                     '<--button line-->\n\r\nactual lang:<img src=this.png>\n\n\n'+
                     'second section in french\n\n\n'+
                     'section in mixed lang\nfor various langs\n\n'+
-                    'section for all';
+                    'section for all\n'; // the same EOLs at the end of the source
                 expect(obtainedDoc).to.eql(fakeDoc);
                 expect(obtainLangsControl.calls.length).to.eql(1);
                 expect(obtainLangsControl.calls[0][0]).to.contain(
@@ -294,6 +329,15 @@ describe('multilang', function(){
             }).catch(function(err){
                 done(err);
             })
+        });
+        it('keep the same EOLs at the end of the source', function(){
+            var doc='<!--multilang v0 en:en.md es:es.md de:de.md -->\n'+
+                '<!--lang:en-->\nend\n\n<!--lang:es--]\nfin\n\n[!--lang:de-->\nEnde';
+            var expected='<!-- multilang from en.md\n\n\n\n\n'+multilang.langs.es.phrases['DO NOT MODIFY DIRECTLY']+'\n\n\n\n\n-->\n'+
+                'fin';
+            expect(multilang.changeDoc(doc,'es')).to.eql(expected);
+            expect(multilang.changeDoc(doc+'\r\n','es')).to.eql(expected+'\r\n');
+            expect(multilang.changeDoc(doc+'\n\n','es')).to.eql(expected+'\n\n');
         });
         it('generate warnings controling --lang:xx-- directive',function(){
             var doc='\n'+
@@ -662,8 +706,9 @@ describe('multilang', function(){
         });
         it('stripComments input with comments', function(){
             compareSCio('linea con<!-- esto es un comentario --> una sola linea','linea con una sola linea');
-            compareSCio('hola <!-- esto es un comentario -->\nlinea comun','hola \nlinea comun');
-            compareSCio('hola <!-- esto es un comentario\nmultilinea -->\nlinea comun','hola \nlinea comun');
+            compareSCio('hola <!-- esto es un comentario -->\nlinea comun','hola\nlinea comun');
+            compareSCio('hola <!-- esto es un comentario\nmultilinea -->\nlinea comun','hola\nlinea comun');
+            compareSCio('hola <!-- uno --> <!-- dos -->\nlinea comun','hola\nlinea comun');
             compareSCio('primera\n<!-- esto es un comentario línea completa -->\nsegunda línea','primera\nsegunda línea');
             compareSCio('primera\n<!-- comentario dos líneas -->\nsegunda línea','primera\nsegunda línea');
             compareSCio('<!-- comentario al principio \n varias líneas -->\nprimera línea\n2\n3','primera línea\n2\n3');

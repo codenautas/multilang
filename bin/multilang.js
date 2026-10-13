@@ -14,6 +14,7 @@ var changing = require('best-globals').changing;
 // matches: m[1]: LB, m[2]: lang, m[3]: RB
 var reLangSec=/([<\[])!--lang:(.*)--([>\]])/;
 var reTrimWS = /([\t\r ]*)$/g;
+var reEolsAtEnd = /(\r?\n)*$/;
 var imgUrl = 'https://raw.githubusercontent.com/codenautas/multilang/master/img/';
 
 multilang.defLang='en';
@@ -44,7 +45,7 @@ multilang.changeDoc=function changeDoc(documentText,lang){
     var langConv = this.parseLang(lang);
     var parts=this.splitDoc(documentText);
     var buttonSection=this.generateButtons(obtainedLangs,lang); // we just need the content
-    return parts.map(function(part){
+    var content = parts.map(function(part){
         if('special' in part) {
             switch(part.special){
                 case 'header':
@@ -64,6 +65,8 @@ multilang.changeDoc=function changeDoc(documentText,lang){
             return '';
         }
     }).join('');
+    // the document ends with the same end of lines as the source (ex: the last section could be of other lang)
+    return content.replace(reEolsAtEnd, '') + documentText.match(reEolsAtEnd)[0];
 };
 
 multilang.obtainLangs=function obtainLangs(docHeader){
@@ -364,24 +367,25 @@ multilang.stripComments = function stripComments(doc) { // eslint-disable-line c
         if(! inTicks) {
             if(start && end) {
                 var m=reAIOL.exec(line);
-                o.push(line.substring(0, m.index));
+                var lineParts=[line.substring(0, m.index)];
                 var first=null;
                 var lastLen=null;
                 while(m) {
                     if(! first) {
                         first = m.index;
                     } else {
-                        o.push(line.substr(lastLen, m.index-lastLen));
+                        lineParts.push(line.substr(lastLen, m.index-lastLen));
                     }
                     lastLen=reAIOL.lastIndex;
                     m=reAIOL.exec(line);
                 }
                 var el = line.substr(lastLen, line.length-1);
-                o.push(el);
+                lineParts.push(el);
+                o.push(lineParts.join('').replace(reTrimWS,'')); // right trim ws left by the removed comments
                 if(first === 0 && el==="") { continue; }
             } else if(start) {
                 if(! inComment) {
-                    o.push(line.substring(0, start.index));
+                    o.push(line.substring(0, start.index).replace(reTrimWS,''));
                     inComment=true;
                     if(start.index === 0) {
                         continue;

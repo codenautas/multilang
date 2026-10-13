@@ -7,26 +7,12 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 indent_style = space
 
-[examples/README.md]
+[examples/exception-eol.md]
+charset = utf-8-bom
+trim_trailing_whitespace = false
 insert_final_newline = false
 
-[examples/desde-es.md]
+[examples/excepcion-eol.md]
+charset = utf-8-bom
+trim_trailing_whitespace = false
 insert_final_newline = false
-
-[examples/from-es.md]
-insert_final_newline = false
-
-[examples/mehrsprachig.md]
-charset = unset
-
-[examples/multilanguage.md]
-charset = unset
-
-[examples/multilenguaje.md]
-charset = unset
-
-[examples/multilingua.md]
-charset = unset
-
-[examples/мультиязычный.md]
-charset = unset

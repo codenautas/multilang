@@ -1,4 +1,4 @@
-﻿<!-- multilang from multilanguage.md
+<!-- multilang from multilanguage.md
 
 
 

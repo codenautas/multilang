@@ -1,4 +1,4 @@
-﻿<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md de:mehrsprachig.md -->
+<!--multilang v0 en:multilanguage.md es:multilenguaje.md it:multilingua.md ru:мультиязычный.md de:mehrsprachig.md -->
 <!--multilang buttons-->
 
 language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
