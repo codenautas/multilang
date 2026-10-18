@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "commander": "^15.0.0",
-    "js-yaml": "^5.4.3",
+    "js-yaml": "^5.5.0",
     "strip-bom-string": "^1.0.0",
     "best-globals": "^2.2.3"
   },
@@ -35,14 +35,14 @@
     "nyc": "^18.0.0",
     "mocha": "^12.0.3",
     "expect-called": "^0.4.0",
-    "qa-control": "^0.12.1"
+    "qa-control": "^0.12.2"
   },
   "engines": {
     "node": ">= 22"
   },
   "scripts": {
     "test": "mocha --reporter spec --bail --check-leaks test/",
-    "test-ci": "nyc --reporter=lcov mocha --reporter spec --check-leaks test/",
+    "test-ci": "nyc --reporter=lcov --reporter=text-summary mocha --reporter spec --check-leaks test/",
     "test-cov": "nyc mocha --reporter dot --check-leaks test/",
     "qac": "qa-control . -v",
     "all": "npm test && npm run test-cov && npm run qac",
